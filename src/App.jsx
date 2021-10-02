@@ -5,44 +5,52 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import GroupDetails from "./components/TeamDetails";
-import Table from "./components/TeamTable";
+import Otp from "./components/Otp";
+import Login from "./components/Login";
+import Dashbaord from "./components/Dashbaord";
+
+
 import apis from "./api";
 
 function App() {
-  // const [list, setList] = useState([]);
-  // : ["The value '49cfc59-5312-48c6-90ee-f422e692230f' is not valid.
+
+  const [idNum, setIdNum] = useState('300628583');
+  const [phone, setPhone] = useState('0542226958');
+  const [loggedIn, setLoggedIn] = useState(false);
+
   useEffect(() => {
-  console.log("111")    
-      apis
-        .validateTube()
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }, []);
+    let token = localStorage.getItem('token');
+    setLoggedIn(token ? true : false)
+  }, [])
+
+  const childProps = {
+    idNum,
+    phone,
+    setIdNum,
+    setPhone
+  };
 
   return (
-    <div>
-      <h1>einrstidnsteitsnei</h1>
-    </div>
-    // <Router>
-    //   <Switch>
-    //     <Route exact path="/">
-    //       <Redirect to="/teams" />
-    //     </Route>
-    //     <Route exact path="/teams">
-    //       <Table list={list} />  
-    //     </Route>
-    //     <Route path="/teams/:id">
-    //       <GroupDetails />
-    //     </Route>
-    //   </Switch>
-    // </Router>
+
+    <Router>
+      <Switch>
+        <Route exact path="/">
+          {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />}
+        </Route>
+        <Route path="/dashboard"
+        >
+          <Dashbaord />
+        </Route>
+        <Route path="/login">
+          <Login
+            idNum={idNum}
+            phone={phone} />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
+
 
 export default App;
 

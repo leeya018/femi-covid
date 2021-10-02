@@ -14,23 +14,13 @@ const config = {
 
 
 
-export const otp = () => {
-  return api.post(`/OTPRquest`,
-    {
-      idNum: "300628583",
-      phone: "0542226958"
-
-    });
+export const otp = (payload) => {
+  return api.post(`/OTPRquest`,payload);
 };
 
 
-export const login = () => {
-  return api.post(`/logIn`,
-    {
-      idNum: "300628583",
-      otp: "128956", // have to be get from the otp
-      phone: "0542226958"
-    });
+export const login = (payload) => {
+  return api.post(`/logIn`,payload)
 };
 
 //localStorage.getItem('jwtToken')
@@ -247,7 +237,7 @@ async function creatTaskJson() {
   console.log(baseClient)
   return baseClient
 }
-creatTaskJson()
+// creatTaskJson()
 
 
 export const createTask = (payload) => {
