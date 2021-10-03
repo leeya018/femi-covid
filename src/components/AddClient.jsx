@@ -2,6 +2,7 @@ import './otp.css';
 
 import React, { useState } from 'react'
 import apis from "../api";
+import secretKey from 'secret-key';
 
 export default function AddClient() {
 
@@ -28,15 +29,12 @@ export default function AddClient() {
     }
 
 
-
-    function generateCode() {
-
-    }
     async function creatTaskJson(client) {
-
+        let key = secretKey.create('1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X')
+        console.log(key)
         const coords = "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6"
         let dupClient = { ...client }
-        let source = '3ea4e6bc-91c0-4335-9b7d-de160c1a16ac'
+        source = key.iv
         dupClient.source = source
         let roleData = await apis.getRole(dupClient.role)
         dupClient.role = roleData
@@ -69,36 +67,36 @@ export default function AddClient() {
         let a = {
             source: "3ea4e6bc-91c0-4335-9b7d-de160c6a17a2",
             coordination: {
-              id: "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6",
-              tester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
-              institute: {
-                id: 42,
-                name: "אקים בת ים",
-                code: "8301100151",
-                type: {
-                  id: 101,
-                  title: "מוסד גריאטרי"
+                id: "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6",
+                tester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
+                institute: {
+                    id: 42,
+                    name: "אקים בת ים",
+                    code: "8301100151",
+                    type: {
+                        id: 101,
+                        title: "מוסד גריאטרי"
+                    },
+                    address: "קינמון 10, בת ים",
+                    contactName: "יוסי כהן",
+                    contactPhone: "052-8534516",
+                    city: "בת ים",
+                    street: "קינמון",
+                    houseNumber: "10",
+                    requestID: "1024872",
+                    district: {
+                        id: 1001,
+                        title: "פמי"
+                    },
+                    coordinationType: 1
                 },
-                address: "קינמון 10, בת ים",
-                contactName: "יוסי כהן",
-                contactPhone: "052-8534516",
-                city: "בת ים",
-                street: "קינמון",
-                houseNumber: "10",
-                requestID: "1024872",
-                district: {
-                  id: 1001,
-                  title: "פמי"
-                },
-                coordinationType: 1
-              },
-              status: false,
-              coordinationDate: "2021-10-02T00:00:00",
-              completedTime: "1899-12-31T21:39:20",
-              notes: "",
-              createdBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-              createdDate: "2021-10-02T13:10:40.49",
-              type: 1
+                status: false,
+                coordinationDate: "2021-10-02T00:00:00",
+                completedTime: "1899-12-31T21:39:20",
+                notes: "",
+                createdBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+                createdDate: "2021-10-02T13:10:40.49",
+                type: 1
             },
             femiCode: "",
             status: 0,
@@ -120,36 +118,36 @@ export default function AddClient() {
             isUrgent: false,
             kupaReferenceId: "",
             kupa: {
-              id: 101,
-              title: "כללית"
+                id: 101,
+                title: "כללית"
             },
             assignedTester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
             institute: {
-              id: 42,
-              name: "אקים בת ים",
-              code: "8301100151",
-              type: {
-                id: 101,
-                title: "מוסד גריאטרי"
-              },
-              address: "קינמון 10, בת ים",
-              contactName: "יוסי כהן",
-              contactPhone: "052-8534516",
-              city: "בת ים",
-              street: "קינמון",
-              houseNumber: "10",
-              requestID: "1024872",
-              district: {
-                id: 1001,
-                title: "פמי"
-              },
-              coordinationType: 1
+                id: 42,
+                name: "אקים בת ים",
+                code: "8301100151",
+                type: {
+                    id: 101,
+                    title: "מוסד גריאטרי"
+                },
+                address: "קינמון 10, בת ים",
+                contactName: "יוסי כהן",
+                contactPhone: "052-8534516",
+                city: "בת ים",
+                street: "קינמון",
+                houseNumber: "10",
+                requestID: "1024872",
+                district: {
+                    id: 1001,
+                    title: "פמי"
+                },
+                coordinationType: 1
             },
             role: {
-              id: 5,
-              title: "צוות מטפל"
+                id: 5,
+                title: "צוות מטפל"
             }
-          }
+        }
 
         let resTask = await apis.createTask(task)
         console.log(resTask.data)
