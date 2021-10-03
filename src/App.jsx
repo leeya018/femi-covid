@@ -19,8 +19,8 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    let token = localStorage.getItem('token');
-    setLoggedIn(token ? true : false)
+    // let token = localStorage.getItem('token');
+    // setLoggedIn(token ? true : false)
   }, [])
 
   const childProps = {
@@ -46,6 +46,7 @@ function App() {
             idNum={idNum}
             phone={phone} />
         </Route>
+
       </Switch>
     </Router>
   );

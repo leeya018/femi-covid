@@ -1,9 +1,12 @@
 import { getRoles } from "@testing-library/dom";
 import axios from "axios";
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzE2NTcyNywiZXhwIjoxNjMzMTcyOTI3LCJpYXQiOjE2MzMxNjU3Mjd9.G0KjS29eTfqs5VJWGeuQkhpOeM_aPcAaFhiFLNzoGbs"
+const token1 = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzI1ODk0MCwiZXhwIjoxNjMzMjY2MTQwLCJpYXQiOjE2MzMyNTg5NDB9.x1JR29s-5_yzQgkfI_GMYQideYEHcNkZ71Nu6R921Kw"
+const coords = "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6"
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzI1ODk0MCwiZXhwIjoxNjMzMjY2MTQwLCJpYXQiOjE2MzMyNTg5NDB9.x1JR29s-5_yzQgkfI_GMYQideYEHcNkZ71Nu6R921Kw"
 const api = axios.create({
   baseURL: "https://magenavot-be-prd.femimoh.co.il/femiCovidSampellingForNursingHome/1.0.0",
 });
+
 
 const config = {
   headers: {
@@ -32,8 +35,8 @@ export const openTium = () => { //AKA plus button
 
 };
 //300628583  the id of patient
-export const findData = () => {
-  return api.get(`/patient/recurent/1/300628583`, config);
+export const findClient = (id) => {
+  return api.get(`/patient/recurent/1/${id}/`, config);
 
 };
 const getPatientRoles = () => {
@@ -137,45 +140,10 @@ async function getRole(roleNum) {
   return null
 }
 
-// this datat shoylud come from " openTium"
-function getTium() {
-  return {
-    id: "749cfc59-5312-48c6-90ee-f422e692230f",
-    tester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
-    institute: {
-      id: 25,
-      name: "אקים בת ים - רחוב אילת",
-      code: "8301100151",
-      type: {
-        id: 101,
-        title: "מוסד גריאטרי"
-      },
-      address: "רח' אילת 11, בת ים",
-      contactName: "עינת קורן",
-      contactPhone: "050-4175066",
-      city: "בת ים",
-      street: "רח' אילת",
-      houseNumber: "11",
-      requestID: "1024872",
-      district: {
-        id: 1001,
-        title: "פמי"
-      },
-      coordinationType: 1
-    },
-    status: false,
-    coordinationDate: "2021-09-25T00:00:00",
-    completedTime: "1899-12-31T21:39:20",
-    notes: "בדיקה",
-    createdBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    createdDate: "2021-09-25T11:35:27.123",
-    type: 1
-  }
-}
 
-function getInst() {
-  return getTium().institute
-}
+// function getInst() {
+//   return getTium().institute
+// }
 
 async function getKupa(kupaId){
   let kupas = (await getKupas()).data
@@ -187,62 +155,15 @@ async function getKupa(kupaId){
   return null
 }
 
-function addExtraFields() {
-  return {
-    antigenStatus: null,
-    assignedTester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
-    femiCode: "",
-    isUrgent: false,
-    kupaReferenceId: "",
-    orderItemIds: null,
-    receptionEnteredBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    receptionEnteredTime: "2021-10-01T23:08:38.7666667",
-    requestTime: "2021-10-01T23:08:32.893Z",
-    rowVersion: null,
-    serologyStatus: null,
-    source: "5a5ffb39-f464-4efb-99a9-d72dc7f8c934",
-    status: 0,
-    supplierCode: "",
-    supplierDesc: "",
-    unacurateInformationFeedback: null
-  }
+//bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6
+function getCoordination(coordsId) {
+  return api.get(`/coordination/${coordsId}`,config);
+
+  
 }
 
-function addCoordination() {
-  let coordExtra = {
-    completedTime: "1899-12-31T21:39:20",
-    coordinationDate: "2021-09-25T00:00:00",
-    createdBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    createdDate: "2021-09-25T11:35:27.123",
-    id: "749cfc59-5312-48c6-90ee-f422e692230f",
-    notes: "בדיקה",
-    status: false,
-    tester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
-    type: 1
-  }
-  return Object.assign({institute:getInst()}, coordExtra);
-}
-
-// still need to fix it with data that inisd  
-async function creatTaskJson() {
-  let baseClient = getClient() // this come from "find data"
-  let roleData = await getRole(baseClient.role)
-  baseClient.role = roleData
-  baseClient.kupa = await getKupa(baseClient.kupa)
-  // let institute = getInst()
-  // baseClient.institute = institute
-  baseClient.coordination = addCoordination()
-  baseClient = Object.assign(baseClient, addExtraFields());
-  delete baseClient.lastUpdated
-  console.log(baseClient)
-  return baseClient
-}
-// creatTaskJson()
-
-
-export const createTask = (payload) => {
-  // return creatTaskJson()
-  // return api.post(`/tasks`, config, payload);
+ function createTask(payload) {
+  return api.post(`/tasks`,payload, config );
 
 };
 
@@ -253,12 +174,15 @@ const apis = {
   otp,
   login,
   openTium,
-  findData,
+  findClient,
   createTask,
   getTaskById,
   validateTube,
   validateCooler,
-  addRec
+  addRec,
+  getCoordination,
+  getRole,
+  getKupa
 };
 
 export default apis;
