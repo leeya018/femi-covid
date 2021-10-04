@@ -8,15 +8,17 @@ import {
 import Otp from "./components/Otp";
 import Login from "./components/Login";
 import Dashbaord from "./components/Dashbaord";
+import Clients from "./components/Clients";
 
 
 import apis from "./api";
 
 function App() {
-
+ 
   const [idNum, setIdNum] = useState('300628583');
   const [phone, setPhone] = useState('0542226958');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [totalTests, setTotalTests] = useState(0)
 
   useEffect(() => {
     // let token = localStorage.getItem('token');
@@ -39,12 +41,15 @@ function App() {
         </Route>
         <Route path="/dashboard"
         >
-          <Dashbaord />
+          <Dashbaord totalTests={totalTests}/>
         </Route>
         <Route path="/login">
           <Login
             idNum={idNum}
             phone={phone} />
+        </Route>
+        <Route path="/clients">
+          <Clients setTotalTests={setTotalTests}/>
         </Route>
 
       </Switch>

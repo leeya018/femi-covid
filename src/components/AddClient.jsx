@@ -1,19 +1,16 @@
 import './otp.css';
-
 import React, { useState } from 'react'
 import apis from "../api";
 import secretKey from 'secret-key';
+import Tubes from './Tubes'
 
-export default function AddClient() {
-
+export default function AddClient({ totalTests }) {
     const [clientId, setClientId] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [message, setMessage] = useState('');
-    const [tubeId, setTubeId] = useState('');
-    const [coolerId, setCoolerId] = useState('');
-    const [igumId, setIgumId] = useState('');
-
+    const [found, setFound] = useState(false)
+    const [source, setSource] = useState('')
 
     function addExtraFields() {
         return {
@@ -21,49 +18,74 @@ export default function AddClient() {
             femiCode: "",
             isUrgent: false,
             kupaReferenceId: "",
-            requestTime: "2021-10-01T23:08:32.893Z",
-            status: 0,
+            requestTime: "2021-10-01T23:08:32.893Z", // change this one to the new date format
+            status: 1,
             supplierCode: "",
             supplierDesc: "",
         }
     }
-
-
     async function creatTaskJson(client) {
         let key = secretKey.create('1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X')
         console.log(key)
-        const coords = "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6"
+        const coords = "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6" // this is changing according to the Tium
         let dupClient = { ...client }
-        source = key.iv
-        dupClient.source = source
+        let sourceTmp = key.iv
+        setSource(sourceTmp)
+        dupClient.source = sourceTmp
         let roleData = await apis.getRole(dupClient.role)
         dupClient.role = roleData
         dupClient.kupa = await apis.getKupa(dupClient.kupa)
         let res = await apis.getCoordination(coords)
         dupClient.institute = res.data.institute
         dupClient.coordination = res.data
-
-
         dupClient = Object.assign(dupClient, addExtraFields());
         delete dupClient.lastUpdated
         delete dupClient.phone2
         delete dupClient.phoneAreaCode2
         delete dupClient.email
         delete dupClient.email2
-
         console.log(dupClient)
         return dupClient
     }
-
-
-
     async function findClient() {
+        let client
+        let task
+        try {
+            let res = await apis.findClient(clientId)
+            if (res.status === 204) {
+                setMessage("cannot find the data")
+            } else {
+                setFirstName(res.data.firstName)
+                setLastName(res.data.lastName)
+                setMessage("")
+                client = res.data
+                setFound(true)
+            }
+        } catch (err) {
+            console.log(err)
+            setMessage(err.response.data.message)
+        }
+        try {
+            if (client) {
+                task = await creatTaskJson(client)
+                console.log("object")
+                console.log(task)
+                console.log("object")
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        try {
+            if (task) {
+                let resTask = await apis.createTask(task)
+                console.log(resTask.data)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        //need to change status
 
-        let client = (await apis.findClient(clientId)).data
-        let task = await creatTaskJson(client)
-        console.log("object")
-        console.log(task)
-        console.log("object")
+
         let a = {
             source: "3ea4e6bc-91c0-4335-9b7d-de160c6a17a2",
             coordination: {
@@ -148,53 +170,22 @@ export default function AddClient() {
                 title: "צוות מטפל"
             }
         }
-
-        let resTask = await apis.createTask(task)
-        console.log(resTask.data)
-
-
     }
-
-
-    // apis.findClient(clientId).then(res => {
-    //     console.log(res.data)
-    //     if (res.status === 204) {
-    //         setMessage("cannot find the data")
-    //     } else {
-    //         setFirstName(res.data.firstName)
-    //         setLastName(res.data.lastName)
-    //         setMessage("")
-    //         let task = await creatTaskJson(res.data)
-    //         apis.createTask(task).then(res=>{
-    //             console.log(res.data)
-    //         }).catch(err=>{
-    //             console.log(err.response)
-
-    //         })
-
-
-    //     }
-
-    // }).catch(err => {
-    //     if (err.response && err.response.data) {
-    //         console.log(err.response.data.message);
-    //         setMessage(err.response.data.message)
-    //     }
-    // })
-    // }
     return (
         <div className="otp-wrapper">
+            <p>totalTests: {totalTests}</p>
+            <p>cooler amount: {totalTests % 51}</p>
+            <p>Igum amount: {totalTests % 16}</p>
+
             <h1>add client page</h1>
-            <input type="text" placeholder="id" onChange={e => setClientId(e.target.value)} />
+            <input type="text" placeholder="id" defaultValue="30062858" onChange={e => setClientId(e.target.value)} />
             <button onClick={findClient}>find client</button>
             <p>{firstName}</p>
             <p>{lastName}</p>
             <p className="err-message">{message}</p>
-            <input type="text" placeholder="tubeId" onChange={e => setTubeId(e.target.value)} />
-            <input type="text" placeholder="coolerId" onChange={e => setCoolerId(e.target.value)} />
-            <input type="text" placeholder="igumId" onChange={e => setIgumId(e.target.value)} />
-
+            {found && (
+                <Tubes source={source} />
+            )}
         </div>
     )
 }
-

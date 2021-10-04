@@ -1,8 +1,8 @@
 import { getRoles } from "@testing-library/dom";
 import axios from "axios";
-const token1 = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzI1ODk0MCwiZXhwIjoxNjMzMjY2MTQwLCJpYXQiOjE2MzMyNTg5NDB9.x1JR29s-5_yzQgkfI_GMYQideYEHcNkZ71Nu6R921Kw"
+const token1 = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzM0MzE5OSwiZXhwIjoxNjMzMzUwMzk5LCJpYXQiOjE2MzMzNDMxOTl9.LA6w_sRyLG3Hc1d7MLPibqhFTcDV-SMixDj08t-17iE"
 const coords = "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6"
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzI2NjU5MywiZXhwIjoxNjMzMjczNzkzLCJpYXQiOjE2MzMyNjY1OTN9.jqyYA1549XfCZfNvT83ypviR4sWVIwu6W0aLx_tFVsw"
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzM0MzE5OSwiZXhwIjoxNjMzMzUwMzk5LCJpYXQiOjE2MzMzNDMxOTl9.LA6w_sRyLG3Hc1d7MLPibqhFTcDV-SMixDj08t-17iE"
 const api = axios.create({
   baseURL: "https://magenavot-be-prd.femimoh.co.il/femiCovidSampellingForNursingHome/1.0.0",
 });
@@ -61,9 +61,9 @@ const validateCooler = () => {
 });
 };
 
-const addRec = () => {
+const addRec = (data) => {
   let payload = {
-    source: "365e31b3-299f-4145-aa3d-a7f3a0532d0f",
+    source:data.source,
     exposeAbroad: false,
     closeContact: false,
     otherReason: true,
@@ -75,15 +75,15 @@ const addRec = () => {
     leavingDate: "1900-01-01",
     otherReasonNotes: "ג",
     otherBreathingSymptNotes: "",
-    testTubeBarCode: "304397102",
-    containerBarCode: "1000205545",
+    testTubeBarCode: data.tubeId,
+    containerBarCode: data.coolerId,
     poolingType: 2,
     poolingComplete: 1,
-    tubeBarcode: "304397102",
-    CoolerBarcode: "1000205545",
-    poolingSampleBarcode: "309140723"
+    tubeBarcode: data.tubeId,
+    CoolerBarcode: data.coolerId,
+    poolingSampleBarcode: data.igumId
   }
-  return api.post(`/test/365e31b3-299f-4145-aa3d-a7f3a0532d0f?isDraft=false`, config,payload);
+  return api.post(`/test/${data.source}?isDraft=false`, config,payload);
 };
 
 
@@ -168,6 +168,11 @@ function getCoordination(coordsId) {
 };
 
 
+function getClients(coordsId) {
+  return api.get(`/tasks/coordination/${coordsId}`, config );
+
+};
+
 
 
 const apis = {
@@ -182,7 +187,8 @@ const apis = {
   addRec,
   getCoordination,
   getRole,
-  getKupa
+  getKupa,
+  getClients
 };
 
 export default apis;
