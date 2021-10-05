@@ -19,6 +19,11 @@ export default function Tubes({ source }) {
         }
         let res
         try {
+            let res = await apis.validateTube(tubeId)
+            if(res.data == true){
+            res = await apis.validateCooler(coolerId)
+
+            }
             res = await apis.addRec(data)
             if (res.status === 200) {
                 history.push("/clients");;

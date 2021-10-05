@@ -22,6 +22,7 @@ export default function Login({ idNum, phone }) {
       }
       else{
         setMessage("")
+        localStorage.setItem("currUser", JSON.stringify(res.data))
         history.push("/dashboard");
         console.log(res.data)
       }

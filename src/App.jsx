@@ -10,8 +10,8 @@ import Login from "./components/Login";
 import Dashbaord from "./components/Dashbaord";
 import Clients from "./components/Clients";
 
-
 import apis from "./api";
+import CreateTium from "./components/CreateTium";
 
 function App() {
  
@@ -21,8 +21,7 @@ function App() {
   const [totalTests, setTotalTests] = useState(0)
 
   useEffect(() => {
-    // let token = localStorage.getItem('token');
-    // setLoggedIn(token ? true : false)
+    
   }, [])
 
   const childProps = {
@@ -50,6 +49,10 @@ function App() {
         </Route>
         <Route path="/clients">
           <Clients setTotalTests={setTotalTests}/>
+        </Route>
+
+        <Route path="/tium">
+          <CreateTium />
         </Route>
 
       </Switch>

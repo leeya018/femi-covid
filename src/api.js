@@ -1,69 +1,92 @@
 import { getRoles } from "@testing-library/dom";
 import axios from "axios";
-const token1 = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzM0MzE5OSwiZXhwIjoxNjMzMzUwMzk5LCJpYXQiOjE2MzMzNDMxOTl9.LA6w_sRyLG3Hc1d7MLPibqhFTcDV-SMixDj08t-17iE"
-const coords = "bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6"
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI3ODBkMTlkYS1iNGUyLTRlZmUtYmM0Ni0yY2M5MWFiMGViODciLCJ1bmlxdWVfbmFtZSI6Itec15kg15nXlNeRIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIwNTQyMjI2OTU4Iiwicm9sZSI6IlRlc3RlciIsIm5iZiI6MTYzMzM0MzE5OSwiZXhwIjoxNjMzMzUwMzk5LCJpYXQiOjE2MzMzNDMxOTl9.LA6w_sRyLG3Hc1d7MLPibqhFTcDV-SMixDj08t-17iE"
+// const coords = "de84c671-f59f-40d2-86f5-77dadd39d46a"
 const api = axios.create({
   baseURL: "https://magenavot-be-prd.femimoh.co.il/femiCovidSampellingForNursingHome/1.0.0",
 });
 
+const createHeaders = (token) => {
+  return {
+    headers: {
+      "content-type": "application/json",
+      Authorization: "Bearer " + token
+    }
 
-const config = {
-  headers: {
-    "content-type": "application/json",
-    Authorization: "Bearer " + token
   }
 };
 
 
 
 export const otp = (payload) => {
-  return api.post(`/OTPRquest`,payload);
+  return api.post(`/OTPRquest`, payload);
 };
 
 
 export const login = (payload) => {
-  return api.post(`/logIn`,payload)
+  return api.post(`/logIn`, payload)
 };
 
 //localStorage.getItem('jwtToken')
 //  localStorage.setItem("jwtToken", 'Bearer ' + token);
 
 // 749cfc59-5312-48c6-90ee-f422e692230f
-export const openTium = () => { //AKA plus button 
-  return api.get(`/coordination/749cfc59-5312-48c6-90ee-f422e692230f`, config);
+// export const openTium = () => { //AKA plus button 
+//   let currUser = JSON.parse(localStorage.getItem("currUser"))
+//   let token = currUser.token
+//   return api.get(`/coordination/749cfc59-5312-48c6-90ee-f422e692230f`, createHeaders(token));
 
-};
+// };
+export const createTium = (paylod) => { //AKA plus button 
+    let currUser = JSON.parse(localStorage.getItem("currUser"))
+    let token = currUser.token
+    
+    return api.post(`/coordination`, paylod,createHeaders(token));
+  
+  };
 //300628583  the id of patient
 export const findClient = (id) => {
-  return api.get(`/patient/recurent/1/${id}/`, config);
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/patient/recurent/1/${id}/`, createHeaders(token));
 
 };
 const getPatientRoles = () => {
-  return api.get(`/lookup/patientRoles`, config);
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/lookup/patientRoles`, createHeaders(token));
 };
 const getKupas = () => {
-  return api.get(`/lookup/kupas`, config);
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/lookup/kupas`, createHeaders(token));
 };
 
 
 const getTaskById = () => {// should get a task id
-  return api.get(`/tasks/5a5ffb39-f464-4efb-99a9-d72dc7f8c934`, config);
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/tasks/5a5ffb39-f464-4efb-99a9-d72dc7f8c934`, createHeaders(token));
 };
 
-const validateTube = () => {
-  return api.get(`/validations/barcodes/test-tube/300021313`, config);
+const validateTube = (tubeNum) => {
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/validations/barcodes/test-tube/${tubeNum}`, createHeaders(token));
 };
 
-const validateCooler = () => {
-  return api.post(`/delivery/coolerBarcode?secondOnly=true`, config,{
-    barcode: "1231321321"
-});
+const validateCooler = (coolerId) => {
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.post(`/delivery/coolerBarcode?secondOnly=true`, createHeaders(token), {
+    barcode: coolerId
+  });
 };
+
+// https://magenavot-be-prd.femimoh.co.il/femiCovidSampellingForNursingHome/1.0.0/validations/barcodes/pooling/309232322?coolerBarcode=1000123132&excludeTestId=e395d04b-41d3-441d-849a-c4f091b64019
 
 const addRec = (data) => {
   let payload = {
-    source:data.source,
+    source: data.source,
     exposeAbroad: false,
     closeContact: false,
     otherReason: true,
@@ -83,52 +106,12 @@ const addRec = (data) => {
     CoolerBarcode: data.coolerId,
     poolingSampleBarcode: data.igumId
   }
-  return api.post(`/test/${data.source}?isDraft=false`, config,payload);
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.post(`/test/${data.source}?isDraft=false`, createHeaders(token), payload);
 };
 
 
-
-
-
-
-
-
-function getClient() {
-
-  const clientData ={
-    completedTime: "1899-12-31T21:39:20",
-    coordinationDate: "2021-09-25T00:00:00",
-    createdBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-    createdDate: "2021-09-25T11:35:27.123",
-    id: "749cfc59-5312-48c6-90ee-f422e692230f",
-    institute: {
-      address: "רח' אילת 11, בת ים",
-      city: "בת ים",
-      code: "8301100151",
-      contactName: "עינת קורן",
-      contactPhone: "050-4175066",
-      coordinationType: 1,
-      district: {
-        id: 1001,
-        title: "פמי"
-      },
-      houseNumber: "11",
-      id: 25,
-      name: "אקים בת ים - רחוב אילת",
-      requestID: "1024872",
-      street: "רח' אילת",
-      type: {
-        id: 101,
-        title: "מוסד גריאטרי"
-      }
-    },
-    notes: "בדיקה",
-    status: false,
-    tester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
-    type: 1
-  }
-  return clientData
-}
 
 async function getRole(roleNum) {
   let roles = (await getPatientRoles()).data
@@ -141,11 +124,13 @@ async function getRole(roleNum) {
 }
 
 
-// function getInst() {
-//   return getTium().institute
-// }
+function getInstitutions() {
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/lookup/institutes`,createHeaders(token))
+}
 
-async function getKupa(kupaId){
+async function getKupa(kupaId) {
   let kupas = (await getKupas()).data
   for (const kupa of kupas) {
     if (kupa.id === kupaId) {
@@ -157,28 +142,35 @@ async function getKupa(kupaId){
 
 //bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6
 function getCoordination(coordsId) {
-  return api.get(`/coordination/${coordsId}`,config);
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/coordination/${coordsId}`, createHeaders(token));
 
-  
+
 }
 
- function createTask(payload) {
-  return api.post(`/tasks`,payload, config );
+function createTask(payload) {
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.post(`/tasks`, payload, createHeaders(token));
 
 };
 
 
 function getClients(coordsId) {
-  return api.get(`/tasks/coordination/${coordsId}`, config );
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
 
 };
-
+const coordsId = "de84c671-f59f-40d2-86f5-77dadd39d46a"  //oleg
 
 
 const apis = {
+  coordsId,
   otp,
   login,
-  openTium,
+  createTium,
   findClient,
   createTask,
   getTaskById,
@@ -188,7 +180,43 @@ const apis = {
   getCoordination,
   getRole,
   getKupa,
-  getClients
+  getClients,
+  getInstitutions
 };
 
 export default apis;
+
+
+
+// {
+//   "completedTime": "1899-12-31T21:39:20Z",
+//   "coordinationDate": "2021-10-06T00:00:00",
+//   "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+//   "createdDate": "2021-10-05T16:52:12.543",
+//   "id": "de84c671-f59f-40d2-86f5-77dadd39d46a",
+//   "institute": {
+//       "address": "משה שרת 38, רמת גן",
+//       "city": "רמת גן",
+//       "code": "237M7",
+//       "contactName": "אולג ארחרוב",
+//       "contactPhone": "054-4907614",
+//       "coordinationType": 1,
+//       "district": {
+//           "id": 1001,
+//           "title": "פמי"
+//       },
+//       "houseNumber": "38",
+//       "id": 287,
+//       "name": "נוף חן",
+//       "requestID": "1024726",
+//       "street": "משה שרת",
+//       "type": {
+//           "id": 101,
+//           "title": "מוסד גריאטרי"
+//       }
+//   },
+//   "notes": "",
+//   "status": true,
+//   "tester": "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
+//   "type": 1
+// }

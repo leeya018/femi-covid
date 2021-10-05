@@ -35,7 +35,7 @@ export default function Otp({
       <div>
         <label>
           <p>id</p>
-          <input type="text"  placeholder="setIdNum" onChange={e => setIdNum(e.target.value)} />
+          <input type="text" placeholder="setIdNum" onChange={e => setIdNum(e.target.value)} />
         </label>
         <label>
           <p>phone</p>
