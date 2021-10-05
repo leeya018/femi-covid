@@ -17,18 +17,39 @@ export default function Tubes({ source }) {
         let data = {
             source, tubeId, coolerId, igumId
         }
+
+        async function validateTube(tubeId) {
+            let res = await apis.validateTube(tubeId)
+            if (res.data == true) return true
+            setMessage("tube err")
+            return false
+        }
+        async function validateCooler(coolerId) {
+            let res = await apis.validateTube(coolerId)
+            if (res.data == true) return true
+            setMessage("cooler err")
+            return false
+        }
+        async function validateIgum(igumId, coolerId) {
+            let res = await apis.validateIgum(igumId, coolerId)
+            if (res.data == true) return true
+            setMessage("igum err")
+            return false
+        }
         let res
         try {
-            let res = await apis.validateTube(tubeId)
-            if(res.data == true){
-            res = await apis.validateCooler(coolerId)
+            if (await validateTube(tubeId)) {
+                if (await validateCooler(coolerId)) {
+                    if (await validateIgum(igumId, coolerId)) {
+                        res = await apis.addRec(data)
+                        if (res.status === 200) {
+                            history.push("/clients");;
+                        } else {
+                            setMessage(res.status)
+                        }
 
-            }
-            res = await apis.addRec(data)
-            if (res.status === 200) {
-                history.push("/clients");;
-            }else{
-                setMessage(res.status)
+                    }
+                }
             }
 
         } catch (err) {

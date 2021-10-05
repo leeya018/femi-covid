@@ -37,12 +37,12 @@ export const login = (payload) => {
 
 // };
 export const createTium = (paylod) => { //AKA plus button 
-    let currUser = JSON.parse(localStorage.getItem("currUser"))
-    let token = currUser.token
-    
-    return api.post(`/coordination`, paylod,createHeaders(token));
-  
-  };
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+
+  return api.post(`/coordination`, paylod, createHeaders(token));
+
+};
 //300628583  the id of patient
 export const findClient = (id) => {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
@@ -81,8 +81,13 @@ const validateCooler = (coolerId) => {
     barcode: coolerId
   });
 };
+const validateIgum = (igumCode,coolerId) => {
+  let WhatIsThat = "e395d04b-41d3-441d-849a-c4f091b64019"
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.get(`/validations/barcodes/pooling/${igumCode}?coolerBarcode=${coolerId}&excludeTestId=${WhatIsThat}`, createHeaders(token));
+};
 
-// https://magenavot-be-prd.femimoh.co.il/femiCovidSampellingForNursingHome/1.0.0/validations/barcodes/pooling/309232322?coolerBarcode=1000123132&excludeTestId=e395d04b-41d3-441d-849a-c4f091b64019
 
 const addRec = (data) => {
   let payload = {
@@ -127,7 +132,7 @@ async function getRole(roleNum) {
 function getInstitutions() {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.get(`/lookup/institutes`,createHeaders(token))
+  return api.get(`/lookup/institutes`, createHeaders(token))
 }
 
 async function getKupa(kupaId) {
@@ -181,7 +186,8 @@ const apis = {
   getRole,
   getKupa,
   getClients,
-  getInstitutions
+  getInstitutions,
+  validateIgum
 };
 
 export default apis;
