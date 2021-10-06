@@ -16,14 +16,14 @@ import apis from "./api";
 import CreateTium from "./components/CreateTium";
 
 function App() {
- 
+
   const [idNum, setIdNum] = useState('300628583');
   const [phone, setPhone] = useState('0542226958');
   const [loggedIn, setLoggedIn] = useState(false);
   const [totalTests, setTotalTests] = useState(123)
 
   useEffect(() => {
-    
+
   }, [])
 
   const childProps = {
@@ -38,23 +38,25 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-        <Test />
-          {/* {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />} */}
+          {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />}
         </Route>
-        {/* <Route path="/test">
-          
-        </Route> */}
+      
         <Route path="/dashboard"
         >
-          <Dashbaord totalTests={totalTests}/>
+          <Dashbaord totalTests={totalTests} />
         </Route>
+
+        <Route path="/test">
+          <Test />
+        </Route>
+        
         <Route path="/login">
           <Login
             idNum={idNum}
             phone={phone} />
         </Route>
         <Route path="/clients">
-          <Clients setTotalTests={setTotalTests}/>
+          <Clients setTotalTests={setTotalTests} />
         </Route>
 
         <Route path="/tium">
