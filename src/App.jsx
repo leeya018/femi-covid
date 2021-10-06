@@ -18,7 +18,7 @@ function App() {
   const [idNum, setIdNum] = useState('300628583');
   const [phone, setPhone] = useState('0542226958');
   const [loggedIn, setLoggedIn] = useState(false);
-  const [totalTests, setTotalTests] = useState(0)
+  const [totalTests, setTotalTests] = useState(123)
 
   useEffect(() => {
     

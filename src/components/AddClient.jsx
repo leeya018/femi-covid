@@ -12,6 +12,8 @@ export default function AddClient({ totalTests }) {
     const [message, setMessage] = useState('');
     const [found, setFound] = useState(false)
     const [source, setSource] = useState('')
+    const [date, setDate] = useState('')
+
 
     function addExtraFields() {
         let currUser = JSON.parse(localStorage.getItem("currUser"))
@@ -21,7 +23,8 @@ export default function AddClient({ totalTests }) {
             femiCode: "",
             isUrgent: false,
             kupaReferenceId: "",
-            requestTime: "2021-10-06T11:08:32.893Z", // change this one to the new date format
+            // requestTime: "2021-10-06T11:08:32.893Z", // change this one to the new date format
+            requestTime: date, // change this one to the new date format
             status: 0,
             supplierCode: "",
             supplierDesc: "",
@@ -60,6 +63,11 @@ export default function AddClient({ totalTests }) {
             } else {
                 setFirstName(res.data.firstName)
                 setLastName(res.data.lastName)
+                console.log("date")
+                console.log(res.data.lastUpdated + "Z")
+                console.log("date")
+
+                setDate(res.data.lastUpdated+"Z")
                 setMessage("")
                 client = res.data
                 setFound(true)
@@ -99,8 +107,8 @@ export default function AddClient({ totalTests }) {
     return (
         <div className="otp-wrapper">
             <p>totalTests: {totalTests}</p>
-            <p>cooler amount: {totalTests % 51}</p>
-            <p>Igum amount: {totalTests % 16}</p>
+            <p>cooler amount: {totalTests % 50}</p>
+            <p>Igum amount: {totalTests % 15}</p>
 
             <h1>add client page</h1>
             <input type="text" placeholder="id" defaultValue="30062858" onChange={e => setClientId(e.target.value)} />

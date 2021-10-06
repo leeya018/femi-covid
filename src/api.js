@@ -168,7 +168,7 @@ function getClients(coordsId) {
   return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
 
 };
-const coordsId = "de84c671-f59f-40d2-86f5-77dadd39d46a"  //oleg
+const coordsId = "6326ddcd-f067-49c0-88dc-dc01dbc36c72"  //oleg
 
 
 const apis = {
@@ -193,36 +193,3 @@ const apis = {
 export default apis;
 
 
-
-// {
-//   "completedTime": "1899-12-31T21:39:20Z",
-//   "coordinationDate": "2021-10-06T00:00:00",
-//   "createdBy": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-//   "createdDate": "2021-10-05T16:52:12.543",
-//   "id": "de84c671-f59f-40d2-86f5-77dadd39d46a",
-//   "institute": {
-//       "address": "משה שרת 38, רמת גן",
-//       "city": "רמת גן",
-//       "code": "237M7",
-//       "contactName": "אולג ארחרוב",
-//       "contactPhone": "054-4907614",
-//       "coordinationType": 1,
-//       "district": {
-//           "id": 1001,
-//           "title": "פמי"
-//       },
-//       "houseNumber": "38",
-//       "id": 287,
-//       "name": "נוף חן",
-//       "requestID": "1024726",
-//       "street": "משה שרת",
-//       "type": {
-//           "id": 101,
-//           "title": "מוסד גריאטרי"
-//       }
-//   },
-//   "notes": "",
-//   "status": true,
-//   "tester": "780d19da-b4e2-4efe-bc46-2cc91ab0eb87",
-//   "type": 1
-// }
