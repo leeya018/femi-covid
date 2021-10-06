@@ -9,6 +9,8 @@ import Otp from "./components/Otp";
 import Login from "./components/Login";
 import Dashbaord from "./components/Dashbaord";
 import Clients from "./components/Clients";
+import Test from "./components/Test";
+
 
 import apis from "./api";
 import CreateTium from "./components/CreateTium";
@@ -36,8 +38,12 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-          {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />}
+        <Test />
+          {/* {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />} */}
         </Route>
+        {/* <Route path="/test">
+          
+        </Route> */}
         <Route path="/dashboard"
         >
           <Dashbaord totalTests={totalTests}/>
