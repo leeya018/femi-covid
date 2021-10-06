@@ -46,9 +46,9 @@ function App() {
           <Dashbaord totalTests={totalTests} />
         </Route>
 
-        <Route path="/test">
+        {/* <Route path="/test">
           <Test />
-        </Route>
+        </Route> */}
 
         <Route path="/login">
           <Login
