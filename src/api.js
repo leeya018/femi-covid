@@ -113,7 +113,7 @@ const addRec = (data) => {
   }
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.post(`/test/${data.source}?isDraft=false`, createHeaders(token), payload);
+  return api.post(`/test/${data.source}?isDraft=false`, payload,createHeaders(token));
 };
 
 

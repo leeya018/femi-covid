@@ -31,7 +31,9 @@ export default function Tubes({ source }) {
     }
     async function validateIgum() {
         let res = await apis.validateIgum(igumId, coolerId)
-        if (res.data == true) return true
+        if (res.status == 204){
+            return true
+        }
         setMessage("igum err")
         return false
     }
@@ -80,6 +82,7 @@ export default function Tubes({ source }) {
                 <input type="text" placeholder="coolerId" maxlength="11" onChange={handleChangeCooler }  value={coolerId}/>
                 <input type="text" placeholder="igumId" maxlength="9" onChange={handleChangeIgum } value={igumId} />
                 <button onClick={addRec}>add client</button>
+                <p>{message}</p>
             </div>
 
 

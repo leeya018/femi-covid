@@ -45,7 +45,7 @@ export default function Clients({ setTotalTests }) {
             <button onClick={e => history.push("/dashboard")}>+</button>
             <div className="rows">
                 <button style={{ backgroundColor: activeBtn ? "blue" : "" }} onClick={() => handleClick(4)}>complete</button>
-                <button style={{ backgroundColor: !activeBtn ? "blue" : "" }} onClick={() => handleClick(1)}>not complete</button>
+                <button style={{ backgroundColor: !activeBtn ? "blue" : "" }} onClick={() => handleClick(0)}>not complete</button>
 
             </div>
             <div className="rows">
