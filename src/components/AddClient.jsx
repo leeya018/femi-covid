@@ -15,7 +15,8 @@ export default function AddClient({ totalTests }) {
     const [date, setDate] = useState('')
 
 
-    function addExtraFields() {
+    function addExtraFields(lastUpdate) {
+        console.log("extra fields")
         let currUser = JSON.parse(localStorage.getItem("currUser"))
         let assignedTester = currUser.id
         return {
@@ -24,13 +25,13 @@ export default function AddClient({ totalTests }) {
             isUrgent: false,
             kupaReferenceId: "",
             // requestTime: "2021-10-06T11:08:32.893Z", // change this one to the new date format
-            requestTime: date, // change this one to the new date format
+            requestTime: lastUpdate, // change this one to the new date format
             status: 0,
             supplierCode: "",
             supplierDesc: "",
         }
     }
-    async function creatTaskJson(client) {
+    async function creatTaskJson(client,lastUpdate) {
         let key = secretKey.create('1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X')
         console.log(key)
         let dupClient = { ...client }
@@ -43,7 +44,7 @@ export default function AddClient({ totalTests }) {
         let res = await apis.getCoordination(apis.coordsId)
         dupClient.institute = res.data.institute
         dupClient.coordination = res.data
-        dupClient = Object.assign(dupClient, addExtraFields());
+        dupClient = Object.assign(dupClient, addExtraFields(lastUpdate));
         delete dupClient.lastUpdated
         delete dupClient.phone2
         delete dupClient.phoneAreaCode2
@@ -55,8 +56,9 @@ export default function AddClient({ totalTests }) {
     async function findClient() {
         let client
         let task
+        let res
         try {
-            let res = await apis.findClient(clientId)
+             res = await apis.findClient(clientId)
             
             if (res.status === 204) {
                 setMessage("cannot find the data")
@@ -84,7 +86,7 @@ export default function AddClient({ totalTests }) {
         }
         try {
             if (client) {
-                task = await creatTaskJson(client)
+                task = await creatTaskJson(client,res.data.lastUpdated)
                 console.log("object")
                 console.log(task)
                 console.log("object")
