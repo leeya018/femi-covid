@@ -7,7 +7,7 @@ function Test() {
     const [data, setData] = useState('Not Found');
     const [active, setActive] = useState(false);
 
-
+// 
     return (
         <>
             <button onClick={() => setActive(true)}>Scan Barcodes</button>
