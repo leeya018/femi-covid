@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/femi-covid/static/css/main.b3730b53.chunk.css",
+    "main.js": "/femi-covid/static/js/main.6ecbc952.chunk.js",
+    "main.js.map": "/femi-covid/static/js/main.6ecbc952.chunk.js.map",
+    "runtime-main.js": "/femi-covid/static/js/runtime-main.773d65d6.js",
+    "runtime-main.js.map": "/femi-covid/static/js/runtime-main.773d65d6.js.map",
+    "static/js/2.a65a6d64.chunk.js": "/femi-covid/static/js/2.a65a6d64.chunk.js",
+    "static/js/2.a65a6d64.chunk.js.map": "/femi-covid/static/js/2.a65a6d64.chunk.js.map",
+    "index.html": "/femi-covid/index.html",
+    "static/css/main.b3730b53.chunk.css.map": "/femi-covid/static/css/main.b3730b53.chunk.css.map",
+    "static/js/2.a65a6d64.chunk.js.LICENSE.txt": "/femi-covid/static/js/2.a65a6d64.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.773d65d6.js",
+    "static/js/2.a65a6d64.chunk.js",
+    "static/css/main.b3730b53.chunk.css",
+    "static/js/main.6ecbc952.chunk.js"
+  ]
+}
