@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-// import BarcodeScannerComponent from "react-webcam-barcode-scanner";
+import BarcodeScannerComponent from "react-webcam-barcode-scanner";
 
 function Test() {
 
@@ -14,7 +14,7 @@ function Test() {
             {active &&
                 <>
                     <button onClick={() => setActive(false)}>X</button>
-                    {/* <BarcodeScannerComponent
+                    <BarcodeScannerComponent
                         width={500}
                         height={500}
                         onUpdate={(err, result) => {
@@ -24,7 +24,7 @@ function Test() {
                             }
                             else setData('Not Found')
                         }}
-                    /> */}
+                    />
                 </>
             }
             <p>{data}</p>
