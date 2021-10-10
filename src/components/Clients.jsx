@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 // what are kind of clients are those 
 // status 1,0 - not done
 // status 4,2 - inside system 
-export default function Clients({ setTotalTests }) {
+export default function Clients({ setTotalTests, totalTests }) {
     const [clients, setClients] = useState([])
     const [filteredClients, setFilteredClients] = useState([])
     const [activeBtn, setActiveBtn] = useState(true)
@@ -25,24 +25,40 @@ export default function Clients({ setTotalTests }) {
             clientList = res.data
             console.log(clientList)
             setClients(clientList)
-            setTotalTests(clientList.length)
+            setTotalTests(getLen())
             filterByStatus([2, 4], clientList)
         } catch (error) {
             console.log(error.response)
         }
     }, [])
 
+    function getLen() {
+        return clientList.filter(client => [2, 4].includes(client.status)).length;
+    }
+
     function filterByStatus(statusCodes) {
+        updateLocalStorage()
         let winList = clients.length > 0 ? clients : clientList
         let list = winList.filter(client => statusCodes.includes(client.status));
         setFilteredClients(list)
         setDoneNum(list.length)
     }
 
+    function updateLocalStorage() {
+        if (totalTests % 15 == 0) {
+            localStorage.setItem('igumId', '')
+        }
+        if (totalTests % 60 == 0) {
+            localStorage.setItem('coolerId', '')
+        }
+    }
+
     function handleClick(statusCodes) {
 
         setActiveBtn(statusCodes.includes(2) ? true : false)
         filterByStatus(statusCodes)
+        setTotalTests(getLen())
+
 
     }
     return (

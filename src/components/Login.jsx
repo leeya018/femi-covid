@@ -39,7 +39,7 @@ export default function Login({ idNum, phone }) {
   return (
     <div className="otp-wrapper">
       <h1> Please Log In</h1>
-      <input type="text" placeholder="setOtp" onChange={e => setOtp(e.target.value)} />
+      <input type="text" placeholder="setOtp" maxlength="6" onChange={e => setOtp(e.target.value)} />
 
       <button onClick={login}>Submit</button>
       <span className="err-message">{message}</span>

@@ -44,10 +44,10 @@ export const createTium = (paylod) => { //AKA plus button
 
 };
 //300628583  the id of patient
-export const findClient = (id) => {
+export const findClient = (id,idType) => {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.get(`/patient/recurent/1/${id}/`, createHeaders(token));
+  return api.get(`/patient/recurent/${idType}/${id}/`, createHeaders(token));
 
 };
 const getPatientRoles = () => {
@@ -168,7 +168,7 @@ function getClients(coordsId) {
   return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
 
 };
-const coordsId = "9afaf80e-6026-4ba9-b439-27722bb48f46"  //or ehad
+const coordsId = "ccc078b1-6878-4172-a8e5-f5e520cdb129"  //or ehad
 
 
 const apis = {

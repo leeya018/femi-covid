@@ -10,9 +10,8 @@ import Login from "./components/Login";
 import Dashbaord from "./components/Dashbaord";
 import Clients from "./components/Clients";
 import Test from "./components/Test";
-
-
 import apis from "./api";
+
 import CreateTium from "./components/CreateTium";
 
 function App() {
@@ -20,11 +19,16 @@ function App() {
   const [idNum, setIdNum] = useState('300628583');
   const [phone, setPhone] = useState('0542226958');
   const [loggedIn, setLoggedIn] = useState(false);
-  const [totalTests, setTotalTests] = useState(123)
+  const [totalTests, setTotalTests] = useState(0)
 
-  useEffect(() => {
-
+  useEffect(async () => {
+    let res = await apis.getClients(apis.coordsId)
+    let clientList = res.data
+    console.log(clientList)
+    let len = clientList.filter(client => [2, 4].includes(client.status)).length;
+    setTotalTests(len)
   }, [])
+
 
   const childProps = {
     idNum,
@@ -40,7 +44,7 @@ function App() {
         <Route exact path="/">
           {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />}
         </Route>
-      
+
         <Route path="/dashboard"
         >
           <Dashbaord totalTests={totalTests} />
@@ -56,12 +60,12 @@ function App() {
             phone={phone} />
         </Route>
         <Route path="/clients">
-          <Clients setTotalTests={setTotalTests} />
+          <Clients setTotalTests={setTotalTests} totalTests={totalTests} />
         </Route>
 
-        <Route path="/tium">
+        {/* <Route path="/tium">
           <CreateTium />
-        </Route>
+        </Route> */}
 
       </Switch>
     </Router>

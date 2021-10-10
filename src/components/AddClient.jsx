@@ -9,10 +9,14 @@ export default function AddClient({ totalTests }) {
     const [clientId, setClientId] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
+    const [kupaName, setKupaName] = useState('')
     const [message, setMessage] = useState('');
     const [found, setFound] = useState(false)
     const [source, setSource] = useState('')
     const [date, setDate] = useState('')
+    const [idType, setIdType] = useState(1)
+
+
 
 
     function addExtraFields(lastUpdate) {
@@ -31,7 +35,7 @@ export default function AddClient({ totalTests }) {
             supplierDesc: "",
         }
     }
-    async function creatTaskJson(client,lastUpdate) {
+    async function creatTaskJson(client, lastUpdate) {
         let key = secretKey.create('1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X')
         console.log(key)
         let dupClient = { ...client }
@@ -57,19 +61,23 @@ export default function AddClient({ totalTests }) {
         let client
         let task
         let res
+        setFirstName('')
+        setLastName('')
+        setKupaName("")
         try {
-             res = await apis.findClient(clientId)
-            
+            res = await apis.findClient(clientId, idType)
+
             if (res.status === 204) {
                 setMessage("cannot find the data")
             } else {
                 setFirstName(res.data.firstName)
                 setLastName(res.data.lastName)
+                setKupaName(await getKupaName(res.data.kupa))
                 console.log("date")
                 console.log(res.data.lastUpdated + "Z")
                 console.log("date")
 
-                setDate(res.data.lastUpdated+"Z")
+                setDate(res.data.lastUpdated + "Z")
                 setMessage("")
                 client = res.data
                 setFound(true)
@@ -80,13 +88,13 @@ export default function AddClient({ totalTests }) {
             if (err.response && err.response.data) {
                 console.log(err.response.data.message);
                 setMessage(err.response.data.message)
-            }else{
+            } else {
                 setMessage("something went wrong")
             }
         }
         try {
             if (client) {
-                task = await creatTaskJson(client,res.data.lastUpdated)
+                task = await creatTaskJson(client, res.data.lastUpdated)
                 console.log("object")
                 console.log(task)
                 console.log("object")
@@ -106,20 +114,42 @@ export default function AddClient({ totalTests }) {
         //need to change status
 
     }
+
+    async function getKupaName(kupaNum) {
+        let kupa = await apis.getKupa(kupaNum)
+        return kupa.title
+    }
+
     return (
         <div className="otp-wrapper">
             <p>totalTests: {totalTests}</p>
-            <p>cooler amount: {totalTests % 50}</p>
-            <p>Igum amount: {totalTests % 15}</p>
+
 
             <h1>add client page</h1>
-            <input type="text" placeholder="id" defaultValue="30062858" onChange={e => setClientId(e.target.value)} />
+
+            <div>
+                <input type="radio" id="id"
+                    name="contact" value="id" onChange={() => setIdType(1)} checked={idType === 1} />
+                <label for="id">id</label>
+
+                <input type="radio" id="passport" onChange={() => setIdType(2)} checked={idType === 2}
+                    name="contact" value="passport" />
+                <label for="passport">passport</label>
+            </div>
+            {idType == 1 && (
+                <input type="number" maxlength="9" placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
+            )}
+            {idType == 2 && (
+                <input type="text" placeholder="passport" defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
+            )}
             <button onClick={findClient}>find client</button>
-            <p>{firstName}</p>
-            <p>{lastName}</p>
+            <p className="no-margin">{firstName}</p>
+            <p className="no-margin">{lastName}</p>
+            <p className="no-margin">{kupaName}</p>
+
             <p className="err-message">{message}</p>
             {found && (
-                <Tubes source={source} />
+                <Tubes source={source} totalTests={totalTests}/>
             )}
         </div>
     )

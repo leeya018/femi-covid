@@ -1,10 +1,10 @@
 import './otp.css';
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import apis from '../api';
 import { Redirect } from 'react-router';
 import { useHistory } from "react-router-dom";
 
-export default function Tubes({ source }) {
+export default function Tubes({ source, totalTests }) {
     let history = useHistory();
 
     const [tubeId, setTubeId] = useState('');
@@ -31,7 +31,7 @@ export default function Tubes({ source }) {
     }
     async function validateIgum() {
         let res = await apis.validateIgum(igumId, coolerId)
-        if (res.status == 204){
+        if (res.status == 204) {
             return true
         }
         setMessage("igum err")
@@ -64,23 +64,31 @@ export default function Tubes({ source }) {
             setMessage(err.response)
         }
     }
-    function handleChangeCooler(e){
+    function handleChangeCooler(e) {
         setCoolerId(e.target.value)
-        localStorage.setItem("coolerId",e.target.value)
+        localStorage.setItem("coolerId", e.target.value)
     }
 
 
-    function handleChangeIgum(e){
+    function handleChangeIgum(e) {
         setIgumId(e.target.value)
-        localStorage.setItem("igumId",e.target.value)
+        localStorage.setItem("igumId", e.target.value)
     }
-    
+
     return (
         <div>
+
+
             <div className="cols">
                 <input type="text" placeholder="tubeId" maxlength="9" onChange={e => setTubeId(e.target.value)} />
-                <input type="text" placeholder="coolerId" maxlength="11" onChange={handleChangeCooler }  value={coolerId}/>
-                <input type="text" placeholder="igumId" maxlength="9" onChange={handleChangeIgum } value={igumId} />
+                <div className="no-margin rows">
+                    <input className="no-margin" type="text" placeholder="coolerId" maxlength="11" onChange={handleChangeCooler} value={coolerId} />
+                    <p className="no-margin">({totalTests % 60})</p>
+                </div>
+                <div className="no-margin rows">
+                    <input className="no-margin" type="text" placeholder="igumId" maxlength="9" onChange={handleChangeIgum} value={igumId} />
+                    <p className="no-margin">({totalTests % 15})</p>
+                </div>
                 <button onClick={addRec}>add client</button>
                 <p>{message}</p>
             </div>
