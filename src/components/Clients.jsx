@@ -7,13 +7,13 @@ import { useHistory } from "react-router-dom";
 
 // what are kind of clients are those 
 // status 1,0 - not done
-// status 4,2 - inside system 
+// status 4,3,2 - inside system 
 export default function Clients({ setTotalTests, totalTests }) {
     const [clients, setClients] = useState([])
     const [filteredClients, setFilteredClients] = useState([])
     const [activeBtn, setActiveBtn] = useState(true)
     const [doneNum, setDoneNum] = useState(0)
-
+    const [filter, setFilter] = useState('');
 
     let clientList = []
     let history = useHistory();
@@ -26,14 +26,14 @@ export default function Clients({ setTotalTests, totalTests }) {
             console.log(clientList)
             setClients(clientList)
             setTotalTests(getLen())
-            filterByStatus([2, 4], clientList)
+            filterByStatus([2, 3, 4], clientList)
         } catch (error) {
             console.log(error.response)
         }
     }, [])
 
     function getLen() {
-        return clientList.filter(client => [2, 4].includes(client.status)).length;
+        return clientList.filter(client => [2, 3, 4].includes(client.status)).length;
     }
 
     function filterByStatus(statusCodes) {
@@ -58,24 +58,30 @@ export default function Clients({ setTotalTests, totalTests }) {
         setActiveBtn(statusCodes.includes(2) ? true : false)
         filterByStatus(statusCodes)
         setTotalTests(getLen())
-
-
     }
+
     return (
         <div>
 
-            <button onClick={e => history.push("/dashboard")}>+</button>
+            <button onClick={e => history.push("/dashboard")} autoFocus>+</button>
             <div className="rows">
-                <button style={{ backgroundColor: activeBtn ? "blue" : "" }} onClick={() => handleClick([2, 4])}>complete</button>
+                <button style={{ backgroundColor: activeBtn ? "blue" : "" }} onClick={() => handleClick([2, 3, 4])}>complete</button>
                 <button style={{ backgroundColor: !activeBtn ? "blue" : "" }} onClick={() => handleClick([0, 1])}>not complete</button>
                 <p>done : {doneNum}</p>
-
+            </div>
+            <div className="rows">
+                <input type="text" placeholder="search" id="filter"
+                    name="filter"
+                    type="text"
+                    value={filter}
+                    onChange={event => setFilter(event.target.value)} />
             </div>
             <div className="rows">
                 <div className="cols">
-                    {filteredClients.map((client, key) => (
-                        <Client key={key} firstName={client.firstName} lastName={client.lastName} />
-                    ))}
+                    {filteredClients.filter(client => client.firstName.includes(filter) || client.lastName.includes(filter) || filter === '')
+                        .map((client, key) => (
+                            <Client key={key} firstName={client.firstName} lastName={client.lastName} />
+                        ))}
                 </div>
             </div>
         </div>

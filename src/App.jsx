@@ -25,8 +25,10 @@ function App() {
     let res = await apis.getClients(apis.coordsId)
     let clientList = res.data
     console.log(clientList)
-    let len = clientList.filter(client => [2, 4].includes(client.status)).length;
-    setTotalTests(len)
+    let len = clientList.filter(client => [2,3, 4].includes(client.status)).length;
+    setTotalTests(len)  
+
+    console.log("app useEfect")
   }, [])
 
 
@@ -47,12 +49,12 @@ function App() {
 
         <Route path="/dashboard"
         >
-          <Dashbaord totalTests={totalTests} />
+          <Dashbaord totalTests={totalTests} setTotalTests={setTotalTests} />
         </Route>
 
-        <Route path="/test">
+        {/* <Route path="/test">
           <Test />
-        </Route>
+        </Route> */}
 
         <Route path="/login">
           <Login

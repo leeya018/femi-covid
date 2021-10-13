@@ -1,23 +1,42 @@
 import './otp.css';
-import React, { useState } from 'react'
+import React, { useState,useEffect,useRef } from 'react'
 import apis from "../api";
 import secretKey from 'secret-key';
 import Tubes from './Tubes'
 // const coords = "de84c671-f59f-40d2-86f5-77dadd39d46a" // this is changing according to the Tium
 
-export default function AddClient({ totalTests }) {
+export default function AddClient({ totalTests,setTotalTests }) {
+    const idInputRef =  useRef(null)
     const [clientId, setClientId] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [kupaName, setKupaName] = useState('')
     const [message, setMessage] = useState('');
-    const [found, setFound] = useState(false)
+    const [goodMessage, setGoodMessage] = useState('');
+
+    const [isTask, setIsTask] = useState(false)
     const [source, setSource] = useState('')
     const [date, setDate] = useState('')
     const [idType, setIdType] = useState(1)
 
 
 
+function clearAddClientFields() {
+    setFirstName('')
+    setLastName('')
+    setKupaName('')
+    setMessage('')
+    setGoodMessage('')
+    setIsTask(false)
+    setDate('')
+    setIdType(1)
+    setSource('')
+    setClientId('')
+    idInputRef.current.focus(); 
+
+    
+
+}
 
     function addExtraFields(lastUpdate) {
         console.log("extra fields")
@@ -57,15 +76,30 @@ export default function AddClient({ totalTests }) {
         console.log(dupClient)
         return dupClient
     }
+
+    function parseWithZeros() {
+        let i = 0
+        let s = ""
+        if (idType === 1) {
+
+            while (i < 9 - clientId.length) {
+                s += "0"
+                i++
+            }
+        }
+        return s + clientId
+    }
     async function findClient() {
         let client
         let task
         let res
+        let newId = parseWithZeros()
+        setClientId(newId)
         setFirstName('')
         setLastName('')
         setKupaName("")
         try {
-            res = await apis.findClient(clientId, idType)
+            res = await apis.findClient(newId, idType)
 
             if (res.status === 204) {
                 setMessage("cannot find the data")
@@ -80,7 +114,6 @@ export default function AddClient({ totalTests }) {
                 setDate(res.data.lastUpdated + "Z")
                 setMessage("")
                 client = res.data
-                setFound(true)
             }
         } catch (err) {
             console.log(err.status)
@@ -97,6 +130,9 @@ export default function AddClient({ totalTests }) {
                 task = await creatTaskJson(client, res.data.lastUpdated)
                 console.log("object")
                 console.log(task)
+                setGoodMessage("task created")
+                setIsTask(true)
+
                 console.log("object")
             }
         } catch (err) {
@@ -137,19 +173,20 @@ export default function AddClient({ totalTests }) {
                 <label for="passport">passport</label>
             </div>
             {idType == 1 && (
-                <input type="number" maxlength="9" placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
+                <input type="text"  ref={idInputRef}  maxLength="9" autoFocus placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
             )}
             {idType == 2 && (
-                <input type="text" placeholder="passport" defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
+                <input type="text" placeholder="passport" autoFocus defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
             <p className="no-margin">{firstName}</p>
             <p className="no-margin">{lastName}</p>
             <p className="no-margin">{kupaName}</p>
+            <p className="success-message">{goodMessage}</p>
 
             <p className="err-message">{message}</p>
-            {found && (
-                <Tubes source={source} totalTests={totalTests}/>
+            {isTask && (
+                <Tubes source={source} totalTests={totalTests} setTotalTests={setTotalTests}  clearAddClientFields={clearAddClientFields}/>
             )}
         </div>
     )

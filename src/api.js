@@ -1,6 +1,5 @@
 import { getRoles } from "@testing-library/dom";
 import axios from "axios";
-// const coords = "de84c671-f59f-40d2-86f5-77dadd39d46a"
 const api = axios.create({
   baseURL: "https://magenavot-be-prd.femimoh.co.il/femiCovidSampellingForNursingHome/1.0.0",
 });
@@ -26,7 +25,7 @@ export const login = (payload) => {
   return api.post(`/logIn`, payload)
 };
 
-//localStorage.getItem('jwtToken')
+// localStorage.getItem('jwtToken')
 //  localStorage.setItem("jwtToken", 'Bearer ' + token);
 
 // 749cfc59-5312-48c6-90ee-f422e692230f
@@ -77,9 +76,9 @@ const validateTube = (tubeNum) => {
 const validateCooler = (coolerId) => {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.post(`/delivery/coolerBarcode?secondOnly=true`, createHeaders(token), {
+  return api.post(`/delivery/coolerBarcode?secondOnly=true`, {
     barcode: coolerId
-  });
+  }, createHeaders(token));
 };
 const validateIgum = (igumCode,coolerId) => {
   let WhatIsThat = "e395d04b-41d3-441d-849a-c4f091b64019"

@@ -33,7 +33,7 @@ export default function Otp({
     <div className="otp-wrapper">
       <h1>Please Log In</h1>
       <div>
-        <button onClick={()=>history.push('/test')}>camera</button>
+        {/* <button onClick={()=>history.push('/test')}>camera</button> */}
         <label>
           <p>id</p>
           <input type="text" placeholder="setIdNum" onChange={e => setIdNum(e.target.value)} />
