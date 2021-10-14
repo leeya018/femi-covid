@@ -1,12 +1,12 @@
 import './otp.css';
-import React, { useState,useEffect,useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import apis from "../api";
 import secretKey from 'secret-key';
 import Tubes from './Tubes'
 // const coords = "de84c671-f59f-40d2-86f5-77dadd39d46a" // this is changing according to the Tium
 
-export default function AddClient({ totalTests,setTotalTests }) {
-    const idInputRef =  useRef(null)
+export default function AddClient({ totalTests, setTotalTests }) {
+    const idInputRef = useRef(null)
     const [clientId, setClientId] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
@@ -21,22 +21,22 @@ export default function AddClient({ totalTests,setTotalTests }) {
 
 
 
-function clearAddClientFields() {
-    setFirstName('')
-    setLastName('')
-    setKupaName('')
-    setMessage('')
-    setGoodMessage('')
-    setIsTask(false)
-    setDate('')
-    setIdType(1)
-    setSource('')
-    setClientId('')
-    idInputRef.current.focus(); 
+    function clearAddClientFields() {
+        setFirstName('')
+        setLastName('')
+        setKupaName('')
+        setMessage('')
+        setGoodMessage('')
+        setIsTask(false)
+        setDate('')
+        setIdType(1)
+        setSource('')
+        setClientId('')
+        idInputRef.current.focus();
 
-    
 
-}
+
+    }
 
     function addExtraFields(lastUpdate) {
         console.log("extra fields")
@@ -47,12 +47,18 @@ function clearAddClientFields() {
             femiCode: "",
             isUrgent: false,
             kupaReferenceId: "",
-            // requestTime: "2021-10-06T11:08:32.893Z", // change this one to the new date format
-            requestTime: lastUpdate, // change this one to the new date format
+            requestTime: createCurrDate(),
             status: 0,
             supplierCode: "",
             supplierDesc: "",
         }
+    }
+
+    // 2021-10-06T11:08:32.893   - this is the format 
+    function createCurrDate() {
+        var dt = new Date(); 
+        let sDate = dt.toISOString() // decrease 3 hours from actual time
+        return sDate.slice(0, -1)
     }
     async function creatTaskJson(client, lastUpdate) {
         let key = secretKey.create('1EEA6DC-JAM4DP2-PHVYPBN-V0XCJ9X')
@@ -173,7 +179,7 @@ function clearAddClientFields() {
                 <label for="passport">passport</label>
             </div>
             {idType == 1 && (
-                <input type="text"  ref={idInputRef}  maxLength="9" autoFocus placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef} maxLength="9" autoFocus placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
             )}
             {idType == 2 && (
                 <input type="text" placeholder="passport" autoFocus defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
@@ -186,7 +192,7 @@ function clearAddClientFields() {
 
             <p className="err-message">{message}</p>
             {isTask && (
-                <Tubes source={source} totalTests={totalTests} setTotalTests={setTotalTests}  clearAddClientFields={clearAddClientFields}/>
+                <Tubes source={source} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} />
             )}
         </div>
     )

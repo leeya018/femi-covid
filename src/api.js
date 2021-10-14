@@ -163,11 +163,11 @@ function createTask(payload) {
 
 function getClients(coordsId) {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+  let token = currUser.token 
   return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
 
 };
-const coordsId = "f4032b0f-f03f-4702-941f-a663fa5057a5"  //or ehad
+const coordsId = "0cc1fec0-4fcd-4255-9b70-23dc97dc0c6a"  //or ehad
 
 
 const apis = {

@@ -22,11 +22,15 @@ function App() {
   const [totalTests, setTotalTests] = useState(0)
 
   useEffect(async () => {
-    let res = await apis.getClients(apis.coordsId)
-    let clientList = res.data
-    console.log(clientList)
-    let len = clientList.filter(client => [2,3, 4].includes(client.status)).length;
-    setTotalTests(len)  
+    let res, clientList, len
+    if (localStorage.getItem("currUser")) {
+
+      res = await apis.getClients(apis.coordsId)
+      clientList = res.data
+      console.log(clientList)
+      len = clientList.filter(client => [2, 3, 4].includes(client.status)).length;
+      setTotalTests(len)
+    }
 
     console.log("app useEfect")
   }, [])
