@@ -23,6 +23,7 @@ export default function Clients({ setTotalTests, totalTests }) {
         try {
             res = await apis.getClients(apis.coordsId)
             clientList = res.data
+            clientList = sortByDate(clientList)
             console.log(clientList)
             setClients(clientList)
             setTotalTests(getLen())
@@ -32,6 +33,10 @@ export default function Clients({ setTotalTests, totalTests }) {
         }
     }, [])
 
+    function sortByDate(arr) {
+        let data = arr.sort((a, b) => Date.parse(b.receptionEnteredTime) - Date.parse(a.receptionEnteredTime))
+        return data
+    }
     function getLen() {
         return clientList.filter(client => [2, 3, 4].includes(client.status)).length;
     }
