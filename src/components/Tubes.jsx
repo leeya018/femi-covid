@@ -24,6 +24,11 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         console.log("useEffect Tubes")
     }, [])
 
+    useEffect(() => {
+        updateLocalStorage()
+        console.log("total use effect")
+    }, [totalTests])
+
     function checkDisableFields() {
         if (totalTests % 60 == 0) {
             localStorage.setItem("coolerId", '')
@@ -88,10 +93,9 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                     if (await validateIgum(igumId, coolerId)) {
                         // if (true) {
                         //     if (true) {
-
-                        console.log("finish good")
                         res = await apis.addRec(data)
                         if (res.status === 200) {
+                            console.log("finish good")
                             setTotalTests(totalTests + 1)
                             clearFields()
                         } else {
@@ -104,6 +108,15 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
 
         } catch (err) {
             setMessage(err.response.data.message)
+        }
+    }
+
+    function updateLocalStorage() {
+        if (totalTests % 15 == 0) {
+            localStorage.setItem('igumId', '')
+        }
+        if (totalTests % 60 == 0) {
+            localStorage.setItem('coolerId', '')
         }
     }
 
