@@ -8,6 +8,8 @@ import { useHistory } from "react-router-dom";
 
 export default function Dashbaord({ totalTests, setTotalTests }) {
     let history = useHistory();
+    const [instName, setInstName] = useState('')
+
 
 
     useEffect(async () => {
@@ -21,6 +23,8 @@ export default function Dashbaord({ totalTests, setTotalTests }) {
           len = clientList.filter(client => [2, 3, 4].includes(client.status)).length;
           setTotalTests(len)
         }
+        res = await apis.getCoordination(apis.coordsId)
+        setInstName(res.data.institute.name)
     
         console.log("app useEfect")
       }, [])
@@ -28,7 +32,7 @@ export default function Dashbaord({ totalTests, setTotalTests }) {
         return (
             <div className="otp-wrapper">
                 <button onClick={e => history.push("/clients")}>client list</button>
-                <h1>Covid app</h1>
+                <h2>{instName}</h2>
                 <AddClient totalTests={totalTests} setTotalTests={setTotalTests}></AddClient>
             </div>
         )

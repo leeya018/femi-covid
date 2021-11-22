@@ -46,7 +46,7 @@ export const createTium = (paylod) => { //AKA plus button
 export const findClient = (id,idType) => {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.get(`/patient/recurent/${idType}/${id}/`, createHeaders(token));
+  return api.get(`/patients/${idType}/${id}/`, createHeaders(token));
 
 };
 const getPatientRoles = () => {
@@ -167,7 +167,7 @@ function getClients(coordsId) {
   return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
 
 };
-const coordsId = "8c3f7d74-a3f0-47e7-9d62-f776b1a52b32"  //or ehad
+const coordsId = "c226bc0a-b159-47e7-8515-ca5f3b6a603f"  //or  רמת י
 
 
 const apis = {

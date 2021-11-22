@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import apis from '../api';
 import { Redirect } from 'react-router';
 import { useHistory } from "react-router-dom";
+import { createGlobalStyle } from 'styled-components';
 
 export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields }) {
     let history = useHistory();
@@ -37,7 +38,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         if (localStorage.getItem("coolerId") !== "") {
             setIsDisabled(true)
         }
-        if (totalTests % 15 == 0) {
+        if (totalTests % 20 == 0) {
             localStorage.setItem("igumId", '')
             setIgumId("")
         }
@@ -92,7 +93,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                 if (await validateCooler(coolerId)) {//status 200
                     if (await validateIgum(igumId, coolerId)) {
                         // if (true) {
-                        //     if (true) {
+                            // if (true) {
                         res = await apis.addRec(data)
                         if (res.status === 200) {
                             console.log("finish good")
@@ -112,7 +113,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     }
 
     function updateLocalStorage() {
-        if (totalTests % 15 == 0) {
+        if (totalTests % 20 == 0) {
             localStorage.setItem('igumId', '')
         }
         if (totalTests % 60 == 0) {
@@ -154,7 +155,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                 </div>
                 <div className="no-margin rows">
                     <input className="no-margin" type="text" placeholder="igumId" disabled={isDisabledIgum} maxLength="9" onChange={handleChangeIgum} value={igumId} />
-                    <p className="no-margin">({totalTests % 15})</p>
+                    <p className="no-margin">({totalTests % 20})</p>
                 </div>
                 <button onClick={addRec}>add client</button>
                 <p className="err-message">{message}</p>
