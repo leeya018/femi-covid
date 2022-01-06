@@ -1,5 +1,5 @@
 {
-  "homepage": "http://leeya018.github.io/femi-covid",
+  "homepage": "http://localhost:3000/login",
   "name": "femi-covid",
   "version": "0.1.0",
   "private": true,

@@ -31,7 +31,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     }, [totalTests])
 
     function checkDisableFields() {
-        if (totalTests % 60 == 0) {
+        if (totalTests % 100 == 0) {
             localStorage.setItem("coolerId", '')
             setCoolerId("")
         }
@@ -116,7 +116,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         if (totalTests % 20 == 0) {
             localStorage.setItem('igumId', '')
         }
-        if (totalTests % 60 == 0) {
+        if (totalTests % 100 == 0) {
             localStorage.setItem('coolerId', '')
         }
     }
