@@ -51,6 +51,8 @@ export default function AddClient({ totalTests, setTotalTests }) {
             status: 0,
             supplierCode: "",
             supplierDesc: "",
+           
+            receptionEnteredTime: createCurrDate(),
         }
     }
 
@@ -73,7 +75,7 @@ export default function AddClient({ totalTests, setTotalTests }) {
         let res = await apis.getCoordination(apis.coordsId)
         dupClient.institute = res.data.institute
         dupClient.reception = res.data
-    
+        dupClient.receptionEnteredBy= res.data.createdBy 
 
         
         dupClient = Object.assign(dupClient, addExtraFields(lastUpdate));
