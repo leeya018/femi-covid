@@ -51,38 +51,6 @@ export default function AddClient({ totalTests, setTotalTests }) {
             status: 0,
             supplierCode: "",
             supplierDesc: "",
-            reception: {
-                businessType: 1,
-                completedTime: "1899-12-31T21:39:20",
-                createdBy: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-                createdDate: "2022-01-07T06:11:59.527",
-                id: "d9c27ffd-f563-493a-a012-4c95b0084fbe",
-                institute: {
-                  address: "מנחם יצחק 5 רמת גן",
-                  businessType: 1,
-                  city: "רמת גן",
-                  code: "237Q4",
-                  contactName: "שרית אבני",
-                  contactPhone: "0535725287",
-                  district: {
-                    id: 1001,
-                    title: "פמי"
-                  },
-                  houseNumber: "5",
-                  id: 358,
-                  name: "רמת אור אחד",
-                  requestID: "1031378",
-                  street: "מנחם יצחק 5",
-                  type: {
-                    id: 101,
-                    title: "מוסד גריאטרי"
-                  }
-                },
-                notes: "",
-                receptionDate: "2022-01-07T00:00:00",
-                status: true,
-                tester: "780d19da-b4e2-4efe-bc46-2cc91ab0eb87"
-              }
         }
     }
 
@@ -104,10 +72,12 @@ export default function AddClient({ totalTests, setTotalTests }) {
         dupClient.insurer = await apis.getKupa(dupClient.insurer)
         let res = await apis.getCoordination(apis.coordsId)
         dupClient.institute = res.data.institute
+        dupClient.reception = res.data
     
+
+        
         dupClient = Object.assign(dupClient, addExtraFields(lastUpdate));
         delete dupClient.lastUpdated
-        delete dupClient.phone2
         delete dupClient.phoneAreaCode2
         delete dupClient.email
         delete dupClient.email2
