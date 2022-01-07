@@ -1,7 +1,7 @@
 import { getRoles } from "@testing-library/dom";
 import axios from "axios";
 const api = axios.create({
-  baseURL: "https://magenavot-be-prd.femimoh.co.il/femiCovidSampellingForNursingHome/1.0.0",
+  baseURL: "https://magenavot-be-prd.femimoh.co.il/femi-internal/1.0.0",
 });
 
 const createHeaders = (token) => {
@@ -17,7 +17,7 @@ const createHeaders = (token) => {
 
 
 export const otp = (payload) => {
-  return api.post(`/OTPRquest`, payload);
+  return api.post(`/otp`, payload);
 };
 
 
@@ -54,12 +54,17 @@ const getPatientRoles = () => {
   let token = currUser.token
   return api.get(`/lookup/patientRoles`, createHeaders(token));
 };
+// const getKupas = () => {
+//   let currUser = JSON.parse(localStorage.getItem("currUser"))
+//   let token = currUser.token
+//   return api.get(`/lookup/kupas`, createHeaders(token));
+// };
 const getKupas = () => {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.get(`/lookup/kupas`, createHeaders(token));
+  return api.get(`/insurers`, createHeaders(token));
 };
-
+// 
 
 const getTaskById = () => {// should get a task id
   let currUser = JSON.parse(localStorage.getItem("currUser"))
@@ -145,12 +150,16 @@ async function getKupa(kupaId) {
 }
 
 //bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6
+// function getCoordination(coordsId) {
+//   let currUser = JSON.parse(localStorage.getItem("currUser"))
+//   let token = currUser.token
+//   return api.get(`/coordination/${coordsId}`, createHeaders(token));
+// }
+
 function getCoordination(coordsId) {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.get(`/coordination/${coordsId}`, createHeaders(token));
-
-
+  return api.get(`/reception/${coordsId}`, createHeaders(token));
 }
 
 function createTask(payload) {
@@ -161,13 +170,19 @@ function createTask(payload) {
 };
 
 
+// function getClients(coordsId) {
+//   let currUser = JSON.parse(localStorage.getItem("currUser"))
+//   let token = currUser.token 
+//   return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
+
+// };
+
 function getClients(coordsId) {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token 
-  return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
-
+  return api.get(`/tasks/reception/${coordsId}`, createHeaders(token));
 };
-const coordsId = "ad69cd02-4b69-4fee-8640-e0fea7e3b6c5"  //or  רמת י
+const coordsId = "d9c27ffd-f563-493a-a012-4c95b0084fbe"  //or  רמת י
 
 
 const apis = {
