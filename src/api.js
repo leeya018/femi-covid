@@ -109,11 +109,13 @@ const addRec = (data) => {
     otherBreathingSymptNotes: "",
     testTubeBarCode: data.tubeId,
     containerBarCode: data.coolerId,
-    poolingType: 2,
-    poolingComplete: 1,
+    // poolingType: 2,
+    // poolingComplete: 1,
     tubeBarcode: data.tubeId,
     CoolerBarcode: data.coolerId,
-    poolingSampleBarcode: data.igumId
+    // poolingSampleBarcode: data.igumId
+    poolingSampleBarcode: ""
+
   }
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
@@ -182,7 +184,7 @@ function getClients(coordsId) {
   let token = currUser.token 
   return api.get(`/tasks/reception/${coordsId}`, createHeaders(token));
 };
-const coordsId = "42fb97db-7884-4aef-8997-bc387b483950"  //or  רמת י
+const coordsId = "4f95c142-6e36-4309-a0ea-9c06565cd59a"  //or  רמת י
 
 
 const apis = {
