@@ -17,7 +17,7 @@ export default function Clients({ setTotalTests, totalTests }) {
     const [avgRate, setAvgRate] = useState(0)
 
 
-    
+
     const [filter, setFilter] = useState('');
 
     let history = useHistory();
@@ -67,60 +67,60 @@ export default function Clients({ setTotalTests, totalTests }) {
 
 
     // check what is the fast rate of samples in an hour
-    function checkTestsRateFastTime(){
-        let statusCodeGood = [2,3,4]
+    function checkTestsRateFastTime() {
+        let statusCodeGood = [2, 3, 4]
         let doneClientList = clients.filter(client => statusCodeGood.includes(client.status));
         let firstInd = 0
         let secondInd = 59
         let lim = 59
         let bestTimeTmp = 1000
         let startTime, endTime
-        if(doneNum < 60){
+        if (doneNum < 60) {
             startTime = Date.parse(doneClientList[0].receptionEnteredTime)
-            endTime = Date.parse(doneClientList[doneNum-1].receptionEnteredTime)
-           let deltaTime =  getTime(startTime,endTime)
-           bestTimeTmp  = deltaTime 
+            endTime = Date.parse(doneClientList[doneNum - 1].receptionEnteredTime)
+            let deltaTime = getTime(startTime, endTime)
+            bestTimeTmp = deltaTime
 
-       }else{
-        for (firstInd; firstInd < doneNum - lim; firstInd +=1 ,secondInd +=1 ) {
-            startTime =  Date.parse(doneClientList[firstInd].receptionEnteredTime)
-             endTime =  Date.parse(doneClientList[secondInd].receptionEnteredTime)
-            let time = getTime(startTime,endTime)
-            if(time < bestTimeTmp){
-                bestTimeTmp = time
+        } else {
+            for (firstInd; firstInd < doneNum - lim; firstInd += 1, secondInd += 1) {
+                startTime = Date.parse(doneClientList[firstInd].receptionEnteredTime)
+                endTime = Date.parse(doneClientList[secondInd].receptionEnteredTime)
+                let time = getTime(startTime, endTime)
+                if (time < bestTimeTmp) {
+                    bestTimeTmp = time
+                }
             }
         }
-    }
-      
-            setBestTime(parseInt(60/bestTimeTmp))
-        
+
+        setBestTime(parseInt(60 / bestTimeTmp))
+
 
     }
 
     // get 2 times and return the delta in hours
-    function getTime(time1, time2){
+    function getTime(time1, time2) {
         var one_hour = 1000 * 60 * 60
-        let time = (time1 -time2) / one_hour
+        let time = (time1 - time2) / one_hour
         return time
     }
 
     // get the avg rate of sample to the shift
-    function avgRateCalc(){
-        let statusCodeGood = [2,3,4]
+    function avgRateCalc() {
+        let statusCodeGood = [2, 3, 4]
         let doneClientList = clients.filter(client => statusCodeGood.includes(client.status));
 
-        let startTime =  Date.parse(doneClientList[0].receptionEnteredTime)
-        let endTime =  Date.parse(doneClientList[doneNum-1].receptionEnteredTime)
+        let startTime = Date.parse(doneClientList[0].receptionEnteredTime)
+        let endTime = Date.parse(doneClientList[doneNum - 1].receptionEnteredTime)
         var one_hour = 1000 * 60 * 60
-        let shiftTime = (startTime -endTime) / one_hour
+        let shiftTime = (startTime - endTime) / one_hour
         let avgRate = parseInt(doneNum / shiftTime)
         console.log(avgRate)
         setAvgRate(avgRate)
     }
 
-    function calcTimes(){
+    function calcTimes() {
         avgRateCalc()
-        checkTestsRateFastTime()    
+        checkTestsRateFastTime()
     }
 
 
@@ -137,9 +137,15 @@ export default function Clients({ setTotalTests, totalTests }) {
 
     return (
         <div>
-        <button onClick={calcTimes}> calc times </button>
-        <label>fastest time: </label><p>{bestTime} for 60 samples </p>
-        <label>avg rate: </label><p>{avgRate} samples per hour</p>
+            <div>
+
+                <button onClick={calcTimes}> calc times </button>
+                <label>fastest time: </label><p>{bestTime} for 60 samples </p>
+                <label>avg rate: </label><p>{avgRate} samples per hour</p>
+            </div>
+            <div>
+                <button onClick={e => history.push("/wage")} >wage calc</button>
+            </div>
 
             <button onClick={e => history.push("/dashboard")} autoFocus>+</button>
             <div className="rows">

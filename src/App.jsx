@@ -11,6 +11,9 @@ import Dashbaord from "./components/Dashbaord";
 import Clients from "./components/Clients";
 import Test from "./components/Test";
 import apis from "./api";
+import Wage from "./components/Wage";
+
+
 
 import CreateTium from "./components/CreateTium";
 
@@ -54,6 +57,11 @@ function App() {
         <Route path="/dashboard"
         >
           <Dashbaord totalTests={totalTests} setTotalTests={setTotalTests} />
+        </Route>
+
+        <Route path="/wage"
+        >
+          <Wage />
         </Route>
 
         <Route path="/login">
