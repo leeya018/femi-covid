@@ -170,9 +170,6 @@ export default function AddClient({ totalTests, setTotalTests }) {
         <div className="otp-wrapper">
             <p>totalTests: {totalTests}</p>
 
-
-            <h1>add client page</h1>
-
             <div>
                 <input type="radio" id="id"
                     name="contact" value="id" onChange={() => setIdType(1)} checked={idType === 1} />

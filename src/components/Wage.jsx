@@ -22,19 +22,19 @@ export default function Wage() {
 
 
     function updateBonusInst(e) {
-        let numInts = e.target.value
+        let numInts = e.target.value | 1
         let moves = numInts - 1
         setInstBonus(moves * BONUS_PER_MOVE)
 
     }
 
     function updateSamplesBonus(e) {
-        let samples = e.target.value
+        let samples = e.target.value | 0 
         setSampleBonus(samples * SAMPLE_RATE)
     }
 
     function updateHoursBonus(e) {
-        let hours = e.target.value
+        let hours = e.target.value | 0
         setHourWage(hours * HOUR_RATE)
     }
 
