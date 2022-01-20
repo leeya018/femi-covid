@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from 'react'
 import apis from "../api";
 import secretKey from 'secret-key';
 import Tubes from './Tubes'
+import FindIdByName from './FindIdByName'
+
+
 // const coords = "de84c671-f59f-40d2-86f5-77dadd39d46a" // this is changing according to the Tium
 
 export default function AddClient({ totalTests, setTotalTests }) {
@@ -18,6 +21,7 @@ export default function AddClient({ totalTests, setTotalTests }) {
     const [source, setSource] = useState('')
     const [date, setDate] = useState('')
     const [idType, setIdType] = useState(1)
+    const [show, setShow] = useState(false)
 
 
 
@@ -169,7 +173,8 @@ export default function AddClient({ totalTests, setTotalTests }) {
     return (
         <div className="otp-wrapper">
             <p>totalTests: {totalTests}</p>
-
+            <button onClick={()=>setShow(!show)}>search by name</button>
+           {show && <FindIdByName updateNumId={setClientId} updateIdType={setIdType} />}
             <div>
                 <input type="radio" id="id"
                     name="contact" value="id" onChange={() => setIdType(1)} checked={idType === 1} />
