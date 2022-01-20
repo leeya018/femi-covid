@@ -11,30 +11,35 @@ export default function Wage() {
     const [sum, setSum] = useState(0)
     const [instBonus, setInstBonus] = useState(0)
     const [sampleBonus, setSampleBonus] = useState(0)
+    const [hours, setHours] = useState(0)
     const [hourWage, setHourWage] = useState(0)
+    const [avgRatePerHour, setAvgRatePerHour] = useState(0)
+
     let history = useHistory();
 
 
 
     useEffect(() => {
         setSum(instBonus + sampleBonus + hourWage)
+        setAvgRatePerHour((sum/hours).toFixed(0))
     }, [instBonus, sampleBonus, hourWage]);
 
 
     function updateBonusInst(e) {
-        let numInts = e.target.value | 1
+        let numInts = e.target.value || 1
         let moves = numInts - 1
         setInstBonus(moves * BONUS_PER_MOVE)
 
     }
 
     function updateSamplesBonus(e) {
-        let samples = e.target.value | 0 
+        let samples = e.target.value || 0 
         setSampleBonus(samples * SAMPLE_RATE)
     }
 
     function updateHoursBonus(e) {
-        let hours = e.target.value | 0
+        let hours = e.target.value || 0
+        setHours(hours)
         setHourWage(hours * HOUR_RATE)
     }
 
@@ -47,5 +52,7 @@ export default function Wage() {
 
         <label>hours<input type="num" onChange={updateHoursBonus} /></label><br />
         <p>wage : {sum} shekels</p>
+        <p>avg wage per hour : {avgRatePerHour || 0} shekels</p>
+
     </div>;
 }
