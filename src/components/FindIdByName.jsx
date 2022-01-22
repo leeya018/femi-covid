@@ -57,12 +57,13 @@ export default function FindIdByName({updateNumId,updateIdType,updateIdIputFocus
       options={fillteredList}
       sx={{ width: 200 }}
       renderInput={(params) => <TextField {...params} label="client" />}
+      onFocus={()=>updateIdIputFocus(false)}
       onChange={(event, client) => {
         chooseClient(client)
         updateIdIputFocus(true)
-        
 
       }}
+        
     />
 
     </div>;
