@@ -10,11 +10,15 @@ import FindIdByName from './FindIdByName'
 
 export default function AddClient({ totalTests, setTotalTests }) {
     const idInputRef = useRef(null)
+
     const [clientId, setClientId] = useState('')
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
     const [kupaName, setKupaName] = useState('')
     const [message, setMessage] = useState('');
+    const [idIputFocus, setIdIputFocus] = useState(false);
+    
+    
     const [goodMessage, setGoodMessage] = useState('');
 
     const [isTask, setIsTask] = useState(false)
@@ -23,6 +27,14 @@ export default function AddClient({ totalTests, setTotalTests }) {
     const [idType, setIdType] = useState(1)
     const [show, setShow] = useState(false)
 
+
+    
+    
+    useEffect(() => {
+        if(idIputFocus == true){
+            idInputRef.current.focus();
+        }
+    },[idIputFocus]);
 
 
     function clearAddClientFields() {
@@ -174,7 +186,7 @@ export default function AddClient({ totalTests, setTotalTests }) {
         <div className="otp-wrapper">
             <p>totalTests: {totalTests}</p>
             <button onClick={()=>setShow(!show)}>search by name</button>
-           {show && <FindIdByName updateNumId={setClientId} updateIdType={setIdType} />}
+           {show && <FindIdByName updateIdIputFocus={setIdIputFocus} updateNumId={setClientId} updateIdType={setIdType} />}
             <div>
                 <input type="radio" id="id"
                     name="contact" value="id" onChange={() => setIdType(1)} checked={idType === 1} />
@@ -185,10 +197,10 @@ export default function AddClient({ totalTests, setTotalTests }) {
                 <label for="passport">passport</label>
             </div>
             {idType == 1 && (
-                <input type="text" ref={idInputRef} maxLength="9" autoFocus placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef} autoFocus maxLength="9"  placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
             )}
             {idType == 2 && (
-                <input type="text" placeholder="passport" autoFocus defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
+                <input type="text" placeholder="passport"  autoFocus defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
             <p className="no-margin">{firstName}</p>

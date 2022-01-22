@@ -138,9 +138,10 @@ export default function Clients({ setTotalTests, totalTests }) {
     return (
         <div>
             <div>
-
                 <button onClick={calcTimes}> calc times </button>
-                <label>fastest time: </label><p>{bestTime} for 60 samples </p>
+                <label>fastest time: </label><p>{bestTime} per hour </p>
+                <label>avg fast time: </label><p>{(bestTime / 60).toFixed()} samples per minute </p>
+
                 <label>avg rate: </label><p>{avgRate} samples per hour</p>
             </div>
             <div>
