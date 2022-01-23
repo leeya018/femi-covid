@@ -185,7 +185,9 @@ export default function AddClient({ totalTests, setTotalTests }) {
     return (
         <div className="otp-wrapper">
             <p>totalTests: {totalTests}</p>
-            <button onClick={()=>setShow(!show)}>search by name</button>
+            <button onClick={()=>{
+                setShow(!show)
+            }}>search by name</button>
            {show && <FindIdByName updateIdIputFocus={setIdIputFocus} updateNumId={setClientId} updateIdType={setIdType} />}
             <div>
                 <input type="radio" id="id"
@@ -200,7 +202,7 @@ export default function AddClient({ totalTests, setTotalTests }) {
                 <input type="text" ref={idInputRef} autoFocus maxLength="9"  placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
             )}
             {idType == 2 && (
-                <input type="text" placeholder="passport"  autoFocus defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef} placeholder="passport"  autoFocus defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
             <p className="no-margin">{firstName}</p>

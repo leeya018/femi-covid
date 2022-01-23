@@ -1,14 +1,14 @@
 import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState,useEffect,useRef } from 'react';
 import api from "../api"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const COORDS_ID = "154d5b2e-c0d9-4c4d-989b-c73048e1e96f"
+const COORDS_ID = "e3500dd7-b293-4b1c-8aa6-1a6bdf4159a7"
 
 
 export default function FindIdByName({updateNumId,updateIdType,updateIdIputFocus}) {
+    
     const [filter, setFilter] = useState('');
 
     const [clientList, setclientList] = useState([]);
@@ -31,6 +31,7 @@ export default function FindIdByName({updateNumId,updateIdType,updateIdIputFocus
 
 
     }, []);
+
 
     function removeDups(arr) {
         return arr.filter((v, i, a) => a.findIndex(t => (t.idNum === v.idNum)) === i)
@@ -56,7 +57,7 @@ export default function FindIdByName({updateNumId,updateIdType,updateIdIputFocus
       id="combo-box-demo"
       options={fillteredList}
       sx={{ width: 200 }}
-      renderInput={(params) => <TextField {...params} label="client" />}
+      renderInput={(params) => <TextField  autoFocus  {...params} label="client" />}
       onFocus={()=>updateIdIputFocus(false)}
       onChange={(event, client) => {
         chooseClient(client)
