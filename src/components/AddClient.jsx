@@ -192,17 +192,17 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             <div>
                 <input type="radio" id="id"
                     name="contact" value="id" onChange={() => setIdType(1)} checked={idType === 1} />
-                <label for="id">id</label>
+                <label htmlFor="id">id</label>
 
                 <input type="radio" id="passport" onChange={() => setIdType(2)} checked={idType === 2}
                     name="contact" value="passport" />
-                <label for="passport">passport</label>
+                <label htmlFor="passport">passport</label>
             </div>
             {idType == 1 && (
-                <input type="text" ref={idInputRef}  maxLength="9"  placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef}  maxLength="9"  placeholder="id" value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             {idType == 2 && (
-                <input type="text" ref={idInputRef} placeholder="passport"   defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef} placeholder="passport"  value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
             <p className="no-margin">{firstName}</p>

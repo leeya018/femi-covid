@@ -24,7 +24,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [totalTests, setTotalTests] = useState(0)
   const [instName, setInstName] = useState('')
-  const [allClienstFromInstitution, setAllClienstFromInstitution] = useState('')
+  const [allClienstFromInstitution, setAllClienstFromInstitution] = useState([])
 
   useEffect(async () => {
     let res, clientList, len
