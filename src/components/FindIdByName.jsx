@@ -4,38 +4,28 @@ import api from "../api"
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-const COORDS_ID = "e3500dd7-b293-4b1c-8aa6-1a6bdf4159a7"
 
+// const COORDS_ID = "7ef6e001-97e1-46c1-8d09-9932e441c2f5"
 
-export default function FindIdByName({updateNumId,updateIdType,updateIdIputFocus}) {
+export default function FindIdByName({allClienstFromInstitution,updateNumId,updateIdType,updateIdIputFocus}) {
     
     const [filter, setFilter] = useState('');
 
-    const [clientList, setclientList] = useState([]);
-    const [fillteredList, setFilteredList] = useState([]);
     const [focus, setFocus] = useState(false);
 
     
 
-    useEffect(async () => {
-        let res = await api.getClients(COORDS_ID)
-        let clients = res.data.map(function (client) {
-            let { firstName, lastName, idType, idNum } = client
-            return { firstName, lastName, idType, idNum ,label:firstName  + ' ' + lastName}
-        })
 
-        let clientsNoDups = removeDups(clients)
-        setclientList(clientsNoDups)
-        setFilteredList(clientsNoDups)
-        console.log(clientsNoDups);
+    useEffect( () => {
+        console.log(allClienstFromInstitution);
 
 
-    }, []);
 
-
-    function removeDups(arr) {
-        return arr.filter((v, i, a) => a.findIndex(t => (t.idNum === v.idNum)) === i)
-    }
+    }, [allClienstFromInstitution]);
+    
+    // function removeDups(arr) {
+    //     return arr.filter((v, i, a) => a.findIndex(t => (t.idNum === v.idNum)) === i)
+    // }
     
     function chooseClient(client) {
         if(client){
@@ -55,7 +45,7 @@ export default function FindIdByName({updateNumId,updateIdType,updateIdIputFocus
            <Autocomplete
       disablePortal
       id="combo-box-demo"
-      options={fillteredList}
+      options={allClienstFromInstitution}
       sx={{ width: 200 }}
       renderInput={(params) => <TextField  autoFocus  {...params} label="client" />}
       onFocus={()=>updateIdIputFocus(false)}

@@ -184,7 +184,20 @@ function getClients(coordsId) {
   let token = currUser.token 
   return api.get(`/tasks/reception/${coordsId}`, createHeaders(token));
 };
-const coordsId = "2da464a8-41ab-447a-bcb8-36588b6695d4"  //or  רמת י
+
+function getAllReceptions() {
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token 
+  let myId = currUser.id
+  return api.get(`/users/${myId}/receptions`, createHeaders(token));
+
+  
+}
+
+
+
+const coordsId = "16bd0fea-8e20-4bd8-99d1-f5273c34a7c1"  //or  רמת י
+
 
 
 const apis = {
@@ -203,7 +216,8 @@ const apis = {
   getKupa,
   getClients,
   getInstitutions,
-  validateIgum
+  validateIgum,
+  getAllReceptions
 };
 
 export default apis;

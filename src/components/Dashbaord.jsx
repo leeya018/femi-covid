@@ -1,15 +1,16 @@
 
 import './otp.css';
-import apis from "../api";
+import api from "../api";
 import React, { useState, useEffect } from 'react';
 import AddClient from "./AddClient";
 import { useHistory } from "react-router-dom";
 
 
 
-export default function Dashbaord({ totalTests, setTotalTests }) {
+export default function Dashbaord({allClienstFromInstitution,instName ,totalTests, setTotalTests }) {
   let history = useHistory();
-  const [instName, setInstName] = useState('')
+
+
 
 
 
@@ -18,23 +19,30 @@ export default function Dashbaord({ totalTests, setTotalTests }) {
     let res, clientList, len
     if (localStorage.getItem("currUser")) {
 
-      res = await apis.getClients(apis.coordsId)
+      res = await api.getClients(api.coordsId)
       clientList = res.data
       console.log(clientList)
       len = clientList.filter(client => [2, 3, 4].includes(client.status)).length;
       setTotalTests(len)
     }
-    res = await apis.getCoordination(apis.coordsId)
-    setInstName(res.data.institute.name)
+    // res = await api.getCoordination(api.coordsId)
+    // setInstName(res.data.institute.name)
 
-    console.log("app useEfect")
+    console.log("dash useEfect")
+    
+    
   }, [])
+
+
+
+
+
 
   return (
     <div className="otp-wrapper">
       <button onClick={e => history.push("/clients")}>client list</button>
       <h2>{instName}</h2>
-      <AddClient totalTests={totalTests} setTotalTests={setTotalTests}></AddClient>
+      <AddClient allClienstFromInstitution={allClienstFromInstitution} totalTests={totalTests} instName={instName} setTotalTests={setTotalTests}></AddClient>
     </div>
   )
 };

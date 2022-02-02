@@ -8,7 +8,7 @@ import FindIdByName from './FindIdByName'
 
 // const coords = "de84c671-f59f-40d2-86f5-77dadd39d46a" // this is changing according to the Tium
 
-export default function AddClient({ totalTests, setTotalTests }) {
+export default function AddClient({ allClienstFromInstitution,totalTests,setTotalTests }) {
     const idInputRef = useRef(null)
 
     const [clientId, setClientId] = useState('')
@@ -188,7 +188,7 @@ export default function AddClient({ totalTests, setTotalTests }) {
             <button onClick={()=>{
                 setShow(!show)
             }}>search by name</button>
-           {show && <FindIdByName updateIdIputFocus={setIdIputFocus} updateNumId={setClientId} updateIdType={setIdType} />}
+            <FindIdByName allClienstFromInstitution={allClienstFromInstitution} updateIdIputFocus={setIdIputFocus} updateNumId={setClientId} updateIdType={setIdType} />
             <div>
                 <input type="radio" id="id"
                     name="contact" value="id" onChange={() => setIdType(1)} checked={idType === 1} />
@@ -199,10 +199,10 @@ export default function AddClient({ totalTests, setTotalTests }) {
                 <label for="passport">passport</label>
             </div>
             {idType == 1 && (
-                <input type="text" ref={idInputRef} autoFocus maxLength="9"  placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef}  maxLength="9"  placeholder="id" value={clientId} defaultValue="" onChange={e => setClientId(e.target.value)} />
             )}
             {idType == 2 && (
-                <input type="text" ref={idInputRef} placeholder="passport"  autoFocus defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef} placeholder="passport"   defaultValue="" value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
             <p className="no-margin">{firstName}</p>
