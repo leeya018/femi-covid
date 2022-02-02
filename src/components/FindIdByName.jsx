@@ -14,19 +14,6 @@ export default function FindIdByName({allClienstFromInstitution,updateNumId,upda
     const [focus, setFocus] = useState(false);
 
     
-
-
-    useEffect( () => {
-        console.log(allClienstFromInstitution);
-
-
-
-    }, [allClienstFromInstitution]);
-    
-    // function removeDups(arr) {
-    //     return arr.filter((v, i, a) => a.findIndex(t => (t.idNum === v.idNum)) === i)
-    // }
-    
     function chooseClient(client) {
         if(client){
             updateNumId(client.idNum)

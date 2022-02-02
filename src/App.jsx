@@ -45,33 +45,33 @@ function App() {
     setInstName(institutionName)
     let res = await api.getAllReceptions()
     let receptions = res.data
-    
 
-    let recetionWithSameName = receptions.filter(rec=>rec.institute.name === institutionName)
-    let receptionIds = recetionWithSameName.map(rec=>rec.id)
+
+    let recetionWithSameName = receptions.filter(rec => rec.institute.name === institutionName)
+    let receptionIds = recetionWithSameName.map(rec => rec.id)
     console.log(receptionIds);
     let arrOfAllClientsFromInst = []
 
-      receptionIds.map(async function (coordId) {
-    
-        let clientsFull = (await api.getClients(coordId)).data
-        let clients = clientsFull.map(function (client) {
-            let { firstName, lastName, idType, idNum } = client
-            return { firstName, lastName, idType, idNum ,label:firstName  + ' ' + lastName}
-        })
-    
-        arrOfAllClientsFromInst = arrOfAllClientsFromInst.concat(clients).filter(function(c) {  
-            return this[c.idNum] ? false : this[c.idNum] = true;
-          }, {});
-          
-          setAllClienstFromInstitution(arrOfAllClientsFromInst)
-          // console.log(arrOfAllClientsFromInst.length);
-        })
+    receptionIds.map(async function (coordId) {
+
+      let clientsFull = (await api.getClients(coordId)).data
+      let clients = clientsFull.map(function (client) {
+        let { firstName, lastName, idType, idNum } = client
+        return { firstName, lastName, idType, idNum, label: firstName + ' ' + lastName }
+      })
+
+      arrOfAllClientsFromInst = arrOfAllClientsFromInst.concat(clients).filter(function (c) {
+        return this[c.idNum] ? false : this[c.idNum] = true;
+      }, {});
 
     
-    
+      setAllClienstFromInstitution(arrOfAllClientsFromInst)
+    })
+
+
+
     console.log("I am out");
-}
+  }
 
 
   const childProps = {
@@ -105,7 +105,7 @@ function App() {
             phone={phone} />
         </Route>
         <Route path="/clients">
-          <Clients setTotalTests={setTotalTests}  totalTests={totalTests} />
+          <Clients setTotalTests={setTotalTests} totalTests={totalTests} />
         </Route>
 
         {/* <Route path="/tium">
