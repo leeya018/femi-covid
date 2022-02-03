@@ -6,8 +6,6 @@ import Tubes from './Tubes'
 import FindIdByName from './FindIdByName'
 
 
-// const coords = "de84c671-f59f-40d2-86f5-77dadd39d46a" // this is changing according to the Tium
-
 export default function AddClient({ allClienstFromInstitution,totalTests,setTotalTests }) {
     const idInputRef = useRef(null)
 

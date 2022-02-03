@@ -20,8 +20,9 @@ export default function Wage() {
 
 
     useEffect(() => {
-        setSum(instBonus + sampleBonus + hourWage)
-        setAvgRatePerHour((sum/hours).toFixed(0))
+        let total = instBonus + sampleBonus + hourWage
+        setSum(total)
+        setAvgRatePerHour((total/hours).toFixed(0))
     }, [instBonus, sampleBonus, hourWage]);
 
 
