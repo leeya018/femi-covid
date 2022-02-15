@@ -26,6 +26,10 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [show, setShow] = useState(false)
 
 
+    useEffect(() => {
+        setClientId(localStorage.getItem("clientId")) // get the Id if its exists in LocalStorage
+    }, [])
+    
     
     
     useEffect(() => {
@@ -210,7 +214,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
             <p className="err-message">{message}</p>
             {isTask && (
-                <Tubes source={source} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} />
+                <Tubes source={source} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} clientId={clientId}/>
             )}
         </div>
     )

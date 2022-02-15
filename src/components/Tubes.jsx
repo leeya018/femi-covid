@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import { useHistory } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 
-export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields }) {
+export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields ,clientId}) {
     let history = useHistory();
     const inputCooler = useRef(null);
     const buttonRef = useRef(null);
@@ -80,6 +80,16 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         setMessage("igum err")
         return false
     }
+
+    function saveIdBeforeCrash(id) {
+        localStorage.setItem("clientId",clientId)
+    }
+
+    
+    function removeIdAfterSuccess() {
+        localStorage.removeItem("clientId")
+    }
+
     async function addRec() {
         console.log("hola add rec")
         let data = {
@@ -88,6 +98,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
 
         let res
         let r
+
         try {
             if (await validateTube(tubeId)) {
                 if (await validateCooler(coolerId)) {//status 200
@@ -99,7 +110,9 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                             console.log("finish good")
                             setTotalTests(totalTests + 1)
                             clearFields()
+                            removeIdAfterSuccess()
                         } else {
+                            saveIdBeforeCrash()
                             setMessage(res.status)
                         }
 
