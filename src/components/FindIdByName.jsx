@@ -10,7 +10,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 export default function FindIdByName({allClienstFromInstitution,updateNumId,updateIdType,updateIdIputFocus}) {
     
     const [filter, setFilter] = useState('');
-
     const [focus, setFocus] = useState(false);
 
     
