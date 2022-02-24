@@ -109,12 +109,11 @@ const addRec = (data) => {
     otherBreathingSymptNotes: "",
     testTubeBarCode: data.tubeId,
     containerBarCode: data.coolerId,
-    // poolingType: 2,
-    // poolingComplete: 1,
+    poolingType: 2,
+    poolingComplete: 1,
     tubeBarcode: data.tubeId,
     CoolerBarcode: data.coolerId,
-    // poolingSampleBarcode: data.igumId
-    poolingSampleBarcode: ""
+    poolingSampleBarcode: data.igumId
 
   }
   let currUser = JSON.parse(localStorage.getItem("currUser"))
@@ -196,8 +195,8 @@ function getAllReceptions() {
 
 
 
-// const coordsId = "80717b01-3daf-4f38-868f-4a1e05b2feab"  //or  רמת י
-const coordsId = "910c65c3-e022-4b92-ad69-ba2f070e2919"  //or  רמת י
+const coordsId = "c73c1edb-2a80-4407-80be-6b4f025d1039"  //or  רמת י
+
 
 
 

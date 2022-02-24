@@ -5,6 +5,9 @@ import { Redirect } from 'react-router';
 import { useHistory } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 
+const NUM_IN_IGUM = 15
+const NUM_IN_COOLER = 100
+
 export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields, clientId }) {
     let history = useHistory();
     const inputCooler = useRef(null);
@@ -31,14 +34,14 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     }, [totalTests])
 
     function checkDisableFields() {
-        if (totalTests % 100 == 0) {
+        if (totalTests % NUM_IN_COOLER == 0) {
             localStorage.setItem("coolerId", '')
             setCoolerId("")
         }
         if (localStorage.getItem("coolerId") !== "") {
             setIsDisabled(true)
         }
-        if (totalTests % 10 == 0) {
+        if (totalTests % NUM_IN_IGUM == 0) {
             localStorage.setItem("igumId", '')
             setIgumId("")
         }
@@ -102,7 +105,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         try {
             if (await validateTube(tubeId)) {
                 if (await validateCooler(coolerId)) {//status 200
-                    // if (await validateIgum(igumId, coolerId)) {
+                    if (await validateIgum(igumId, coolerId)) {
                     // if (true) {
                     // if (true) {
                     res = await apis.addRec(data)
@@ -116,7 +119,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                         setMessage(res.status)
                     }
 
-                    // }
+                    }
                 }
             }
 
@@ -127,10 +130,10 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     }
 
     function updateLocalStorage() {
-        if (totalTests % 10 == 0) {
+        if (totalTests % NUM_IN_IGUM == 0) {
             localStorage.setItem('igumId', '')
         }
-        if (totalTests % 100 == 0) {
+        if (totalTests % NUM_IN_COOLER == 0) {
             localStorage.setItem('coolerId', '')
         }
     }
@@ -165,12 +168,12 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                 }} />
                 <div className="no-margin rows">
                     <input className="no-margin" ref={inputCooler} type="text" disabled={isDisabled} placeholder="coolerId" maxLength="11" onChange={handleChangeCooler} value={coolerId} />
-                    <p className="no-margin">({totalTests % 60})</p>
+                    <p className="no-margin">({totalTests % NUM_IN_COOLER})</p>
                 </div>
-                {/* <div className="no-margin rows">
+                <div className="no-margin rows">
                     <input className="no-margin" type="text" placeholder="igumId" disabled={isDisabledIgum} maxLength="9" onChange={handleChangeIgum} value={igumId} />
-                    <p className="no-margin">({totalTests % 10})</p>
-                </div> */}
+                    <p className="no-margin">({totalTests % NUM_IN_IGUM})</p>
+                </div>
                 <button onClick={addRec}>add client</button>
                 <p className="err-message">{message}</p>
             </div>
