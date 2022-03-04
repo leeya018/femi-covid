@@ -138,6 +138,8 @@ export default function Clients({ setTotalTests, totalTests }) {
     return (
         <div>
             <div>
+          
+                <button  onClick={e => history.push("/monthlySalary")}> show monthlySalary</button><br />
                 <button onClick={calcTimes}> calc times </button>
                 <label>fastest time: </label><p>{bestTime} per hour </p>
                 <label>avg fast time: </label><p>{(bestTime / 60).toFixed()} samples per minute </p>

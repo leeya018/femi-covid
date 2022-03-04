@@ -195,6 +195,7 @@ function getAllReceptions() {
 
 
 
+
 const coordsId = "c73c1edb-2a80-4407-80be-6b4f025d1039"  //or  רמת י
 
 

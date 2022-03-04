@@ -10,6 +10,9 @@ import Login from "./components/Login";
 import Dashbaord from "./components/Dashbaord";
 import Clients from "./components/Clients";
 import Test from "./components/Test";
+import MonthlySalary from "./components/MonthlySalary";
+
+
 import api from "./api";
 import Wage from "./components/Wage";
 
@@ -107,6 +110,12 @@ function App() {
         <Route path="/clients">
           <Clients setTotalTests={setTotalTests} totalTests={totalTests} />
         </Route>
+
+        <Route path="/monthlySalary">
+          <MonthlySalary />
+        </Route>
+
+        
 
         {/* <Route path="/tium">
           <CreateTium />
