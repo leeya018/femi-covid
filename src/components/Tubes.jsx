@@ -50,8 +50,8 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         }
     }
     async function validateTube(tubeId) {
-        if (tubeId.substring(0, 2) !== "30") {
-            setMessage("tube not start with 30")
+        if (tubeId.substring(0, 1) !== "3") {
+            setMessage("tube not start with 3")
             return false
         }
         let res = await apis.validateTube(tubeId)
