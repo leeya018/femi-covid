@@ -20,6 +20,8 @@ export default function MonthlySalary() {
 
     const [month, setMonth] = useState(currMonth)
     const [year, setYear] = useState(currYear)
+    const [errMsg, setErrMsg] = useState("")
+
 
     const [wageForTime, setWageForTime] = useState()
     const [wageForTransfer, setWageForTransfer] = useState()
@@ -80,24 +82,31 @@ export default function MonthlySalary() {
         }
 
         return new Promise((resolve, reject) => {
-            apiIsutit.getWorkerAttendance(payload).then(res => {
-                if (res.status !== 200) {
-                    console.log("error")
-                    reject("error")
+          
+                apiIsutit.getWorkerAttendance(payload).then(async res => {
+                    if (res.status == 200) {
+                        setErrMsg("")
+                        console.log(res.status)
+                        console.log("GetWorkerAttendance")
+                        console.log(res.data)
+                        let totalTimeInMinutes = sumAllHoursOfWork(res.data)
+                        let TotalTimeInHours = totalTimeInMinutes / 60
+                        // alert(totalTime)
+                        resolve(TotalTimeInHours)
+                   
+                    }
+
+            }).catch(async err=>{
+                if(err.response.status == 401){
+                    await login()
+                    await getWorkerAttendance()
+                    
+                }else{
+                    reject(-1)
                 }
-                else { // good
-                    console.log(res.status)
-                    console.log("GetWorkerAttendance")
-                    console.log(res.data)
-                    let totalTimeInMinutes = sumAllHoursOfWork(res.data)
-                    let TotalTimeInHours = totalTimeInMinutes / 60
-                    // alert(totalTime)
-                    resolve(TotalTimeInHours)
-                }
+                setErrMsg("status: " +  err.response.status + ' ' + err.message)
             })
         })
-
-
     }
 
     async function calcMoneyForHours() {
@@ -182,12 +191,15 @@ export default function MonthlySalary() {
     }
 
     async function calc(){
+        setErrMsg("")
         if (localStorage.getItem("isufitToken") == null) {
             await login()
         }
 
         await calcMoneyForHours()
         await calcBonus()
+        
+        
     }
 
 
@@ -198,15 +210,15 @@ export default function MonthlySalary() {
             <label htmlFor="">month</label><input type="number" value={month} onChange={e=>setMonth(parseInt(e.target.value))}/><br />
             <label htmlFor="">year</label><input type="number" value={year} onChange={e=>setYear(parseInt(e.target.value))}/><br />
 
-            <button onClick={calc}>calc</button>
+            <button onClick={calc}>calc</button><br />
             {wageForTime && <span>money for hour: {wageForTime.toFixed()}</span>}
             <br />
             {wageForTransfer && <span>money for transfer: {wageForTransfer}</span>}
             <br />
             {wageForTests && <span>money for tests: {wageForTests}</span>}
             <br />
-            {wageForTime && wageForTransfer && wageForTests && <span>total money per month: {wageForTests + wageForTransfer + wageForTime}</span>}
-
+            {wageForTime && wageForTransfer && wageForTests && <span>total money per month: {(wageForTests + wageForTransfer + wageForTime).toFixed()}</span>} <br />
+            <span style={{backgroundColor:"red"}} >{errMsg}</span>
 
 
         </div>
