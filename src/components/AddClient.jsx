@@ -24,7 +24,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [date, setDate] = useState('')
     const [idType, setIdType] = useState(1)
     const [show, setShow] = useState(false)
-
+    const [withIgum, setWithIgum] = useState(true);
 
     useEffect(() => {
         setClientId(localStorage.getItem("clientId")) // get the Id if its exists in LocalStorage
@@ -186,6 +186,9 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
     return (
         <div className="otp-wrapper">
+             <div>
+                <button onClick={()=>setWithIgum(!withIgum)}>{withIgum?"with Igum":"No Igum"}</button>
+            </div>
             <p>totalTests: {totalTests}</p>
             <button onClick={()=>{
                 setShow(!show)
@@ -214,7 +217,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
             <p className="err-message">{message}</p>
             {isTask && (
-                <Tubes source={source} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} clientId={clientId}/>
+                <Tubes source={source} withIgum={withIgum} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} clientId={clientId}/>
             )}
         </div>
     )

@@ -8,7 +8,7 @@ import { createGlobalStyle } from 'styled-components';
 const NUM_IN_IGUM = 15
 const NUM_IN_COOLER = 100
 
-export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields, clientId }) {
+export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields, clientId ,withIgum}) {
     let history = useHistory();
     const inputCooler = useRef(null);
     const buttonRef = useRef(null);
@@ -19,6 +19,9 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     const [message, setMessage] = useState('');
     const [isDisabled, setIsDisabled] = useState(false);
     const [isDisabledIgum, setIsDisabledIgum] = useState(false);
+
+    
+
 
 
     useEffect(() => {
@@ -99,33 +102,45 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
             source, tubeId, coolerId, igumId
         }
 
-        let res
-        let r
+        let igumAdditionFieldes ={
+            poolingType: 2,
+            poolingComplete: 1,
+            poolingSampleBarcode: data.igumId
+        }
+
 
         try {
             if (await validateTube(tubeId)) {
                 if (await validateCooler(coolerId)) {//status 200
-                    if (await validateIgum(igumId, coolerId)) {
-                    // if (true) {
-                    // if (true) {
-                    res = await apis.addRec(data)
-                    if (res.status === 200) {
-                        console.log("finish good")
-                        setTotalTests(totalTests + 1)
-                        clearFields()
-                        removeIdAfterSuccess()
-                    } else {
-                        saveIdBeforeCrash()
-                        setMessage(res.status)
+                    if(withIgum){
+                        if (await validateIgum(igumId, coolerId)) {
+                            sendRecord(data,igumAdditionFieldes) // with igum
+                        }
                     }
-
+                    else{
+                        sendRecord(data,{}) // no igum
+                        
                     }
-                }
-            }
+    
+                        }
+                    }
 
         } catch (err) {
             saveIdBeforeCrash()
             setMessage(err.response.data.message)
+        }
+    }
+
+    async function sendRecord(data,addedData){
+        let res = await apis.addRec(data,addedData)
+        if (res.status === 200) {
+            console.log("finish good")
+            setTotalTests(totalTests + 1)
+            clearFields()
+            removeIdAfterSuccess()
+        } else {
+            saveIdBeforeCrash()
+            setMessage(res.status)
         }
     }
 
@@ -158,7 +173,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
 
     return (
         <div>
-
+           
 
             <div className="cols">
                 <input type="text" autoFocus placeholder="tubeId" maxLength="9" onChange={e => {
@@ -170,10 +185,10 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                     <input className="no-margin" ref={inputCooler} type="text" disabled={isDisabled} placeholder="coolerId" maxLength="11" onChange={handleChangeCooler} value={coolerId} />
                     <p className="no-margin">({totalTests % NUM_IN_COOLER})</p>
                 </div>
-                <div className="no-margin rows">
+                {withIgum && <div className="no-margin rows">
                     <input className="no-margin" type="text" placeholder="igumId" disabled={isDisabledIgum} maxLength="9" onChange={handleChangeIgum} value={igumId} />
                     <p className="no-margin">({totalTests % NUM_IN_IGUM})</p>
-                </div>
+                </div>}
                 <button onClick={addRec}>add client</button>
                 <p className="err-message">{message}</p>
             </div>

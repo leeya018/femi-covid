@@ -93,8 +93,8 @@ const validateIgum = (igumCode,coolerId) => {
 };
 
 
-const addRec = (data) => {
-  let payload = {
+const addRec = (data,addedData) => {
+  let noIgumPayload = {
     source: data.source,
     exposeAbroad: false,
     closeContact: false,
@@ -109,13 +109,12 @@ const addRec = (data) => {
     otherBreathingSymptNotes: "",
     testTubeBarCode: data.tubeId,
     containerBarCode: data.coolerId,
-    poolingType: 2,
-    poolingComplete: 1,
     tubeBarcode: data.tubeId,
     CoolerBarcode: data.coolerId,
-    poolingSampleBarcode: data.igumId
 
   }
+
+  let payload = {...noIgumPayload,...addedData}
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
   return api.post(`/test/${data.source}?isDraft=false`, payload,createHeaders(token));
