@@ -52,7 +52,9 @@ export const findClient = (id,idType) => {
 const getPatientRoles = () => {
   let currUser = JSON.parse(localStorage.getItem("currUser"))
   let token = currUser.token
-  return api.get(`/lookup/patientRoles`, createHeaders(token));
+  return api.get(`/patientRoles/1`, createHeaders(token));
+
+  // return api.get(`/lookup/patientRoles`, createHeaders(token));
 };
 // const getKupas = () => {
 //   let currUser = JSON.parse(localStorage.getItem("currUser"))
@@ -98,19 +100,20 @@ const addRec = (data,addedData) => {
     source: data.source,
     exposeAbroad: false,
     closeContact: false,
-    otherReason: true,
+    otherReason: false,
     cough: false,
     fever: false,
     otherBreathingSympt: false,
     symptStart: "1900-01-01",
     exposerCountry: "",
     leavingDate: "1900-01-01",
-    otherReasonNotes: "ג",
+    otherReasonNotes: "",
     otherBreathingSymptNotes: "",
     testTubeBarCode: data.tubeId,
     containerBarCode: data.coolerId,
     tubeBarcode: data.tubeId,
-    CoolerBarcode: data.coolerId,
+    coolerBarcode: data.coolerId,
+    poolingSampleBarcode:""
 
   }
 
@@ -195,9 +198,9 @@ function getAllReceptions() {
 
 
 
-// const coordsId = "d8b100bd-036f-46d7-8884-63ed92da6467"
-// const coordsId = "2089d300-e781-4486-b3fa-ed5b7c1d09e5"  //or  רמת י
-const coordsId = "f553205c-8100-487d-96a6-ef38246a610a"  //or  רמת י
+
+// const coordsId = "097567ee-a3cb-4b9e-b615-dab7ef82743c"  //or  רמת י
+const coordsId = "a0ead64f-b1a3-436d-b9c5-50dcd2458a3c"  //or  רמת י
 
 
 

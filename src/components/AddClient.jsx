@@ -24,6 +24,8 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [date, setDate] = useState('')
     const [idType, setIdType] = useState(1)
     const [show, setShow] = useState(false)
+    
+    //change in here between with Igum and without 
     const [withIgum, setWithIgum] = useState(true);
 
     useEffect(() => {
@@ -89,12 +91,14 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         dupClient.source = sourceTmp
         let roleData = await apis.getRole(dupClient.role)
         dupClient.role = roleData
+        // dupClient.rowVersion = null
+        // dupClient.serologyStatus = null
         dupClient.insurer = await apis.getKupa(dupClient.insurer)
         let res = await apis.getCoordination(apis.coordsId)
         dupClient.institute = res.data.institute
         dupClient.reception = res.data
         dupClient.receptionEnteredBy= res.data.createdBy 
-
+        // dupClient.antigenStatus = null 
         
         dupClient = Object.assign(dupClient, addExtraFields(lastUpdate));
         delete dupClient.lastUpdated
