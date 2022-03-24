@@ -5,6 +5,8 @@ import secretKey from 'secret-key';
 import Tubes from './Tubes'
 import FindIdByName from './FindIdByName'
 
+//change in here between with Igum and without 
+const WITH_IGUM = true 
 
 export default function AddClient({ allClienstFromInstitution,totalTests,setTotalTests }) {
     const idInputRef = useRef(null)
@@ -25,8 +27,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [idType, setIdType] = useState(1)
     const [show, setShow] = useState(false)
     
-    //change in here between with Igum and without 
-    const [withIgum, setWithIgum] = useState(true);
+
 
     useEffect(() => {
         setClientId(localStorage.getItem("clientId")) // get the Id if its exists in LocalStorage
@@ -190,9 +191,6 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
     return (
         <div className="otp-wrapper">
-             <div>
-                <button onClick={()=>setWithIgum(!withIgum)}>{withIgum?"with Igum":"No Igum"}</button>
-            </div>
             <p>totalTests: {totalTests}</p>
             <button onClick={()=>{
                 setShow(!show)
@@ -221,7 +219,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
             <p className="err-message">{message}</p>
             {isTask && (
-                <Tubes source={source} withIgum={withIgum} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} clientId={clientId}/>
+                <Tubes source={source} withIgum={WITH_IGUM} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} clientId={clientId}/>
             )}
         </div>
     )
