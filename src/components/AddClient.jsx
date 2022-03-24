@@ -4,18 +4,24 @@ import apis from "../api";
 import secretKey from 'secret-key';
 import Tubes from './Tubes'
 import FindIdByName from './FindIdByName'
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 //change in here between with Igum and without 
 const WITH_IGUM = true 
 
+// const ALL_KUPAS = ["אחר","אחר","מכבי","לאומית","כללית","אחר"]
+
 export default function AddClient({ allClienstFromInstitution,totalTests,setTotalTests }) {
     const idInputRef = useRef(null)
 
-    const [clientId, setClientId] = useState('')
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+    const [clientId, setClientId] = useState('300628583')
+    const [firstName, setFirstName] = useState('לי')
+    const [lastName, setLastName] = useState('יהב')
     const [kupaName, setKupaName] = useState('')
     const [message, setMessage] = useState('');
+    const [kupaId, setKupaId] = useState();
+
     const [idIputFocus, setIdIputFocus] = useState(false);
     
     
@@ -26,11 +32,23 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [date, setDate] = useState('')
     const [idType, setIdType] = useState(1)
     const [show, setShow] = useState(false)
+    const [allKupas, setAllKupas] = useState(false)
+
+
+    const [showNewClientWindow, setShowNewClientWindow] = useState(false)
+    // firstName: "חווה"
+    // idNum: "010532927"
+    // idType: 1
+    // label: "חווה תמיר"
+    // lastName: "תמיר"
     
-
-
-    useEffect(() => {
+    useEffect(async () => {
         setClientId(localStorage.getItem("clientId")) // get the Id if its exists in LocalStorage
+
+        let tempArrKupas = (await apis.getKupas()).data
+        let newKupasArr = tempArrKupas.map(kupa => ({"label": kupa.title, "id":kupa.id, "title" :kupa.title})) 
+        setAllKupas(newKupasArr)
+
     }, [])
     
     
@@ -122,6 +140,71 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         }
         return s + clientId
     }
+
+    // creating a new client that is not exist
+    async function createClient(){
+
+        let defaulId = "000000000"
+        let defaulIdType = 1
+        let res
+        let client
+        let task
+        try {
+            res = await apis.findClient(defaulId, defaulIdType)
+
+            if (res.status === 204) {
+                setMessage("cannot find the data")
+            } else {
+     
+                res.data.firstName = firstName
+                res.data.lastName = lastName
+                res.data.insurer = kupaId
+                res.data.cityDesc ="רמת גן"
+
+                console.log("date")
+                console.log(res.data.lastUpdated + "Z")
+                console.log("date")
+
+                setDate(res.data.lastUpdated + "Z")
+                setMessage("")
+                client = res.data
+            }
+        } catch (err) {
+            console.log(err.status)
+
+            if (err.response && err.response.data) {
+                console.log(err.response.data.message);
+                setMessage(err.response.data.message)
+            } else {
+                setMessage("something went wrong")
+            }
+        }
+        try {
+            if (client) {
+                task = await creatTaskJson(client, res.data.lastUpdated)
+                console.log("object")
+                console.log(task)
+                setGoodMessage("task created")
+                setIsTask(true)
+
+                console.log("object")
+            }
+        } catch (err) {
+            console.log(err)
+            setMessage(err.status)
+        }
+        try {
+            if (task) {
+                let resTask = await apis.createTask(task)
+                console.log(resTask.data)
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        //need to change status
+
+    }
+
     async function findClient() {
         let client
         let task
@@ -212,6 +295,34 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
                 <input type="text" ref={idInputRef} placeholder="passport"  value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
+            <button onClick={()=>{setShowNewClientWindow(!showNewClientWindow)}}>create new client</button>
+            {(showNewClientWindow || true) && (
+                <div>
+                
+
+                    <input type="text" placeholder='firstName' onChange={(e)=>{setFirstName(e.target.value)}} value={firstName} /> <br />
+                    <input type="text" placeholder='lastName' onChange={(e)=>{setLastName(e.target.value)}} value={lastName} /> <br />
+                    
+                    
+                  <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={allKupas}
+                    sx={{ width: 200 }}
+                    renderInput={(params) => <TextField  autoFocus  {...params} label="kupa" />}
+                    
+                    onChange={(event, kupa) => {
+                        setKupaId(kupa.id)
+                                }}
+        
+              />
+
+                    <button onClick={createClient}>A NEW CLIENT</button>
+                </div>
+            )
+
+            }
+
             <p className="no-margin">{firstName}</p>
             <p className="no-margin">{lastName}</p>
             <p className="no-margin">{kupaName}</p>

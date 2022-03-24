@@ -225,7 +225,9 @@ const apis = {
   getClients,
   getInstitutions,
   validateIgum,
-  getAllReceptions
+  getAllReceptions,
+  getKupas
+
 };
 
 export default apis;
