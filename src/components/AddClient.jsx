@@ -10,14 +10,14 @@ import Autocomplete from '@mui/material/Autocomplete';
 //change in here between with Igum and without 
 const WITH_IGUM = true 
 
-// const ALL_KUPAS = ["אחר","אחר","מכבי","לאומית","כללית","אחר"]
+
 
 export default function AddClient({ allClienstFromInstitution,totalTests,setTotalTests }) {
     const idInputRef = useRef(null)
 
-    const [clientId, setClientId] = useState('300628583')
-    const [firstName, setFirstName] = useState('לי')
-    const [lastName, setLastName] = useState('יהב')
+    const [clientId, setClientId] = useState('')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [kupaName, setKupaName] = useState('')
     const [message, setMessage] = useState('');
     const [kupaId, setKupaId] = useState();
@@ -141,9 +141,34 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         return s + clientId
     }
 
+
+    function is_israeli_id_number(idInput) {
+        let id = String(idInput).trim();
+        if (id.length > 9 || isNaN(id)) return false;
+        id = id.length < 9 ? ("00000000" + id).slice(-9) : id;
+            return Array.from(id, Number).reduce((counter, digit, i) => {
+                const step = digit * ((i % 2) + 1);
+                return counter + (step > 9 ? step - 9 : step);
+            }) % 10 === 0;
+    }
+
+
+    function validateFields(){
+        if(!is_israeli_id_number(clientId)){
+            alert("id is not valid")
+            throw 'id is not valid';
+        }
+        if(!firstName || !lastName || !kupaId ){
+            alert("need to feel all fienlds")
+            throw 'need to feel all fienlds';
+            
+        }
+    }
+
     // creating a new client that is not exist
     async function createClient(){
 
+        validateFields()
         let defaulId = "000000000"
         let defaulIdType = 1
         let res
@@ -159,7 +184,12 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
                 res.data.firstName = firstName
                 res.data.lastName = lastName
                 res.data.insurer = kupaId
+          
+                res.data.idNum = clientId
                 res.data.cityDesc ="רמת גן"
+
+                res.data.phoneAreaCode = "2222222"
+                res.data.phone1 = "054"
 
                 console.log("date")
                 console.log(res.data.lastUpdated + "Z")
@@ -197,6 +227,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             if (task) {
                 let resTask = await apis.createTask(task)
                 console.log(resTask.data)
+                setShowNewClientWindow(false)
             }
         } catch (err) {
             console.log(err)
@@ -274,10 +305,9 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
     return (
         <div className="otp-wrapper">
+            <button onClick={()=>{setShowNewClientWindow(!showNewClientWindow)}}>create new client</button>
             <p>totalTests: {totalTests}</p>
-            <button onClick={()=>{
-                setShow(!show)
-            }}>search by name</button>
+
             <FindIdByName allClienstFromInstitution={allClienstFromInstitution} updateIdIputFocus={setIdIputFocus} updateNumId={setClientId} updateIdType={setIdType} />
             <div>
                 <input type="radio" id="id"
@@ -295,8 +325,8 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
                 <input type="text" ref={idInputRef} placeholder="passport"  value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
-            <button onClick={()=>{setShowNewClientWindow(!showNewClientWindow)}}>create new client</button>
-            {(showNewClientWindow || true) && (
+
+            {(showNewClientWindow) && (
                 <div>
                 
 
