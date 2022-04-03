@@ -23,9 +23,9 @@ export default function MonthlySalary() {
     const [errMsg, setErrMsg] = useState("")
 
 
-    const [wageForTime, setWageForTime] = useState()
-    const [wageForTransfer, setWageForTransfer] = useState()
-    const [wageForTests, setWageForTests] = useState()
+    const [wageForTime, setWageForTime] = useState(0)
+    const [wageForTransfer, setWageForTransfer] = useState(0)
+    const [wageForTests, setWageForTests] = useState(0)
 
 
 
@@ -217,7 +217,9 @@ export default function MonthlySalary() {
             <br />
             {wageForTests && <span>money for tests: {wageForTests}</span>}
             <br />
-            {wageForTime && wageForTransfer && wageForTests && <span>total money per month: {(wageForTests + wageForTransfer + wageForTime).toFixed()}</span>} <br />
+            {/* {wageForTime && wageForTransfer && wageForTests && <span>total money per month: {(wageForTests + wageForTransfer + wageForTime).toFixed()}</span>} <br /> */}
+            <span>total money per month: {(wageForTests + wageForTransfer + wageForTime).toFixed()}</span> <br />
+
             <span style={{backgroundColor:"red"}} >{errMsg}</span>
 
 
