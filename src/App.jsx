@@ -36,7 +36,7 @@ function App() {
       res = await api.getClients(api.coordsId)
       clientList = res.data
       console.log(clientList)
-      len = clientList.filter(client => [2, 3, 4].includes(client.status)).length;
+      len = clientList.filter(client => [2, 3, 4].includes(client.pcrStatus)).length;
       setTotalTests(len)
       getAllClientFromTium()
     }

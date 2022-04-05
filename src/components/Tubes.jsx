@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import { useHistory } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 
-const NUM_IN_IGUM = 15
+const NUM_IN_IGUM = 20
 const NUM_IN_COOLER = 100
 
 export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields, clientId ,withIgum}) {

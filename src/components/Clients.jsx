@@ -43,7 +43,7 @@ export default function Clients({ setTotalTests, totalTests }) {
     }, [])
 
     function fliterMe(arr) {
-        return arr.filter(client => [2, 3, 4].includes(client.status));
+        return arr.filter(client => [2, 3, 4].includes(client.pcrStatus));
 
     }
 
@@ -52,7 +52,7 @@ export default function Clients({ setTotalTests, totalTests }) {
         return data
     }
     function getLen() {
-        return clients.filter(client => [2, 3, 4].includes(client.status)).length;
+        return clients.filter(client => [2, 3, 4].includes(client.pcrStatus)).length;
 
 
 
@@ -60,7 +60,7 @@ export default function Clients({ setTotalTests, totalTests }) {
 
     function filterByStatus(statusCodes) {
         // let winList = clients.length > 0 ? clients : clientList
-        let filteredList = clients.filter(client => statusCodes.includes(client.status));
+        let filteredList = clients.filter(client => statusCodes.includes(client.pcrStatus));
         setFilteredClients(filteredList)
         setDoneNum(filteredList.length)
     }
@@ -69,7 +69,7 @@ export default function Clients({ setTotalTests, totalTests }) {
     // check what is the fast rate of samples in an hour
     function checkTestsRateFastTime() {
         let statusCodeGood = [2, 3, 4]
-        let doneClientList = clients.filter(client => statusCodeGood.includes(client.status));
+        let doneClientList = clients.filter(client => statusCodeGood.includes(client.pcrStatus));
         let firstInd = 0
         let secondInd = 59
         let lim = 59
@@ -107,7 +107,7 @@ export default function Clients({ setTotalTests, totalTests }) {
     // get the avg rate of sample to the shift
     function avgRateCalc() {
         let statusCodeGood = [2, 3, 4]
-        let doneClientList = clients.filter(client => statusCodeGood.includes(client.status));
+        let doneClientList = clients.filter(client => statusCodeGood.includes(client.pcrStatus));
 
         let startTime = Date.parse(doneClientList[0].receptionEnteredTime)
         let endTime = Date.parse(doneClientList[doneNum - 1].receptionEnteredTime)
@@ -159,7 +159,6 @@ export default function Clients({ setTotalTests, totalTests }) {
             <div className="rows">
                 <input type="text" placeholder="search" id="filter"
                     name="filter"
-                    type="text"
                     value={filter}
                     onChange={event => setFilter(event.target.value)} />
             </div>

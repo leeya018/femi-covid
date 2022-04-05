@@ -172,6 +172,12 @@ function createTask(payload) {
 
 };
 
+function updateTask(payload){
+  let currUser = JSON.parse(localStorage.getItem("currUser"))
+  let token = currUser.token
+  return api.put(`/tasks/${payload.source}`, payload, createHeaders(token));
+}
+
 
 // function getClients(coordsId) {
 //   let currUser = JSON.parse(localStorage.getItem("currUser"))
@@ -198,12 +204,17 @@ function getAllReceptions() {
 
 
 
+const coordsId = "97b05b18-b355-4ea3-bba1-1ce3ca27f8d3"  //or  רמת י
+// const coordsId = "b809a08f-5a62-469a-b04e-798aee3c0001"  //or  רמת י
+// const coordsId = "7cc7489f-8eed-4ed3-9cd4-5b6b178984c3"  //or  רמת י
 
 
-// const coordsId = "1ab6904a-34ef-4a62-8039-54a878f77514"  //or  רמת י
-// const coordsId = "3e28ffe4-e1ea-4205-b7ef-2786386bb836"  //or  רמת י
-// const coordsId = "8fab14bd-6b2d-49f0-bb2f-9df3fdb5e86c"  //or  רמת י
-const coordsId = "ba2e7328-b394-4cda-ac60-a8572706826c"  //or  רמת י
+
+
+
+
+
+
 
 
 
@@ -228,7 +239,8 @@ const apis = {
   getInstitutions,
   validateIgum,
   getAllReceptions,
-  getKupas
+  getKupas,
+  updateTask
 
 };
 

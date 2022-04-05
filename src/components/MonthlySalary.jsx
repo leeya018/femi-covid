@@ -153,7 +153,7 @@ export default function MonthlySalary() {
     }
 
     function fliterMe(arr) {
-        return arr.filter(client => [2, 3, 4].includes(client.status));
+        return arr.filter(client => [2, 3, 4].includes(client.pcrStatus));
 
     }
 

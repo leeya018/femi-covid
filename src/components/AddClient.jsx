@@ -87,9 +87,11 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             isUrgent: false,
             insurerReferenceId:"",
             requestTime: createCurrDate(),
-            status: 0,
+            // status: 0,
+            pcrStatus: 0,
             supplierCode: "",
             supplierDesc: "",
+
            
             receptionEnteredTime: createCurrDate(),
         }
@@ -166,75 +168,88 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     }
 
     // creating a new client that is not exist
-    async function createClient(){
+    // async function createClient(){
 
-        validateFields()
-        let defaulId = "000000000"
-        let defaulIdType = 1
-        let res
-        let client
-        let task
-        try {
-            res = await apis.findClient(defaulId, defaulIdType)
+    //     validateFields()
+    //     let defaulId = "000000000"
+    //     let defaulIdType = 1
+    //     let res
+    //     let client
+    //     let task
+    //     try {
+    //         res = await apis.findClient(defaulId, defaulIdType)
 
-            if (res.status === 204) {
-                setMessage("cannot find the data")
-            } else {
+    //         if (res.status === 204) {
+    //             setMessage("cannot find the data")
+    //         } else {
      
-                res.data.firstName = firstName
-                res.data.lastName = lastName
-                res.data.insurer = kupaId
+    //             res.data.firstName = firstName
+    //             res.data.lastName = lastName
+    //             res.data.insurer = kupaId // this where I need to do a json 
           
-                res.data.idNum = clientId
-                res.data.cityDesc ="רמת גן"
+    //             res.data.idNum = clientId
+    //             res.data.cityDesc ="רמת גן"
 
-                res.data.phoneAreaCode = "2222222"
-                res.data.phone1 = "054"
+    //             res.data.phoneAreaCode = "+1"
+    //             res.data.phone1 = "054"
 
-                console.log("date")
-                console.log(res.data.lastUpdated + "Z")
-                console.log("date")
+    //             console.log("date")
+    //             console.log(res.data.lastUpdated + "Z")
+    //             console.log("date")
 
-                setDate(res.data.lastUpdated + "Z")
-                setMessage("")
-                client = res.data
-            }
-        } catch (err) {
-            console.log(err.status)
+    //             setDate(res.data.lastUpdated + "Z")
+    //             setMessage("")
+    //             client = res.data
+    //         }
+    //     } catch (err) {
+    //         console.log(err.status)
 
-            if (err.response && err.response.data) {
-                console.log(err.response.data.message);
-                setMessage(err.response.data.message)
-            } else {
-                setMessage("something went wrong")
-            }
-        }
-        try {
-            if (client) {
-                task = await creatTaskJson(client, res.data.lastUpdated)
-                console.log("object")
-                console.log(task)
-                setGoodMessage("task created")
-                setIsTask(true)
+    //         if (err.response && err.response.data) {
+    //             console.log(err.response.data.message);
+    //             setMessage(err.response.data.message)
+    //         } else {
+    //             setMessage("something went wrong")
+    //         }
+    //     }
+    //     try {
+    //         if (client) {
+    //             task = await creatTaskJson(client, res.data.lastUpdated)
+    //             console.log("object")
+    //             console.log(task)
+    //             setGoodMessage("task created")
+    //             setIsTask(true)
 
-                console.log("object")
-            }
-        } catch (err) {
-            console.log(err)
-            setMessage(err.status)
-        }
-        try {
-            if (task) {
-                let resTask = await apis.createTask(task)
-                console.log(resTask.data)
-                setShowNewClientWindow(false)
-            }
-        } catch (err) {
-            console.log(err)
-        }
-        //need to change status
+    //             console.log("object")
+    //         }
+    //     } catch (err) {
+    //         console.log(err)
+    //         setMessage(err.status)
+    //     }
+    //     let resTask
+    //     try {
+    //         if (task) {
+    //              resTask = await apis.createTask(task)
+    //             console.log(resTask.data)
+    //             try {
+    //                 if (resTask) {
+    //                     task.pcrStatus = 1
+    //                     let a = await apis.updateTask(apis.coordsId,task)
+                        
+    //                     setShowNewClientWindow(false)
+    //                 }
+    //             } catch (err) {
+    //                 console.log(err)
+    //             }
+    //             setShowNewClientWindow(false)
+    //         }
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
 
-    }
+        
+    //     //need to change status
+
+    // }
 
     async function findClient() {
         let client
@@ -273,7 +288,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             }
         }
         try {
-            if (client) {
+            if (client) { 
                 task = await creatTaskJson(client, res.data.lastUpdated)
                 console.log("object")
                 console.log(task)
@@ -286,10 +301,32 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             console.log(err)
             setMessage(err.status)
         }
+        let resTask
         try {
             if (task) {
-                let resTask = await apis.createTask(task)
+                 resTask = await apis.createTask(task)
                 console.log(resTask.data)
+                try {
+                    if (resTask) {
+                        task.pcrStatus = 1
+                        // from 5.4.22
+                        task.antigenStatus = null
+                        task.fastPcrStatus = 0
+                        task.latinFirstName = null
+                        task.latinLastName = null
+                        task.orderItemIds = null
+                        task.passport = null
+                        task.rowVersion = null
+                        task.serologyStatus = null
+                        task.unacurateInformationFeedback = null
+                        let a = await apis.updateTask(task)
+                        
+                        setShowNewClientWindow(false)
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+                // setShowNewClientWindow(false)
             }
         } catch (err) {
             console.log(err)
@@ -347,7 +384,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         
               />
 
-                    <button onClick={createClient}>A NEW CLIENT</button>
+                    {/* <button onClick={createClient}>A NEW CLIENT</button> */}
                 </div>
             )
 
