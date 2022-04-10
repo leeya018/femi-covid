@@ -75,8 +75,8 @@ export default function MonthlySalary() {
         let monthStr = getMonthStr()
         let payload = {
             userid: WORKER_ID,
-            start: `01-${monthStr}-2022`,
-            end: `28-${monthStr}-2022`,
+            start: `01-${monthStr}-${year}`,
+            end: `${lastday(year,month)}-${monthStr}-${year}`,
             ismanager: 'False',
             role_code: 14
         }
@@ -190,6 +190,10 @@ export default function MonthlySalary() {
         setWageForTests(amountOfTests * RATE_PER_TEST)
     }
 
+     function lastday(y,m){
+        return  new Date(y, m , 0).getDate();
+    }
+
     async function calc(){
         setErrMsg("")
         if (localStorage.getItem("isufitToken") == null) {
@@ -207,8 +211,8 @@ export default function MonthlySalary() {
 
         <div>
             <h1>Monthly Salary</h1>
-            <label htmlFor="">month</label><input type="number" value={month} onChange={e=>setMonth(parseInt(e.target.value))}/><br />
-            <label htmlFor="">year</label><input type="number" value={year} onChange={e=>setYear(parseInt(e.target.value))}/><br />
+            <label htmlFor="">month</label><input type="number" value={month} max="12" min="1" onChange={e=>setMonth(parseInt(e.target.value))}/><br />
+            <label htmlFor="">year</label><input type="number" value={year} max="2022" min="2020" onChange={e=>setYear(parseInt(e.target.value))}/><br />
 
             <button onClick={calc}>calc</button><br />
             {wageForTime && <span>money for hour: {wageForTime.toFixed()}</span>}

@@ -204,9 +204,11 @@ function getAllReceptions() {
 
 
 
-const coordsId = "97b05b18-b355-4ea3-bba1-1ce3ca27f8d3"  //or  רמת י
-// const coordsId = "b809a08f-5a62-469a-b04e-798aee3c0001"  //or  רמת י
-// const coordsId = "7cc7489f-8eed-4ed3-9cd4-5b6b178984c3"  //or  רמת י
+
+// const coordsId = "c24859e6-4817-45a5-b7dc-cc3accb63789"  //or  רמת י
+// const coordsId = "1a36844e-6180-4d7e-afb0-cc82161f72bf"  //or  רמת י
+const coordsId = "9cfd3a6d-99b8-4b41-95b7-cfaf62b486cb"  //or  רמת י
+
 
 
 
