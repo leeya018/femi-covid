@@ -2,13 +2,14 @@ import './otp.css';
 import apis from "../api";
 import React, { useEffect, useState } from 'react'
 import Client from "./Client";
+import ShowMissingClients from "./ShowMissingClients";
 import { useHistory } from "react-router-dom";
 // const coordsId = "de84c671-f59f-40d2-86f5-77dadd39d46a"  //oleg
 
 // what are kind of clients are those 
 // status 1,0 - not done
 // status 4,3,2 - inside system 
-export default function Clients({ setTotalTests, totalTests }) {
+export default function Clients({ setTotalTests, totalTests,allClienstFromInstitution }) {
     const [clients, setClients] = useState([])
     const [filteredClients, setFilteredClients] = useState([])
     const [activeBtn, setActiveBtn] = useState(true)
@@ -138,7 +139,7 @@ export default function Clients({ setTotalTests, totalTests }) {
     return (
         <div>
             <div>
-          
+            <ShowMissingClients clientsAfterTest={filteredClients} allClienstFromInstitution={allClienstFromInstitution} />
                 <button  onClick={e => history.push("/monthlySalary")}> show monthlySalary</button><br />
                 <button onClick={calcTimes}> calc times </button>
                 <label>fastest time: </label><p>{bestTime} per hour </p>

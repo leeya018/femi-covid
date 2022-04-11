@@ -108,7 +108,7 @@ function App() {
             phone={phone} />
         </Route>
         <Route path="/clients">
-          <Clients setTotalTests={setTotalTests} totalTests={totalTests} />
+          <Clients setTotalTests={setTotalTests} totalTests={totalTests} allClienstFromInstitution={allClienstFromInstitution}/>
         </Route>
 
         <Route path="/monthlySalary">
