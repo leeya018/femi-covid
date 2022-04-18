@@ -1,4 +1,6 @@
-import React, { useState } from 'react'
+import React, {useState } from 'react'
+import { useHistory } from "react-router-dom";
+import jwt from 'jsonwebtoken'
 import apiIsutit from '../apiIsutit'
 import api from '../api'
 
@@ -27,6 +29,7 @@ export default function MonthlySalary() {
     const [wageForTransfer, setWageForTransfer] = useState(0)
     const [wageForTests, setWageForTests] = useState(0)
 
+    let history = useHistory();
 
 
 
@@ -38,6 +41,9 @@ export default function MonthlySalary() {
         apiIsutit.checkWorkerLogin(payload).then((res) => {
             if (res.status !== 200) {
                 console.log("error")
+            }
+            if (res.status == 401) {
+                history.pushState('/login')
             }
             else { // good
                 console.log(res.status)
@@ -196,9 +202,15 @@ export default function MonthlySalary() {
 
     async function calc(){
         setErrMsg("")
+        let expDate,jwtToken
         if (localStorage.getItem("isufitToken") == null) {
             await login()
         }
+         jwtToken = JSON.parse(localStorage.getItem("currUser")).token 
+         expDate = jwt.decode(jwtToken).exp
+         if (expDate < (new Date().getTime() + 1) / 1000) {
+            history.push("/")
+          }
 
         await calcMoneyForHours()
         await calcBonus()
