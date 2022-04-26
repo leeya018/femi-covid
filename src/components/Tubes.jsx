@@ -5,7 +5,7 @@ import { Redirect } from 'react-router';
 import { useHistory } from "react-router-dom";
 import { createGlobalStyle } from 'styled-components';
 
-const NUM_IN_IGUM = 20
+const NUM_IN_IGUM = 15
 const NUM_IN_COOLER = 100
 
 export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields, clientId ,withIgum}) {
@@ -145,7 +145,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     }
 
     function updateLocalStorage() {
-        if (totalTests % NUM_IN_IGUM == 0) {
+        if ((totalTests % 100) % NUM_IN_IGUM == 0) {
             localStorage.setItem('igumId', '')
         }
         if (totalTests % NUM_IN_COOLER == 0) {
@@ -164,6 +164,12 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         localStorage.setItem("coolerId", e.target.value)
     }
 
+    function resetIgumNum(){
+        setIgumId("")
+        localStorage.setItem("igumId","")
+        setIsDisabledIgum(false)
+    }
+
 
     function handleChangeIgum(e) {
         setMessage("")
@@ -174,7 +180,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     return (
         <div>
            
-
+           <button onClick={resetIgumNum}>reset igum</button>
             <div className="cols">
                 <input type="text" autoFocus placeholder="tubeId" maxLength="9" onChange={e => {
                     setTubeId(e.target.value)
@@ -187,7 +193,8 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                 </div>
                 {withIgum && <div className="no-margin rows">
                     <input className="no-margin" type="text" placeholder="igumId" disabled={isDisabledIgum} maxLength="9" onChange={handleChangeIgum} value={igumId} />
-                    <p className="no-margin">({totalTests % NUM_IN_IGUM})</p>
+                    <p className="no-margin">({totalTests % NUM_IN_IGUM})</p><br />
+                
                 </div>}
                 <button onClick={addRec}>add client</button>
                 <p className="err-message">{message}</p>
