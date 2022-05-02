@@ -38,7 +38,8 @@ function App() {
       console.log(clientList)
       len = clientList.filter(client => [2, 3, 4].includes(client.pcrStatus)).length;
       setTotalTests(len)
-      getAllClientFromTium()
+      getAllClientFromTium() // all tiums
+      // getAllClientsFromOneTium()  // one tiums 
     }
     console.log("app useEfect")
   }, [])
@@ -71,11 +72,27 @@ function App() {
       setAllClienstFromInstitution(arrOfAllClientsFromInst)
     })
 
-
-
     console.log("I am out");
   }
 
+  async function getAllClientsFromOneTium(){
+    let SIUDIT_GAN_BAIR_COORDS = "0c78605c-2908-4b74-9ae9-e7050824595e"
+    
+    let institutionName = (await api.getCoordination(api.coordsId)).data.institute.name
+    setInstName(institutionName)
+
+      let clientsFull = (await api.getClients(SIUDIT_GAN_BAIR_COORDS)).data
+      let clients = clientsFull.map(function (client) {
+        let { firstName, lastName, idType, idNum } = client
+        return { firstName, lastName, idType, idNum, label: firstName + ' ' + lastName }
+      })
+
+    
+      setAllClienstFromInstitution(clients)
+  }
+
+  
+  // 0c78605c-2908-4b74-9ae9-e7050824595e  -  גן בעיר סיעודית
 
   const childProps = {
     idNum,
