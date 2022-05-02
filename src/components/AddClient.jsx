@@ -10,7 +10,19 @@ import Autocomplete from '@mui/material/Autocomplete';
 //change in here between with Igum and without 
 const WITH_IGUM = true 
 
+const roles =[
+    {   
+        id: 4,
+        title: "שוהה במוסד",
+        label: "שוהה במוסד"
+    },
+    {
+        id: 5,
+        title: "צוות מטפל",
+        label: "צוות מטפל"
 
+    },
+]
 
 export default function AddClient({ allClienstFromInstitution,totalTests,setTotalTests }) {
     const idInputRef = useRef(null)
@@ -34,6 +46,13 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [show, setShow] = useState(false)
     const [allKupas, setAllKupas] = useState(false)
 
+    const [roleObj, setRoleObj] = useState("")
+
+    const [phoneAreaCode, setPhoneAreaCode] = useState("")
+    const [phone1, setPhone1] = useState("")
+
+
+ 
 
     const [showNewClientWindow, setShowNewClientWindow] = useState(false)
     // firstName: "חווה"
@@ -50,6 +69,12 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         setAllKupas(newKupasArr)
 
     }, [])
+    
+    useEffect(() => {
+        console.log(roleObj)
+    
+      
+    }, [roleObj])
     
     
     
@@ -110,8 +135,13 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         let sourceTmp = key.iv
         setSource(sourceTmp)
         dupClient.source = sourceTmp
-        let roleData = await apis.getRole(dupClient.role)
-        dupClient.role = roleData
+
+        let roleData
+        roleData = await apis.getRole(dupClient.role)
+        dupClient.role = showNewClientWindow? roleObj : roleData
+        if(showNewClientWindow) dupClient.phone1 = phone1
+        if(showNewClientWindow) dupClient.phoneAreaCode = phoneAreaCode
+
         // dupClient.rowVersion = null
         // dupClient.serologyStatus = null
         dupClient.insurer = await apis.getKupa(dupClient.insurer)
@@ -160,7 +190,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             alert("id is not valid")
             throw 'id is not valid';
         }
-        if(!firstName || !lastName || !kupaId ){
+        if(!firstName || !lastName || !kupaId || !phoneAreaCode || !phone1 || Object.keys(roleObj).length === 0 ){
             alert("need to feel all fienlds")
             throw 'need to feel all fienlds';
             
@@ -168,90 +198,94 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     }
 
     // creating a new client that is not exist
-    // async function createClient(){
+    async function createClient(){
+        
+        validateFields()
+        let defaulId = "000000000"
+        let defaulIdType = 1
+        let res
+        let client
+        let task
+        try {
+            res = await apis.findClient(defaulId, defaulIdType)
 
-    //     validateFields()
-    //     let defaulId = "000000000"
-    //     let defaulIdType = 1
-    //     let res
-    //     let client
-    //     let task
-    //     try {
-    //         res = await apis.findClient(defaulId, defaulIdType)
-
-    //         if (res.status === 204) {
-    //             setMessage("cannot find the data")
-    //         } else {
+            if (res.status === 204) {
+                setMessage("cannot find the data")
+            } else {
      
-    //             res.data.firstName = firstName
-    //             res.data.lastName = lastName
-    //             res.data.insurer = kupaId // this where I need to do a json 
+                res.data.firstName = firstName
+                res.data.lastName = lastName
+                res.data.insurer = kupaId // this where I need to do a json 
           
-    //             res.data.idNum = clientId
-    //             res.data.cityDesc ="רמת גן"
+                res.data.idNum = clientId
+                res.data.cityDesc ="רמת גן"
 
-    //             res.data.phoneAreaCode = "+1"
-    //             res.data.phone1 = "054"
+                res.data.phoneAreaCode = "+1"
+                res.data.phone1 = "054"
 
-    //             console.log("date")
-    //             console.log(res.data.lastUpdated + "Z")
-    //             console.log("date")
+                console.log("date")
+                console.log(res.data.lastUpdated + "Z")
+                console.log("date")
 
-    //             setDate(res.data.lastUpdated + "Z")
-    //             setMessage("")
-    //             client = res.data
-    //         }
-    //     } catch (err) {
-    //         console.log(err.status)
+                setDate(res.data.lastUpdated + "Z")
+                setMessage("")
+                client = res.data
+            }
+        } catch (err) {
+            console.log(err.status)
 
-    //         if (err.response && err.response.data) {
-    //             console.log(err.response.data.message);
-    //             setMessage(err.response.data.message)
-    //         } else {
-    //             setMessage("something went wrong")
-    //         }
-    //     }
-    //     try {
-    //         if (client) {
-    //             task = await creatTaskJson(client, res.data.lastUpdated)
-    //             console.log("object")
-    //             console.log(task)
-    //             setGoodMessage("task created")
-    //             setIsTask(true)
+            if (err.response && err.response.data) {
+                console.log(err.response.data.message);
+                setMessage(err.response.data.message)
+            } else {
+                setMessage("something went wrong")
+            }
+        }
+        try {
+            //CREATE A NEW ONE 005347562
+            if (client) {
+                task = await creatTaskJson(client, res.data.lastUpdated)
+                console.log("object")
+                console.log(task)
+                setGoodMessage("task created")
+                setIsTask(true)
 
-    //             console.log("object")
-    //         }
-    //     } catch (err) {
-    //         console.log(err)
-    //         setMessage(err.status)
-    //     }
-    //     let resTask
-    //     try {
-    //         if (task) {
-    //              resTask = await apis.createTask(task)
-    //             console.log(resTask.data)
-    //             try {
-    //                 if (resTask) {
-    //                     task.pcrStatus = 1
-    //                     let a = await apis.updateTask(apis.coordsId,task)
+                console.log("object")
+            }
+        } catch (err) {
+            console.log(err)
+            setMessage(err.status)
+        }
+        let resTask
+        try {
+            if (task) {
+                 resTask = await apis.createTask(task)
+                console.log(resTask.data)
+                try {
+                    if (resTask) {
+                        task.pcrStatus = 1
+                        let a = await apis.updateTask(task)
                         
-    //                     setShowNewClientWindow(false)
-    //                 }
-    //             } catch (err) {
-    //                 console.log(err)
-    //             }
-    //             setShowNewClientWindow(false)
-    //         }
-    //     } catch (err) {
-    //         console.log(err)
-    //     }
+                        setShowNewClientWindow(false)
+                    }
+                } catch (err) {
+                    console.log(err)
+                }
+  
+            }
+        } catch (err) {
+            console.log(err)
+        }
 
         
-    //     //need to change status
+        //need to change status
 
-    // }
+    }
 
+    /// DO NOT TOUCH 
     async function findClient() {
+    setShowNewClientWindow(false)
+
         let client
         let task
         let res
@@ -320,8 +354,8 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
                         task.serologyStatus = null
                         task.unacurateInformationFeedback = null
                         let a = await apis.updateTask(task)
-                        
-                        setShowNewClientWindow(false)
+                        console.log(a)
+                        // setShowNewClientWindow(false)
                     }
                 } catch (err) {
                     console.log(err)
@@ -380,11 +414,33 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
                     
                     onChange={(event, kupa) => {
                         setKupaId(kupa.id)
+                        setKupaName(kupa.label)
                                 }}
         
               />
 
-                    {/* <button onClick={createClient}>A NEW CLIENT</button> */}
+                <Autocomplete
+                    disablePortal
+                    id="combo-box-demo"
+                    options={roles}
+                    sx={{ width: 200 }}
+                    renderInput={(params) => <TextField  autoFocus  {...params} label="role" />}
+                    
+                    onChange={(event, role) => {
+                        let roleDup = {...role}
+                        delete roleDup.label
+                        setRoleObj(roleDup)
+
+                                }}
+        
+              />
+            
+
+              <input type="text" placeholder='phoneAreaCode' maxLength="3" minLength="2" onChange={e => setPhoneAreaCode(e.target.value)} value={phoneAreaCode} /> <br />
+              <input type="text" placeholder='phone1' maxLength="7" minLength="7" onChange={e => setPhone1(e.target.value)} value={phone1} /> <br />
+              
+
+                    <button onClick={createClient}>A NEW CLIENT</button>
                 </div>
             )
 
@@ -393,6 +449,11 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             <p className="no-margin">{firstName}</p>
             <p className="no-margin">{lastName}</p>
             <p className="no-margin">{kupaName}</p>
+            <p className="no-margin">{roleObj.title}</p>
+            <p className="no-margin">{phoneAreaCode}</p>
+            <p className="no-margin">{phone1}</p>
+
+
             <p className="success-message">{goodMessage}</p>
 
             <p className="err-message">{message}</p>
