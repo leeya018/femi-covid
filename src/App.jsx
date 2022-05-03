@@ -13,6 +13,7 @@ import MonthlySalary from "./components/MonthlySalary";
 import api from "./api";
 import Wage from "./components/Wage";
 import Xlsx from "./components/Xlsx";
+import CoodlersPickup from "./components/CoodlersPickup";
 
 
 function App() {
@@ -117,6 +118,12 @@ function App() {
           >
             <Wage />
           </Route>
+
+          <Route path="/coodlersPickup"
+          >
+            <CoodlersPickup />
+          </Route>
+
 
           <Route path="/login">
             <Login

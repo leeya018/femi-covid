@@ -150,6 +150,9 @@ export default function Clients({ setTotalTests, totalTests, allClienstFromInsti
             <div>
                 <button onClick={e => history.push("/wage")} >wage calc</button>
             </div>
+            <div>
+                <button onClick={e => history.push("/coodlersPickup")} >coolers pickup</button>
+            </div>
 
             <button onClick={e => history.push("/dashboard")} autoFocus>+</button>
             <div className="rows">
