@@ -16,6 +16,7 @@ import MonthlySalary from "./components/MonthlySalary";
 import api from "./api";
 import Wage from "./components/Wage";
 
+import Xlsx from "./components/Xlsx";
 
 
 import CreateTium from "./components/CreateTium";
@@ -28,6 +29,8 @@ function App() {
   const [totalTests, setTotalTests] = useState(0)
   const [instName, setInstName] = useState('')
   const [allClienstFromInstitution, setAllClienstFromInstitution] = useState([])
+  const [isXlsz, setIsXlsz] = useState(false);
+
 
   useEffect(async () => {
     let res, clientList, len
@@ -38,7 +41,9 @@ function App() {
       console.log(clientList)
       len = clientList.filter(client => [2, 3, 4].includes(client.pcrStatus)).length;
       setTotalTests(len)
-      getAllClientFromTium() // all tiums
+      if (!isXlsz) {
+        getAllClientFromTium() // all tiums
+      } // else its gonna take from excel
       // getAllClientsFromOneTium()  // one tiums 
     }
     console.log("app useEfect")
@@ -68,30 +73,30 @@ function App() {
         return this[c.idNum] ? false : this[c.idNum] = true;
       }, {});
 
-    
+
       setAllClienstFromInstitution(arrOfAllClientsFromInst)
     })
 
     console.log("I am out");
   }
 
-  async function getAllClientsFromOneTium(){
+  async function getAllClientsFromOneTium() {
     let SIUDIT_GAN_BAIR_COORDS = "0c78605c-2908-4b74-9ae9-e7050824595e"
-    
+
     let institutionName = (await api.getCoordination(api.coordsId)).data.institute.name
     setInstName(institutionName)
 
-      let clientsFull = (await api.getClients(SIUDIT_GAN_BAIR_COORDS)).data
-      let clients = clientsFull.map(function (client) {
-        let { firstName, lastName, idType, idNum } = client
-        return { firstName, lastName, idType, idNum, label: firstName + ' ' + lastName }
-      })
+    let clientsFull = (await api.getClients(SIUDIT_GAN_BAIR_COORDS)).data
+    let clients = clientsFull.map(function (client) {
+      let { firstName, lastName, idType, idNum } = client
+      return { firstName, lastName, idType, idNum, label: firstName + ' ' + lastName }
+    })
 
-    
-      setAllClienstFromInstitution(clients)
+
+    setAllClienstFromInstitution(clients)
   }
 
-  
+
   // 0c78605c-2908-4b74-9ae9-e7050824595e  -  גן בעיר סיעודית
 
   const childProps = {
@@ -102,44 +107,49 @@ function App() {
   };
 
   return (
+    <div>
+     <Xlsx updateAllClienstFromInstitution={setAllClienstFromInstitution} updateIsXlsz={setIsXlsz}></Xlsx>
+     
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />}
+          </Route>
 
-    <Router>
-      <Switch>
-        <Route exact path="/">
-          {loggedIn ? <Redirect to="/dashboard" /> : <Otp  {...childProps} />}
-        </Route>
+          <Route path="/dashboard"
+          >
+            <Dashbaord instName={instName} allClienstFromInstitution={allClienstFromInstitution} totalTests={totalTests} setTotalTests={setTotalTests} />
+          </Route>
 
-        <Route path="/dashboard"
-        >
-          <Dashbaord instName={instName} allClienstFromInstitution={allClienstFromInstitution} totalTests={totalTests} setTotalTests={setTotalTests} />
-        </Route>
+          <Route path="/wage"
+          >
+            <Wage />
+          </Route>
 
-        <Route path="/wage"
-        >
-          <Wage />
-        </Route>
+          <Route path="/login">
+            <Login
+              idNum={idNum}
+              phone={phone} />
+          </Route>
+          <Route path="/clients">
+            <Clients setTotalTests={setTotalTests} totalTests={totalTests} allClienstFromInstitution={allClienstFromInstitution} />
+          </Route>
 
-        <Route path="/login">
-          <Login
-            idNum={idNum}
-            phone={phone} />
-        </Route>
-        <Route path="/clients">
-          <Clients setTotalTests={setTotalTests} totalTests={totalTests} allClienstFromInstitution={allClienstFromInstitution}/>
-        </Route>
+          <Route path="/monthlySalary">
+            <MonthlySalary />
+          </Route>
 
-        <Route path="/monthlySalary">
-          <MonthlySalary />
-        </Route>
 
-        
 
-        {/* <Route path="/tium">
+          {/* <Route path="/tium">
           <CreateTium />
         </Route> */}
 
-      </Switch>
-    </Router>
+        </Switch>
+      </Router>
+
+    
+    </div>
   );
 }
 

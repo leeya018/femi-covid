@@ -7,11 +7,8 @@ import { useHistory } from "react-router-dom";
 
 
 
-export default function Dashbaord({allClienstFromInstitution,instName ,totalTests, setTotalTests }) {
+export default function Dashbaord({ allClienstFromInstitution, instName, totalTests, setTotalTests }) {
   let history = useHistory();
-
-
-
 
 
   useEffect(async () => {
@@ -29,11 +26,9 @@ export default function Dashbaord({allClienstFromInstitution,instName ,totalTest
     // setInstName(res.data.institute.name)
 
     console.log("dash useEfect")
-    
-    
+
+
   }, [])
-
-
 
 
 
