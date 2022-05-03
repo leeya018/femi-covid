@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, { useState } from 'react'
 import { useHistory } from "react-router-dom";
 import jwt from 'jsonwebtoken'
 import apiIsutit from '../apiIsutit'
@@ -10,8 +10,6 @@ const WORKER_ID = '8184'
 const HOUR_RATE = 29
 const TRANSFER_RATE = 40
 const RATE_PER_TEST = 3
-
-
 
 
 
@@ -50,7 +48,6 @@ export default function MonthlySalary() {
                 console.log(res.data)
                 let token = res.data.bearer
                 localStorage.setItem("isufitToken", token)
-
             }
         })
     }
@@ -82,41 +79,41 @@ export default function MonthlySalary() {
         let payload = {
             userid: WORKER_ID,
             start: `01-${monthStr}-${year}`,
-            end: `${lastday(year,month)}-${monthStr}-${year}`,
+            end: `${lastday(year, month)}-${monthStr}-${year}`,
             ismanager: 'False',
             role_code: 14
         }
 
         return new Promise((resolve, reject) => {
-          
-                apiIsutit.getWorkerAttendance(payload).then(async res => {
-                    if (res.status == 200) {
-                        setErrMsg("")
-                        console.log(res.status)
-                        console.log("GetWorkerAttendance")
-                        console.log(res.data)
-                        let totalTimeInMinutes = sumAllHoursOfWork(res.data)
-                        let TotalTimeInHours = totalTimeInMinutes / 60
-                        // alert(totalTime)
-                        resolve(TotalTimeInHours)
-                   
-                    }
 
-            }).catch(async err=>{
-                if(err.response.status == 401){
+            apiIsutit.getWorkerAttendance(payload).then(async res => {
+                if (res.status == 200) {
+                    setErrMsg("")
+                    console.log(res.status)
+                    console.log("GetWorkerAttendance")
+                    console.log(res.data)
+                    let totalTimeInMinutes = sumAllHoursOfWork(res.data)
+                    let TotalTimeInHours = totalTimeInMinutes / 60
+                    // alert(totalTime)
+                    resolve(TotalTimeInHours)
+
+                }
+
+            }).catch(async err => {
+                if (err.response.status == 401) {
                     await login()
                     await getWorkerAttendance()
-                    
-                }else{
+
+                } else {
                     reject(-1)
                 }
-                setErrMsg("status: " +  err.response.status + ' ' + err.message)
+                setErrMsg("status: " + err.response.status + ' ' + err.message)
             })
         })
     }
 
     async function calcMoneyForHours() {
- 
+
         let timeInHours = await getWorkerAttendance()
         setWageForTime(timeInHours * HOUR_RATE)
 
@@ -160,7 +157,6 @@ export default function MonthlySalary() {
 
     function fliterMe(arr) {
         return arr.filter(client => [2, 3, 4].includes(client.pcrStatus));
-
     }
 
     async function getValidClients(coordsId) {
@@ -174,9 +170,6 @@ export default function MonthlySalary() {
             let validClients = await getValidClients(rec.id)
             return (await countClients) + validClients.length
         }, 0)
-
-
-
     }
 
     async function calcBonus() {
@@ -196,26 +189,24 @@ export default function MonthlySalary() {
         setWageForTests(amountOfTests * RATE_PER_TEST)
     }
 
-     function lastday(y,m){
-        return  new Date(y, m , 0).getDate();
+    function lastday(y, m) {
+        return new Date(y, m, 0).getDate();
     }
 
-    async function calc(){
+    async function calc() {
         setErrMsg("")
-        let expDate,jwtToken
+        let expDate, jwtToken
         if (localStorage.getItem("isufitToken") == null) {
             await login()
         }
-         jwtToken = JSON.parse(localStorage.getItem("currUser")).token 
-         expDate = jwt.decode(jwtToken).exp
-         if (expDate < (new Date().getTime() + 1) / 1000) {
+        jwtToken = JSON.parse(localStorage.getItem("currUser")).token
+        expDate = jwt.decode(jwtToken).exp
+        if (expDate < (new Date().getTime() + 1) / 1000) {
             history.push("/")
-          }
+        }
 
         await calcMoneyForHours()
         await calcBonus()
-        
-        
     }
 
 
@@ -223,8 +214,8 @@ export default function MonthlySalary() {
 
         <div>
             <h1>Monthly Salary</h1>
-            <label htmlFor="">month</label><input type="number" value={month} max="12" min="1" onChange={e=>setMonth(parseInt(e.target.value))}/><br />
-            <label htmlFor="">year</label><input type="number" value={year} max="2022" min="2020" onChange={e=>setYear(parseInt(e.target.value))}/><br />
+            <label htmlFor="">month</label><input type="number" value={month} max="12" min="1" onChange={e => setMonth(parseInt(e.target.value))} /><br />
+            <label htmlFor="">year</label><input type="number" value={year} max="2022" min="2020" onChange={e => setYear(parseInt(e.target.value))} /><br />
 
             <button onClick={calc}>calc</button><br />
             {wageForTime && <span>money for hour: {wageForTime.toFixed()}</span>}
@@ -236,7 +227,7 @@ export default function MonthlySalary() {
             {/* {wageForTime && wageForTransfer && wageForTests && <span>total money per month: {(wageForTests + wageForTransfer + wageForTime).toFixed()}</span>} <br /> */}
             <span>total money per month: {(wageForTests + wageForTransfer + wageForTime).toFixed()}</span> <br />
 
-            <span style={{backgroundColor:"red"}} >{errMsg}</span>
+            <span style={{ backgroundColor: "red" }} >{errMsg}</span>
 
 
         </div>

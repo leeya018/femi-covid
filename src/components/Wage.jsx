@@ -17,12 +17,10 @@ export default function Wage() {
 
     let history = useHistory();
 
-
-
     useEffect(() => {
         let total = instBonus + sampleBonus + hourWage
         setSum(total)
-        setAvgRatePerHour((total/hours).toFixed(0))
+        setAvgRatePerHour((total / hours).toFixed(0))
     }, [instBonus, sampleBonus, hourWage]);
 
 
@@ -30,13 +28,14 @@ export default function Wage() {
         let numInts = e.target.value || 1
         let moves = numInts - 1
         setInstBonus(moves * BONUS_PER_MOVE)
-
     }
+
 
     function updateSamplesBonus(e) {
-        let samples = e.target.value || 0 
+        let samples = e.target.value || 0
         setSampleBonus(samples * SAMPLE_RATE)
     }
+
 
     function updateHoursBonus(e) {
         let hours = e.target.value || 0
@@ -50,7 +49,6 @@ export default function Wage() {
         <h2>daily wage:</h2>
         <label>inst num<input type="num" onChange={updateBonusInst} /></label><br />
         <label>amount samples<input type="num" onChange={updateSamplesBonus} /></label><br />
-
         <label>hours<input type="num" onChange={updateHoursBonus} /></label><br />
         <p>wage : {sum} shekels</p>
         <p>avg wage per hour : {avgRatePerHour || 0} shekels</p>

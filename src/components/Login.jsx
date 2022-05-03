@@ -1,4 +1,3 @@
-
 import './otp.css';
 import apis from "../api";
 import React, { useState } from 'react';
@@ -20,7 +19,7 @@ export default function Login({ idNum, phone }) {
       if (res.status !== 200) {
         setMessage("error")
       }
-      else{
+      else {
         setMessage("")
         localStorage.setItem("currUser", JSON.stringify(res.data))
         history.push("/dashboard");

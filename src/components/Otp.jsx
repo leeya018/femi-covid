@@ -40,7 +40,7 @@ export default function Otp({
         </label>
         <label>
           <p>phone</p>
-          <input type="text"  placeholder="phone" onChange={e => setPhone(e.target.value)} />
+          <input type="text" placeholder="phone" onChange={e => setPhone(e.target.value)} />
         </label>
         <div>
           <button onClick={otp}>Submit</button>

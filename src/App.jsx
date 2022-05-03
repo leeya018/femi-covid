@@ -9,17 +9,11 @@ import Otp from "./components/Otp";
 import Login from "./components/Login";
 import Dashbaord from "./components/Dashbaord";
 import Clients from "./components/Clients";
-import Test from "./components/Test";
 import MonthlySalary from "./components/MonthlySalary";
-
-
 import api from "./api";
 import Wage from "./components/Wage";
-
 import Xlsx from "./components/Xlsx";
 
-
-import CreateTium from "./components/CreateTium";
 
 function App() {
 
@@ -49,12 +43,12 @@ function App() {
     console.log("app useEfect")
   }, [])
 
+
   async function getAllClientFromTium() {
     let institutionName = (await api.getCoordination(api.coordsId)).data.institute.name
     setInstName(institutionName)
     let res = await api.getAllReceptions()
     let receptions = res.data
-
 
     let recetionWithSameName = receptions.filter(rec => rec.institute.name === institutionName)
     let receptionIds = recetionWithSameName.map(rec => rec.id)
@@ -73,12 +67,11 @@ function App() {
         return this[c.idNum] ? false : this[c.idNum] = true;
       }, {});
 
-
       setAllClienstFromInstitution(arrOfAllClientsFromInst)
     })
-
     console.log("I am out");
   }
+
 
   async function getAllClientsFromOneTium() {
     let SIUDIT_GAN_BAIR_COORDS = "0c78605c-2908-4b74-9ae9-e7050824595e"
@@ -96,7 +89,6 @@ function App() {
     setAllClienstFromInstitution(clients)
   }
 
-
   // 0c78605c-2908-4b74-9ae9-e7050824595e  -  גן בעיר סיעודית
 
   const childProps = {
@@ -108,8 +100,8 @@ function App() {
 
   return (
     <div>
-     <Xlsx updateAllClienstFromInstitution={setAllClienstFromInstitution} updateIsXlsz={setIsXlsz}></Xlsx>
-     
+      <Xlsx updateAllClienstFromInstitution={setAllClienstFromInstitution} updateIsXlsz={setIsXlsz}></Xlsx>
+
       <Router>
         <Switch>
           <Route exact path="/">
@@ -148,7 +140,7 @@ function App() {
         </Switch>
       </Router>
 
-    
+
     </div>
   );
 }

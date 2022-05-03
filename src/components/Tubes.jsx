@@ -1,14 +1,14 @@
 import './otp.css';
 import React, { useState, useEffect, useRef } from 'react'
 import apis from '../api';
-import { Redirect } from 'react-router';
 import { useHistory } from "react-router-dom";
-import { createGlobalStyle } from 'styled-components';
+
 
 const NUM_IN_IGUM = 15
 const NUM_IN_COOLER = 100
 
-export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields, clientId ,withIgum}) {
+
+export default function Tubes({ source, totalTests, setTotalTests, clearAddClientFields, clientId, withIgum }) {
     let history = useHistory();
     const inputCooler = useRef(null);
     const buttonRef = useRef(null);
@@ -20,8 +20,6 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
     const [isDisabled, setIsDisabled] = useState(false);
     const [isDisabledIgum, setIsDisabledIgum] = useState(false);
 
-    
-
 
 
     useEffect(() => {
@@ -31,10 +29,12 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         console.log("useEffect Tubes")
     }, [])
 
+
     useEffect(() => {
         updateLocalStorage()
         console.log("total use effect")
     }, [totalTests])
+
 
     function checkDisableFields() {
         if (totalTests % NUM_IN_COOLER == 0) {
@@ -52,6 +52,8 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
             setIsDisabledIgum(true)
         }
     }
+
+
     async function validateTube(tubeId) {
         if (tubeId.substring(0, 1) !== "3") {
             setMessage("tube not start with 3")
@@ -62,6 +64,8 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         setMessage("tube err")
         return false
     }
+
+
     async function validateCooler(coolerId) {
         let res
         try {
@@ -78,6 +82,8 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
             return false
         }
     }
+
+
     async function validateIgum() {
         let res = await apis.validateIgum(igumId, coolerId)
         if (res.status == 204) {
@@ -86,6 +92,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         setMessage("igum err")
         return false
     }
+
 
     function saveIdBeforeCrash() {
         localStorage.setItem("clientId", clientId)
@@ -102,28 +109,27 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
             source, tubeId, coolerId, igumId
         }
 
-        let igumAdditionFieldes ={
+        let igumAdditionFieldes = {
             poolingType: 2,
             poolingComplete: 1,
             poolingSampleBarcode: data.igumId
         }
 
-
         try {
             if (await validateTube(tubeId)) {
                 if (await validateCooler(coolerId)) {//status 200
-                    if(withIgum){
+                    if (withIgum) {
                         if (await validateIgum(igumId, coolerId)) {
-                            sendRecord(data,igumAdditionFieldes) // with igum
+                            sendRecord(data, igumAdditionFieldes) // with igum
                         }
                     }
-                    else{
-                        sendRecord(data,{}) // no igum
-                        
+                    else {
+                        sendRecord(data, {}) // no igum
+
                     }
-    
-                        }
-                    }
+
+                }
+            }
 
         } catch (err) {
             saveIdBeforeCrash()
@@ -131,8 +137,9 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         }
     }
 
-    async function sendRecord(data,addedData){
-        let res = await apis.addRec(data,addedData)
+
+    async function sendRecord(data, addedData) {
+        let res = await apis.addRec(data, addedData)
         if (res.status === 200) {
             console.log("finish good")
             setTotalTests(totalTests + 1)
@@ -144,6 +151,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         }
     }
 
+
     function updateLocalStorage() {
         if ((totalTests % 100) % NUM_IN_IGUM == 0) {
             localStorage.setItem('igumId', '')
@@ -153,20 +161,24 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         }
     }
 
+
     function clearFields() {
         setTubeId('')
         setMessage("")
         clearAddClientFields()
     }
+
+
     function handleChangeCooler(e) {
         setMessage("")
         setCoolerId(e.target.value)
         localStorage.setItem("coolerId", e.target.value)
     }
 
-    function resetIgumNum(){
+
+    function resetIgumNum() {
         setIgumId("")
-        localStorage.setItem("igumId","")
+        localStorage.setItem("igumId", "")
         setIsDisabledIgum(false)
     }
 
@@ -177,10 +189,11 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         localStorage.setItem("igumId", e.target.value)
     }
 
+
     return (
         <div>
-           
-           <button onClick={resetIgumNum}>reset igum</button>
+
+            <button onClick={resetIgumNum}>reset igum</button>
             <div className="cols">
                 <input type="text" autoFocus placeholder="tubeId" maxLength="9" onChange={e => {
                     setTubeId(e.target.value)
@@ -194,7 +207,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
                 {withIgum && <div className="no-margin rows">
                     <input className="no-margin" type="text" placeholder="igumId" disabled={isDisabledIgum} maxLength="9" onChange={handleChangeIgum} value={igumId} />
                     <p className="no-margin">({totalTests % NUM_IN_IGUM})</p><br />
-                
+
                 </div>}
                 <button onClick={addRec}>add client</button>
                 <p className="err-message">{message}</p>

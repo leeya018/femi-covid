@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom";
 // what are kind of clients are those 
 // status 1,0 - not done
 // status 4,3,2 - inside system 
-export default function Clients({ setTotalTests, totalTests,allClienstFromInstitution }) {
+export default function Clients({ setTotalTests, totalTests, allClienstFromInstitution }) {
     const [clients, setClients] = useState([])
     const [filteredClients, setFilteredClients] = useState([])
     const [activeBtn, setActiveBtn] = useState(true)
@@ -139,8 +139,8 @@ export default function Clients({ setTotalTests, totalTests,allClienstFromInstit
     return (
         <div>
             <div>
-            <ShowMissingClients clientsAfterTest={filteredClients} allClienstFromInstitution={allClienstFromInstitution} />
-                <button  onClick={e => history.push("/monthlySalary")}> show monthlySalary</button><br />
+                <ShowMissingClients clientsAfterTest={filteredClients} allClienstFromInstitution={allClienstFromInstitution} />
+                <button onClick={e => history.push("/monthlySalary")}> show monthlySalary</button><br />
                 <button onClick={calcTimes}> calc times </button>
                 <label>fastest time: </label><p>{bestTime} per hour </p>
                 <label>avg fast time: </label><p>{(bestTime / 60).toFixed()} samples per minute </p>

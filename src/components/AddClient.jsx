@@ -8,10 +8,10 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
 //change in here between with Igum and without 
-const WITH_IGUM = true 
+const WITH_IGUM = true
 
-const roles =[
-    {   
+const roles = [
+    {
         id: 4,
         title: "שוהה במוסד",
         label: "שוהה במוסד"
@@ -24,7 +24,7 @@ const roles =[
     },
 ]
 
-export default function AddClient({ allClienstFromInstitution,totalTests,setTotalTests }) {
+export default function AddClient({ allClienstFromInstitution, totalTests, setTotalTests }) {
     const idInputRef = useRef(null)
 
     const [clientId, setClientId] = useState('')
@@ -35,8 +35,8 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [kupaId, setKupaId] = useState();
 
     const [idIputFocus, setIdIputFocus] = useState(false);
-    
-    
+
+
     const [goodMessage, setGoodMessage] = useState('');
 
     const [isTask, setIsTask] = useState(false)
@@ -52,7 +52,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     const [phone1, setPhone1] = useState("")
 
 
- 
+
 
     const [showNewClientWindow, setShowNewClientWindow] = useState(false)
     // firstName: "חווה"
@@ -60,29 +60,29 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
     // idType: 1
     // label: "חווה תמיר"
     // lastName: "תמיר"
-    
+
     useEffect(async () => {
         setClientId(localStorage.getItem("clientId")) // get the Id if its exists in LocalStorage
 
         let tempArrKupas = (await apis.getKupas()).data
-        let newKupasArr = tempArrKupas.map(kupa => ({"label": kupa.title, "id":kupa.id, "title" :kupa.title})) 
+        let newKupasArr = tempArrKupas.map(kupa => ({ "label": kupa.title, "id": kupa.id, "title": kupa.title }))
         setAllKupas(newKupasArr)
 
     }, [])
-    
+
     useEffect(() => {
         console.log(roleObj)
-    
-      
+
+
     }, [roleObj])
-    
-    
-    
+
+
+
     useEffect(() => {
-        if(idIputFocus == true){
+        if (idIputFocus == true) {
             idInputRef.current.focus();
         }
-    },[idIputFocus]);
+    }, [idIputFocus]);
 
 
     function clearAddClientFields() {
@@ -110,21 +110,21 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             assignedTester,
             femiCode: "",
             isUrgent: false,
-            insurerReferenceId:"",
+            insurerReferenceId: "",
             requestTime: createCurrDate(),
             // status: 0,
             pcrStatus: 0,
             supplierCode: "",
             supplierDesc: "",
 
-           
+
             receptionEnteredTime: createCurrDate(),
         }
     }
 
     // 2021-10-06T11:08:32.893   - this is the format 
     function createCurrDate() {
-        var dt = new Date(); 
+        var dt = new Date();
         let sDate = dt.toISOString() // decrease 3 hours from actual time
         return sDate.slice(0, -1)
     }
@@ -138,9 +138,9 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
         let roleData
         roleData = await apis.getRole(dupClient.role)
-        dupClient.role = showNewClientWindow? roleObj : roleData
-        if(showNewClientWindow) dupClient.phone1 = phone1
-        if(showNewClientWindow) dupClient.phoneAreaCode = phoneAreaCode
+        dupClient.role = showNewClientWindow ? roleObj : roleData
+        if (showNewClientWindow) dupClient.phone1 = phone1
+        if (showNewClientWindow) dupClient.phoneAreaCode = phoneAreaCode
 
         // dupClient.rowVersion = null
         // dupClient.serologyStatus = null
@@ -148,9 +148,9 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         let res = await apis.getCoordination(apis.coordsId)
         dupClient.institute = res.data.institute
         dupClient.reception = res.data
-        dupClient.receptionEnteredBy= res.data.createdBy 
+        dupClient.receptionEnteredBy = res.data.createdBy
         // dupClient.antigenStatus = null 
-        
+
         dupClient = Object.assign(dupClient, addExtraFields(lastUpdate));
         delete dupClient.lastUpdated
         delete dupClient.phoneAreaCode2
@@ -178,28 +178,28 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         let id = String(idInput).trim();
         if (id.length > 9 || isNaN(id)) return false;
         id = id.length < 9 ? ("00000000" + id).slice(-9) : id;
-            return Array.from(id, Number).reduce((counter, digit, i) => {
-                const step = digit * ((i % 2) + 1);
-                return counter + (step > 9 ? step - 9 : step);
-            }) % 10 === 0;
+        return Array.from(id, Number).reduce((counter, digit, i) => {
+            const step = digit * ((i % 2) + 1);
+            return counter + (step > 9 ? step - 9 : step);
+        }) % 10 === 0;
     }
 
 
-    function validateFields(){
-        if(!is_israeli_id_number(clientId)){
+    function validateFields() {
+        if (!is_israeli_id_number(clientId)) {
             alert("id is not valid")
             throw 'id is not valid';
         }
-        if(!firstName || !lastName || !kupaId || !phoneAreaCode || !phone1 || Object.keys(roleObj).length === 0 ){
+        if (!firstName || !lastName || !kupaId || !phoneAreaCode || !phone1 || Object.keys(roleObj).length === 0) {
             alert("need to feel all fienlds")
             throw 'need to feel all fienlds';
-            
+
         }
     }
 
     // creating a new client that is not exist
-    async function createClient(){
-        
+    async function createClient() {
+
         validateFields()
         let defaulId = "000000000"
         let defaulIdType = 1
@@ -212,13 +212,13 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             if (res.status === 204) {
                 setMessage("cannot find the data")
             } else {
-     
+
                 res.data.firstName = firstName
                 res.data.lastName = lastName
                 res.data.insurer = kupaId // this where I need to do a json 
-          
+
                 res.data.idNum = clientId
-                res.data.cityDesc ="רמת גן"
+                res.data.cityDesc = "רמת גן"
 
                 res.data.phoneAreaCode = "+1"
                 res.data.phone1 = "054"
@@ -259,32 +259,32 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         let resTask
         try {
             if (task) {
-                 resTask = await apis.createTask(task)
+                resTask = await apis.createTask(task)
                 console.log(resTask.data)
                 try {
                     if (resTask) {
                         task.pcrStatus = 1
                         let a = await apis.updateTask(task)
-                        
+
                         setShowNewClientWindow(false)
                     }
                 } catch (err) {
                     console.log(err)
                 }
-  
+
             }
         } catch (err) {
             console.log(err)
         }
 
-        
+
         //need to change status
 
     }
 
     /// DO NOT TOUCH 
     async function findClient() {
-    setShowNewClientWindow(false)
+        setShowNewClientWindow(false)
 
         let client
         let task
@@ -322,7 +322,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
             }
         }
         try {
-            if (client) { 
+            if (client) {
                 task = await creatTaskJson(client, res.data.lastUpdated)
                 console.log("object")
                 console.log(task)
@@ -338,7 +338,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
         let resTask
         try {
             if (task) {
-                 resTask = await apis.createTask(task)
+                resTask = await apis.createTask(task)
                 console.log(resTask.data)
                 try {
                     if (resTask) {
@@ -376,7 +376,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
     return (
         <div className="otp-wrapper">
-            <button onClick={()=>{setShowNewClientWindow(!showNewClientWindow)}}>create new client</button>
+            <button onClick={() => { setShowNewClientWindow(!showNewClientWindow) }}>create new client</button>
             <p>totalTests: {totalTests}</p>
 
             <FindIdByName allClienstFromInstitution={allClienstFromInstitution} updateIdIputFocus={setIdIputFocus} updateNumId={setClientId} updateIdType={setIdType} />
@@ -390,55 +390,55 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
                 <label htmlFor="passport">passport</label>
             </div>
             {idType == 1 && (
-                <input type="text" ref={idInputRef}  maxLength="9"  placeholder="id" value={clientId} onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef} maxLength="9" placeholder="id" value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             {idType == 2 && (
-                <input type="text" ref={idInputRef} placeholder="passport"  value={clientId} onChange={e => setClientId(e.target.value)} />
+                <input type="text" ref={idInputRef} placeholder="passport" value={clientId} onChange={e => setClientId(e.target.value)} />
             )}
             <button onClick={findClient}>find client</button>
 
             {(showNewClientWindow) && (
                 <div>
-                
 
-                    <input type="text" placeholder='firstName' onChange={(e)=>{setFirstName(e.target.value)}} value={firstName} /> <br />
-                    <input type="text" placeholder='lastName' onChange={(e)=>{setLastName(e.target.value)}} value={lastName} /> <br />
-                    
-                    
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={allKupas}
-                    sx={{ width: 200 }}
-                    renderInput={(params) => <TextField  autoFocus  {...params} label="kupa" />}
-                    
-                    onChange={(event, kupa) => {
-                        setKupaId(kupa.id)
-                        setKupaName(kupa.label)
-                                }}
-        
-              />
 
-                <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={roles}
-                    sx={{ width: 200 }}
-                    renderInput={(params) => <TextField  autoFocus  {...params} label="role" />}
-                    
-                    onChange={(event, role) => {
-                        let roleDup = {...role}
-                        delete roleDup.label
-                        setRoleObj(roleDup)
+                    <input type="text" placeholder='firstName' onChange={(e) => { setFirstName(e.target.value) }} value={firstName} /> <br />
+                    <input type="text" placeholder='lastName' onChange={(e) => { setLastName(e.target.value) }} value={lastName} /> <br />
 
-                                }}
-        
-              />
-            
 
-              <input type="text" placeholder='phoneAreaCode' maxLength="3" minLength="2" onChange={e => setPhoneAreaCode(e.target.value)} value={phoneAreaCode} /> <br />
-              <input type="text" placeholder='phone1' maxLength="7" minLength="7" onChange={e => setPhone1(e.target.value)} value={phone1} /> <br />
-              
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={allKupas}
+                        sx={{ width: 200 }}
+                        renderInput={(params) => <TextField autoFocus  {...params} label="kupa" />}
+
+                        onChange={(event, kupa) => {
+                            setKupaId(kupa.id)
+                            setKupaName(kupa.label)
+                        }}
+
+                    />
+
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={roles}
+                        sx={{ width: 200 }}
+                        renderInput={(params) => <TextField autoFocus  {...params} label="role" />}
+
+                        onChange={(event, role) => {
+                            let roleDup = { ...role }
+                            delete roleDup.label
+                            setRoleObj(roleDup)
+
+                        }}
+
+                    />
+
+
+                    <input type="text" placeholder='phoneAreaCode' maxLength="3" minLength="2" onChange={e => setPhoneAreaCode(e.target.value)} value={phoneAreaCode} /> <br />
+                    <input type="text" placeholder='phone1' maxLength="7" minLength="7" onChange={e => setPhone1(e.target.value)} value={phone1} /> <br />
+
 
                     <button onClick={createClient}>A NEW CLIENT</button>
                 </div>
@@ -458,7 +458,7 @@ export default function AddClient({ allClienstFromInstitution,totalTests,setTota
 
             <p className="err-message">{message}</p>
             {isTask && (
-                <Tubes source={source} withIgum={WITH_IGUM} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} clientId={clientId}/>
+                <Tubes source={source} withIgum={WITH_IGUM} totalTests={totalTests} setTotalTests={setTotalTests} clearAddClientFields={clearAddClientFields} clientId={clientId} />
             )}
         </div>
     )

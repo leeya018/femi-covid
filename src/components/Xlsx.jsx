@@ -6,6 +6,7 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
     const [file] = e.target.files;
     const reader = new FileReader();
 
+
     reader.onload = (evt) => {
       const bstr = evt.target.result;
       const wb = XLSX.read(bstr, { type: "binary" });
@@ -18,6 +19,7 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
     reader.readAsBinaryString(file);
     updateIsXlsz(true)
   };
+
 
   function createClientObj(arr) {
     // let { first, last, id } = client
@@ -37,6 +39,8 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
     console.log(clients)
     updateAllClienstFromInstitution(clients)
   }
+
+  
   return (
     <div>
       <input type="file" onChange={onChange} />

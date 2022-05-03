@@ -40,7 +40,7 @@ export default function CreateTium() {
 
     return (
         <div className="otp-wrapper">
-            <button onClick={()=>history.push("/dashboard")}>add client</button>
+            <button onClick={() => history.push("/dashboard")}>add client</button>
             <input type="text" onChange={e => setInstName(e.target.value)} />
             <div>tnirntinrsietnsir</div>
             <select id="inst" name="inst">
