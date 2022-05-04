@@ -29,18 +29,18 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
     for (const client of dupArr) {
       clients.push(
         {
-          idNum: client[0],
-          firstName: client[1],
-          lastName: client[2],
+          idNum: client[1].toString(),
+          firstName: client[0].split(" ")[0],
+          lastName: client[0].split(" ")[1],
           idType: 1,
-          label: client[1] + ' ' + client[2]
+          label: client[0]
         })
     }
     console.log(clients)
     updateAllClienstFromInstitution(clients)
   }
 
-  
+
   return (
     <div>
       <input type="file" onChange={onChange} />
