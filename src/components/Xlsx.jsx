@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import * as XLSX from "xlsx";
 
 export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) {
+  const [data, setData] = useState([])
+  const [numOfFiles, setNumOfFiles] = useState(0)
+
+
+
   const onChange = (e) => {
     const [file] = e.target.files;
     const reader = new FileReader();
+
 
 
     reader.onload = (evt) => {
@@ -12,11 +18,13 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
       const wb = XLSX.read(bstr, { type: "binary" });
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
-      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      console.log(data);
-      createClientObj(data)
+      const newData = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      setData([...data, ...newData])
+      console.log([...data, ...newData])
+      createClientObj([...data, ...newData])
     };
     reader.readAsBinaryString(file);
+    setNumOfFiles(numOfFiles + 1)
     updateIsXlsz(true)
   };
 
@@ -26,15 +34,19 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
     let clients = []
     let dupArr = [...arr]
     dupArr.shift()
+    dupArr.shift()
+
     for (const client of dupArr) {
-      clients.push(
-        {
-          idNum: client[1].toString(),
-          firstName: client[0].split(" ")[0],
-          lastName: client[0].split(" ")[1],
-          idType: 1,
-          label: client[0]
-        })
+      if (client[0] !== undefined && client[1] !== undefined) {
+        clients.push(
+          {
+            idNum: client[1].toString(),
+            firstName: client[0].split(" ")[0],
+            lastName: client[0].split(" ")[1],
+            idType: 1,
+            label: client[0]
+          })
+      }
     }
     console.log(clients)
     updateAllClienstFromInstitution(clients)
@@ -44,6 +56,7 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
   return (
     <div>
       <input type="file" onChange={onChange} />
+      <span>num of files: {numOfFiles}</span>
     </div>
   );
 }
