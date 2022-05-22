@@ -25,7 +25,7 @@ function App() {
   const [instName, setInstName] = useState('')
   const [allClienstFromInstitution, setAllClienstFromInstitution] = useState([])
   const [isXlsz, setIsXlsz] = useState(false);
-
+  const [contactInst, setContactInst] = useState({})
 
   useEffect(async () => {
     let res, clientList, len
@@ -46,8 +46,12 @@ function App() {
 
 
   async function getAllClientFromTium() {
-    let institutionName = (await api.getCoordination(api.coordsId)).data.institute.name
+    // let institutionName = (await api.getCoordination(api.coordsId)).data.institute.name
+    let data = (await api.getCoordination(api.coordsId)).data
+    let institutionName = data.institute.name
     setInstName(institutionName)
+    
+    setContactInst({name:data.institute.contactName, phone:data.institute.contactPhone})
     let res = await api.getAllReceptions()
     let receptions = res.data
 
@@ -131,18 +135,12 @@ function App() {
               phone={phone} />
           </Route>
           <Route path="/clients">
-            <Clients setTotalTests={setTotalTests} totalTests={totalTests} allClienstFromInstitution={allClienstFromInstitution} />
+            <Clients setTotalTests={setTotalTests} contactInst={contactInst} totalTests={totalTests} allClienstFromInstitution={allClienstFromInstitution} />
           </Route>
 
           <Route path="/monthlySalary">
             <MonthlySalary />
           </Route>
-
-
-
-          {/* <Route path="/tium">
-          <CreateTium />
-        </Route> */}
 
         </Switch>
       </Router>

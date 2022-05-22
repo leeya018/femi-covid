@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
+import '../style.css';
 
 export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) {
   const [data, setData] = useState([])
@@ -55,7 +56,7 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
 
   return (
     <div>
-      <input type="file" onChange={onChange} />
+      <input type="file" id="fileInput" onChange={onChange} />
       <span>num of files: {numOfFiles}</span>
     </div>
   );

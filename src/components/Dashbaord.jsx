@@ -4,7 +4,7 @@ import api from "../api";
 import React, { useState, useEffect } from 'react';
 import AddClient from "./AddClient";
 import { useHistory } from "react-router-dom";
-
+import '../style.css';
 
 
 export default function Dashbaord({ allClienstFromInstitution, instName, totalTests, setTotalTests }) {

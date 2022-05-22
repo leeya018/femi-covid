@@ -3,19 +3,27 @@ import apis from "../api";
 import React, { useEffect, useState } from 'react'
 import Client from "./Client";
 import ShowMissingClients from "./ShowMissingClients";
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Redirect,
+  } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 // const coordsId = "de84c671-f59f-40d2-86f5-77dadd39d46a"  //oleg
 
 // what are kind of clients are those 
 // status 1,0 - not done
 // status 4,3,2 - inside system 
-export default function Clients({ setTotalTests, totalTests, allClienstFromInstitution }) {
+export default function Clients({ setTotalTests,contactInst, totalTests, allClienstFromInstitution }) {
     const [clients, setClients] = useState([])
     const [filteredClients, setFilteredClients] = useState([])
     const [activeBtn, setActiveBtn] = useState(true)
     const [doneNum, setDoneNum] = useState(0)
     const [bestTime, setBestTime] = useState(0)
     const [avgRate, setAvgRate] = useState(0)
+
+
 
 
 
@@ -29,6 +37,7 @@ export default function Clients({ setTotalTests, totalTests, allClienstFromInsti
         let res
         try {
             res = await apis.getClients(apis.coordsId)
+            
             let clientList = res.data
             clientList = sortByDate(clientList)
             console.log(clientList)
@@ -139,7 +148,11 @@ export default function Clients({ setTotalTests, totalTests, allClienstFromInsti
     return (
         <div>
             <div>
-                <ShowMissingClients clientsAfterTest={filteredClients} allClienstFromInstitution={allClienstFromInstitution} />
+
+          {/* <button onClick={e => history.push("/showmissingclients")}> show missing clients</button><br /> */}
+
+
+                <ShowMissingClients contactInst={contactInst} clientsAfterTest={filteredClients} allClienstFromInstitution={allClienstFromInstitution} />
                 <button onClick={e => history.push("/monthlySalary")}> show monthlySalary</button><br />
                 <button onClick={calcTimes}> calc times </button>
                 <label>fastest time: </label><p>{bestTime} per hour </p>

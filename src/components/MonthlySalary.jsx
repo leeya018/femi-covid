@@ -5,6 +5,7 @@ import apiIsutit from '../apiIsutit'
 import api from '../api'
 
 
+
 const URER_ID = '300628583'
 const WORKER_ID = '8184'
 const HOUR_RATE = 29
@@ -213,6 +214,7 @@ export default function MonthlySalary() {
     return (
 
         <div>
+            <button onClick={e => history.push("/clients")} >go back</button>
             <h1>Monthly Salary</h1>
             <label htmlFor="">month</label><input type="number" value={month} max="12" min="1" onChange={e => setMonth(parseInt(e.target.value))} /><br />
             <label htmlFor="">year</label><input type="number" value={year} max="2022" min="2020" onChange={e => setYear(parseInt(e.target.value))} /><br />

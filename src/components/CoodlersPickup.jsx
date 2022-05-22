@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import apis from '../api'
+import { useHistory } from "react-router-dom";
+
+
 export default function CoodlersPickup() {
 
     const [instCollect, setInstCollect] = useState([])
     const [instNotCollect, setInstNotCollect] = useState([])
+
+    let history = useHistory();
 
     useEffect(async () => {
         let myReceptionsFromToday = await getMyReceptionsFromToday()
@@ -51,6 +56,7 @@ export default function CoodlersPickup() {
     }
     return (
         <div>
+             <button onClick={e => history.push("/clients")} >go back</button>
             <h2>CoodlersPickup</h2>
             <h4>collect</h4>
             <ul>
