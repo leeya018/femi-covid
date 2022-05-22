@@ -186,10 +186,12 @@ export default function AddClient({ allClienstFromInstitution, totalTests, setTo
 
 
     function validateFields() {
-        if (!is_israeli_id_number(clientId)) {
-            alert("id is not valid")
-            throw 'id is not valid';
-        }
+        if(idType == 1){
+            if (!is_israeli_id_number(clientId)) {
+                alert("id is not valid")
+                throw 'id is not valid';
+            }
+        }   
         if (!firstName || !lastName || !kupaId || !phoneAreaCode || !phone1 || Object.keys(roleObj).length === 0) {
             alert("need to feel all fienlds")
             throw 'need to feel all fienlds';
@@ -216,6 +218,7 @@ export default function AddClient({ allClienstFromInstitution, totalTests, setTo
                 res.data.firstName = firstName
                 res.data.lastName = lastName
                 res.data.insurer = kupaId // this where I need to do a json 
+                res.data.idType = idType // this where I need to do a json 
 
                 res.data.idNum = clientId
                 res.data.cityDesc = "רמת גן"
