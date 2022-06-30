@@ -44,7 +44,7 @@ export default function Tubes({ source, totalTests, setTotalTests, clearAddClien
         if (localStorage.getItem("coolerId") !== "") {
             setIsDisabled(true)
         }
-        if (totalTests % NUM_IN_IGUM == 0) {
+        if ((totalTests % 100 )% NUM_IN_IGUM == 0) {
             localStorage.setItem("igumId", '')
             setIgumId("")
         }

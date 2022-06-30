@@ -14,6 +14,8 @@ import api from "./api";
 import Wage from "./components/Wage";
 import Xlsx from "./components/Xlsx";
 import CoodlersPickup from "./components/CoodlersPickup";
+import ExportCSV from "./components/ExportCSV";
+
 
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
   const [allClienstFromInstitution, setAllClienstFromInstitution] = useState([])
   const [isXlsz, setIsXlsz] = useState(false);
   const [contactInst, setContactInst] = useState({})
+  const [clientsData, setClientsData] = useState()
+
 
   useEffect(async () => {
     let res, clientList, len
@@ -48,6 +52,8 @@ function App() {
   async function getAllClientFromTium() {
     // let institutionName = (await api.getCoordination(api.coordsId)).data.institute.name
     let data = (await api.getCoordination(api.coordsId)).data
+    // let data = (await api.getCoordination("cafd217c-c166-4e9e-9f57-eab175c01c45")).data   //REMOVE THIS ONE 
+
     let institutionName = data.institute.name
     setInstName(institutionName)
     
@@ -73,6 +79,7 @@ function App() {
       }, {});
 
       setAllClienstFromInstitution(arrOfAllClientsFromInst)
+      setClientsData(arrOfAllClientsFromInst)
     })
     console.log("I am out");
   }
@@ -106,7 +113,7 @@ function App() {
   return (
     <div>
       <Xlsx updateAllClienstFromInstitution={setAllClienstFromInstitution} updateIsXlsz={setIsXlsz}></Xlsx>
-
+      <ExportCSV csvData={clientsData} fileName={instName} />
       <Router>
         <Switch>
           <Route exact path="/">
