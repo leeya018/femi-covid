@@ -145,6 +145,11 @@ export default function Clients({ setTotalTests,contactInst, totalTests, allClie
         }
     }
 
+    function copyList() {
+        let listToCopy = filteredClients.map(client => client.firstName + " " + client.lastName)
+        navigator.clipboard.writeText(listToCopy);
+      }
+
     return (
         <div>
             <div>
@@ -168,6 +173,9 @@ export default function Clients({ setTotalTests,contactInst, totalTests, allClie
             </div>
 
             <button onClick={e => history.push("/dashboard")} autoFocus>+</button>
+            <div className='rows'>
+                <button onClick={copyList}>copy list</button>
+            </div>
             <div className="rows">
                 <button style={{ backgroundColor: activeBtn ? "blue" : "" }} onClick={() => handleClick([2, 3, 4])}>complete</button>
                 <button style={{ backgroundColor: !activeBtn ? "blue" : "" }} onClick={() => handleClick([0, 1])}>not complete</button>

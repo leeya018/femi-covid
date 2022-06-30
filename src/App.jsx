@@ -112,8 +112,10 @@ function App() {
 
   return (
     <div>
-      <Xlsx updateAllClienstFromInstitution={setAllClienstFromInstitution} updateIsXlsz={setIsXlsz}></Xlsx>
-      <ExportCSV csvData={clientsData} fileName={instName} />
+      <div className="left">
+        <Xlsx updateAllClienstFromInstitution={setAllClienstFromInstitution} updateIsXlsz={setIsXlsz}></Xlsx>
+        <ExportCSV csvData={clientsData} fileName={instName} />
+      </div>
       <Router>
         <Switch>
           <Route exact path="/">

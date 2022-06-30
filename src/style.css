@@ -25,3 +25,11 @@ input {
 button:hover {
     opacity: 0.5;
 }
+.center {
+    display: flex;
+    flex-direction: center;
+}
+.left {
+    display: flex;
+    flex-direction: left; 
+}
