@@ -112,8 +112,8 @@ const addRec = (data,addedData) => {
     testTubeBarCode: data.tubeId,
     containerBarCode: data.coolerId,
     tubeBarcode: data.tubeId,
-    coolerBarcode: data.coolerId,
-    poolingSampleBarcode:""
+    coolerBarcode: data.coolerId
+    
 
   }
 
@@ -206,8 +206,10 @@ function getAllReceptions() {
 
 
 
-// const coordsId = "602750c4-2148-4ca1-907f-f024c38a7375"  //or  רמת י
-const coordsId = "602750c4-2148-4ca1-907f-f024c38a7375"  //or  רמת י
+// const coordsId = "937de2be-c9b1-4bed-b712-00dfc6c3ae66"  //or  רמת י
+const coordsId = "1a56e089-5304-48cc-a26c-b3539d6b3875"  //or  רמת י
+
+
 
 
 
