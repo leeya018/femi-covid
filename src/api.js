@@ -1,4 +1,3 @@
-
 import axios from "axios";
 const api = axios.create({
   baseURL: "https://magenavot-be-prd.femimoh.co.il/femi-internal/1.0.0",
@@ -8,50 +7,45 @@ const createHeaders = (token) => {
   return {
     headers: {
       "content-type": "application/json",
-      Authorization: "Bearer " + token
-    }
-
-  }
+      Authorization: "Bearer " + token,
+    },
+  };
 };
-
-
 
 export const otp = (payload) => {
   return api.post(`/otp`, payload);
 };
 
-
 export const login = (payload) => {
-  return api.post(`/logIn`, payload)
+  return api.post(`/logIn`, payload);
 };
 
 // localStorage.getItem('jwtToken')
 //  localStorage.setItem("jwtToken", 'Bearer ' + token);
 
 // 749cfc59-5312-48c6-90ee-f422e692230f
-// export const openTium = () => { //AKA plus button 
+// export const openTium = () => { //AKA plus button
 //   let currUser = JSON.parse(localStorage.getItem("currUser"))
 //   let token = currUser.token
 //   return api.get(`/coordination/749cfc59-5312-48c6-90ee-f422e692230f`, createHeaders(token));
 
 // };
-export const createTium = (paylod) => { //AKA plus button 
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+export const createTium = (paylod) => {
+  //AKA plus button
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
 
   return api.post(`/coordination`, paylod, createHeaders(token));
-
 };
 //300628583  the id of patient
-export const findClient = (id,idType) => {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+export const findClient = (id, idType) => {
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
   return api.get(`/patients/${idType}/${id}/`, createHeaders(token));
-
 };
 const getPatientRoles = () => {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
   return api.get(`/patientRoles/1`, createHeaders(token));
 
   // return api.get(`/lookup/patientRoles`, createHeaders(token));
@@ -62,40 +56,53 @@ const getPatientRoles = () => {
 //   return api.get(`/lookup/kupas`, createHeaders(token));
 // };
 const getKupas = () => {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
   return api.get(`/insurers`, createHeaders(token));
 };
-// 
+//
 
-const getTaskById = () => {// should get a task id
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
-  return api.get(`/tasks/5a5ffb39-f464-4efb-99a9-d72dc7f8c934`, createHeaders(token));
+const getTaskById = () => {
+  // should get a task id
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
+  return api.get(
+    `/tasks/5a5ffb39-f464-4efb-99a9-d72dc7f8c934`,
+    createHeaders(token)
+  );
 };
 
 const validateTube = (tubeNum) => {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
-  return api.get(`/validations/barcodes/test-tube/${tubeNum}`, createHeaders(token));
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
+  return api.get(
+    `/validations/barcodes/test-tube/${tubeNum}`,
+    createHeaders(token)
+  );
 };
 
 const validateCooler = (coolerId) => {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
-  return api.post(`/delivery/coolerBarcode?secondOnly=true`, {
-    barcode: coolerId
-  }, createHeaders(token));
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
+  return api.post(
+    `/delivery/coolerBarcode?secondOnly=true`,
+    {
+      barcode: coolerId,
+    },
+    createHeaders(token)
+  );
 };
-const validateIgum = (igumCode,coolerId) => {
-  let WhatIsThat = "e395d04b-41d3-441d-849a-c4f091b64019"
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
-  return api.get(`/validations/barcodes/pooling/${igumCode}?coolerBarcode=${coolerId}&excludeTestId=${WhatIsThat}`, createHeaders(token));
+const validateIgum = (igumCode, coolerId) => {
+  let WhatIsThat = "e395d04b-41d3-441d-849a-c4f091b64019";
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
+  return api.get(
+    `/validations/barcodes/pooling/${igumCode}?coolerBarcode=${coolerId}&excludeTestId=${WhatIsThat}`,
+    createHeaders(token)
+  );
 };
 
-
-const addRec = (data,addedData) => {
+const addRec = (data, addedData) => {
   let noIgumPayload = {
     source: data.source,
     exposeAbroad: false,
@@ -112,44 +119,43 @@ const addRec = (data,addedData) => {
     testTubeBarCode: data.tubeId,
     containerBarCode: data.coolerId,
     tubeBarcode: data.tubeId,
-    coolerBarcode: data.coolerId
-    
+    coolerBarcode: data.coolerId,
+  };
 
-  }
-
-  let payload = {...noIgumPayload,...addedData}
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
-  return api.post(`/test/${data.source}?isDraft=false`, payload,createHeaders(token));
+  let payload = { ...noIgumPayload, ...addedData };
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
+  return api.post(
+    `/test/${data.source}?isDraft=false`,
+    payload,
+    createHeaders(token)
+  );
 };
 
-
-
 async function getRole(roleNum) {
-  let roles = (await getPatientRoles()).data
+  let roles = (await getPatientRoles()).data;
   for (const role of roles) {
     if (role.id === roleNum) {
-      return role
+      return role;
     }
   }
-  return null
+  return null;
 }
 
-
 function getInstitutions() {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
-  return api.get(`/lookup/institutes`, createHeaders(token))
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
+  return api.get(`/lookup/institutes`, createHeaders(token));
 }
 
 async function getKupa(kupaId) {
-  let kupas = (await getKupas()).data
+  let kupas = (await getKupas()).data;
   for (const kupa of kupas) {
     if (kupa.id === kupaId) {
-      return kupa
+      return kupa;
     }
   }
-  return null
+  return null;
 }
 
 //bd8a3d31-dbd8-4685-9d6a-a9780f49b3d6
@@ -160,82 +166,45 @@ async function getKupa(kupaId) {
 // }
 
 function getCoordination(coordsId) {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
   return api.get(`/reception/${coordsId}`, createHeaders(token));
 }
 
 function createTask(payload) {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
   return api.post(`/tasks`, payload, createHeaders(token));
+}
 
-};
-
-function updateTask(payload){
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token
+function updateTask(payload) {
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
   return api.put(`/tasks/${payload.source}`, payload, createHeaders(token));
 }
 
-
 // function getClients(coordsId) {
 //   let currUser = JSON.parse(localStorage.getItem("currUser"))
-//   let token = currUser.token 
+//   let token = currUser.token
 //   return api.get(`/tasks/coordination/${coordsId}`, createHeaders(token));
 
 // };
 
 function getClients(coordsId) {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token 
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
   return api.get(`/tasks/reception/${coordsId}`, createHeaders(token));
-};
-
-function getAllReceptions() {
-  let currUser = JSON.parse(localStorage.getItem("currUser"))
-  let token = currUser.token 
-  let myId = currUser.id
-  return api.get(`/users/${myId}/receptions`, createHeaders(token));
-
-  
 }
 
+function getAllReceptions() {
+  let currUser = JSON.parse(localStorage.getItem("currUser"));
+  let token = currUser.token;
+  let myId = currUser.id;
+  return api.get(`/users/${myId}/receptions`, createHeaders(token));
+}
 
-
-
-
-
-// const coordsId = "937de2be-c9b1-4bed-b712-00dfc6c3ae66"  //or  רמת י
-const coordsId = "1a56e089-5304-48cc-a26c-b3539d6b3875"  //or  רמת י
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// const coordsId = "4388750f-5d38-49dc-8727-187fdf947f42"; //or  רמת י
+const coordsId = "e9fb63cd-1ffa-4e62-8e77-c5cc855f4a32"; //or  רמת י
 
 const apis = {
   coordsId,
@@ -256,10 +225,7 @@ const apis = {
   validateIgum,
   getAllReceptions,
   getKupas,
-  updateTask
-
+  updateTask,
 };
 
 export default apis;
-
-
