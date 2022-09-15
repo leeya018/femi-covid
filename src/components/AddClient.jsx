@@ -1,4 +1,4 @@
-import "./otp.css";
+// import "./otp.css";
 import React, { useState, useEffect, useRef } from "react";
 import apis from "../api";
 import secretKey from "secret-key";
@@ -54,7 +54,11 @@ export default function AddClient({
   const [phone1, setPhone1] = useState("");
 
   const [showNewClientWindow, setShowNewClientWindow] = useState(false);
-  const [clientsItems, setClientsItems] = useState([]);
+  // const [clientsItems, setClientsItems] = useState([]);
+  const [isProcess, setIsProcess] = useState(false);
+
+  const [disableFind, setDisableFind] = useState(false);
+  const [disableCreate, setDisableCreate] = useState(false);
 
   // firstName: "חווה"
   // idNum: "010532927"
@@ -62,19 +66,33 @@ export default function AddClient({
   // label: "חווה תמיר"
   // lastName: "תמיר"
 
-  useEffect(async () => {
-    const res = await apis.getClients(apis.coordsId);
-    setClientsItems(res.data);
+  useEffect(() => {
+    // const getClients = async () => {
+    //   const res = await apis.getClients(apis.coordsId);
+    //   setClientsItems(res.data);
+    // };
+    // getClients().catch((err) => {
+    //   alert(err.message);
+    // });
 
     setClientId(localStorage.getItem("clientId")); // get the Id if its exists in LocalStorage
 
-    let tempArrKupas = (await apis.getKupas()).data;
-    let newKupasArr = tempArrKupas.map((kupa) => ({
-      label: kupa.title,
-      id: kupa.id,
-      title: kupa.title,
-    }));
-    setAllKupas(newKupasArr);
+    const getKupasAsync = async () => {
+      const res = await apis.getKupas();
+
+      let newKupasArr = res.data.map((kupa) => ({
+        label: kupa.title,
+        id: kupa.id,
+        title: kupa.title,
+      }));
+      setAllKupas(newKupasArr);
+    };
+
+    getKupasAsync().catch((err) => {
+      alert(err.message);
+    });
+
+    // let tempArrKupas = (await apis.getKupas()).data;
   }, []);
 
   useEffect(() => {
@@ -158,16 +176,17 @@ export default function AddClient({
     return dupClient;
   }
 
-  function parseWithZeros() {
+  function parseWithZeros(id, type) {
     let i = 0;
     let s = "";
-    if (idType === 1) {
-      while (i < 9 - clientId.length) {
+    if (type === 1) {
+      while (i < 9 - id.length) {
         s += "0";
         i++;
       }
     }
-    return s + clientId;
+    console.log(s + id);
+    return s + id;
   }
 
   function is_israeli_id_number(idInput) {
@@ -271,7 +290,7 @@ export default function AddClient({
           if (resTask) {
             task.pcrStatus = 1;
             let a = await apis.updateTask(task);
-
+            setIsProcess(false);
             setShowNewClientWindow(false);
           }
         } catch (err) {
@@ -285,34 +304,42 @@ export default function AddClient({
     //need to change status
   }
 
-  const isNotComplet = async (id) => {
-    //  need to ge tthe clinets form the out side
+  // const isNotComplet = (id) => {
+  //   //  need to ge tthe clinets form the out side
 
-    const statusCodes = [0, 1];
-    let unfinishedList = clientsItems.filter((client) =>
-      statusCodes.includes(client.pcrStatus)
-    );
-    return unfinishedList.find((item) => item.id === id) === 1;
-  };
+  //   const statusCodes = [0, 1];
+  //   let unfinishedList = clientsItems.filter((client) =>
+  //     statusCodes.includes(client.pcrStatus)
+  //   );
+  //   return unfinishedList.find((item) => {
+  //     return item.idNum === id;
+  //   });
+  // };
 
   /// DO NOT TOUCH
   async function findClient() {
+    setDisableFind(true);
     setShowNewClientWindow(false);
+    // if (isProcess) {
+    //   alert("have to update this item from system");
+    // }
 
     let client;
     let task;
     let res;
-    let newId = parseWithZeros();
-    if (isNotComplet(newId)) {
-      alert("client in thes system no done ");
-      return;
-    }
+    let newId = parseWithZeros(clientId, idType);
+    // const itemFound = isNotComplet(newId);
+    // if (itemFound !== undefined) {
+    //   alert("client in thes system no done ");
+    //   return;
+    // }
     setClientId(newId);
     setFirstName("");
     setLastName("");
     setKupaName("");
     try {
       res = await apis.findClient(newId, idType);
+      setIsProcess(true);
 
       if (res.status === 204) {
         setMessage("cannot find the data");
@@ -372,6 +399,7 @@ export default function AddClient({
             task.unacurateInformationFeedback = null;
             let a = await apis.updateTask(task);
             console.log(a);
+
             // setShowNewClientWindow(false)
           }
         } catch (err) {
@@ -447,7 +475,13 @@ export default function AddClient({
           onChange={(e) => setClientId(e.target.value)}
         />
       )}
-      <button onClick={findClient}>find client</button>
+      <button
+        className={` ${disableFind ? "button_disable" : "button_enable"}`}
+        disabled={disableFind}
+        onClick={findClient}
+      >
+        find client
+      </button>
 
       {showNewClientWindow && (
         <div>
@@ -530,6 +564,9 @@ export default function AddClient({
       <p className="err-message">{message}</p>
       {isTask && (
         <Tubes
+          disableCreate={disableCreate}
+          updateDisableCreate={setDisableCreate}
+          updateDisableFind={setDisableFind}
           source={source}
           withIgum={WITH_IGUM}
           totalTests={totalTests}

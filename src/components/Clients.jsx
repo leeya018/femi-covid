@@ -1,4 +1,4 @@
-import "./otp.css";
+// import "./otp.css";
 import apis from "../api";
 import React, { useEffect, useState } from "react";
 import Client from "./Client";

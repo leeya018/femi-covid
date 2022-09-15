@@ -203,8 +203,8 @@ function getAllReceptions() {
   return api.get(`/users/${myId}/receptions`, createHeaders(token));
 }
 
-// const coordsId = "4388750f-5d38-49dc-8727-187fdf947f42"; //or  רמת י
-const coordsId = "e9fb63cd-1ffa-4e62-8e77-c5cc855f4a32"; //or  רמת י
+// const coordsId = "7431a0ca-7cf0-4f24-843b-0ca467dba7ab"; //or  רמת י
+const coordsId = "3e35bf38-55b1-4d66-924e-7f853e40b762"; //or  רמת י
 
 const apis = {
   coordsId,

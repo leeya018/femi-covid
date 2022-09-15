@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import * as XLSX from "xlsx";
-import '../style.css';
+import "../style.css";
 
-export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) {
-  const [data, setData] = useState([])
-  const [numOfFiles, setNumOfFiles] = useState(0)
-
-
+export default function Xlsx({
+  updateAllClienstFromInstitution,
+  updateIsXlsz,
+}) {
+  const [data, setData] = useState([]);
+  const [numOfFiles, setNumOfFiles] = useState(0);
 
   const onChange = (e) => {
     const [file] = e.target.files;
     const reader = new FileReader();
-
-
 
     reader.onload = (evt) => {
       const bstr = evt.target.result;
@@ -20,22 +19,21 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
       const wsname = wb.SheetNames[0];
       const ws = wb.Sheets[wsname];
       const newData = XLSX.utils.sheet_to_json(ws, { header: 1 });
-      setData([...data, ...newData])
-      console.log([...data, ...newData])
-      createClientObj([...data, ...newData])
+      setData([...data, ...newData]);
+      console.log([...data, ...newData]);
+      createClientObj([...data, ...newData]);
     };
     reader.readAsBinaryString(file);
-    setNumOfFiles(numOfFiles + 1)
-    updateIsXlsz(true)
+    setNumOfFiles(numOfFiles + 1);
+    updateIsXlsz(true);
   };
-
 
   function createClientObj(arr) {
     // let { first, last, id } = client
-    let clients = []
-    let dupArr = [...arr]
-    dupArr.shift()
-    dupArr.shift()
+    let clients = [];
+    let dupArr = [...arr];
+    dupArr.shift();
+    dupArr.shift();
     // for (const client of dupArr) {
     //   if (client[0] !== undefined && client[1] !== undefined) {
     //     clients.push(
@@ -64,23 +62,21 @@ export default function Xlsx({ updateAllClienstFromInstitution, updateIsXlsz }) 
     //   }
     // }
 
-// take the file from my file creation
+    // take the file from my file creation
     for (const client of dupArr) {
       if (client[0] !== undefined && client[1] !== undefined) {
-        clients.push(
-          {
-            idNum: client[3].toString(),
-            firstName: client[0],
-            lastName: client[1],
-            idType: client[2],
-            label: client[4]
-          })
+        clients.push({
+          idNum: client[3].toString(),
+          firstName: client[0],
+          lastName: client[1],
+          idType: client[2],
+          label: client[4],
+        });
       }
     }
-    console.log(clients)
-    updateAllClienstFromInstitution(clients)
+    console.log(clients);
+    updateAllClienstFromInstitution(clients);
   }
-
 
   return (
     <div>
