@@ -37,7 +37,6 @@ export const createTium = (paylod) => {
 
   return api.post(`/coordination`, paylod, createHeaders(token));
 };
-//300628583  the id of patient
 export const findClient = (id, idType) => {
   let currUser = JSON.parse(localStorage.getItem("currUser"));
   let token = currUser.token;
@@ -203,8 +202,8 @@ function getAllReceptions() {
   return api.get(`/users/${myId}/receptions`, createHeaders(token));
 }
 
-// const coordsId = "7431a0ca-7cf0-4f24-843b-0ca467dba7ab"; //or  רמת י
-const coordsId = "3e35bf38-55b1-4d66-924e-7f853e40b762"; //or  רמת י
+// const coordsId = "4062c1b8-3179-479c-baa9-34f01ce4fb42"; //or  רמת י
+const coordsId = "4471a9b5-bb36-459a-80f6-97527c8c1c85"; //or  רמת י
 
 const apis = {
   coordsId,
